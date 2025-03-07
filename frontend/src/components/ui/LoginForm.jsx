@@ -58,7 +58,8 @@ function LoginForm() {
             {errors.password && <p className="text-red-500">{errors.password.message}</p>}
           </div>
           <div className="text-right mb-4">
-            <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
+            <Link to ="/resetpass" className="text-blue-500">Change Password?</Link>
+            
           </div>
           <button type="submit" disabled={isSubmitting} className="bg-pink-500 py-2 px-4 mt-4 w-full font-bold text-white">
             LOGIN

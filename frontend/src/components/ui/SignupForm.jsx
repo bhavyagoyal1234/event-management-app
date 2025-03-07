@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-
 import axios from "axios";
 
 function SignupForm() {
@@ -12,6 +11,7 @@ function SignupForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm();
 
   async function onSubmit(data) {
@@ -40,7 +40,7 @@ function SignupForm() {
 
   const handletypechange = (type) => {
     setAccountType(type);
-    if (type == "company") {
+    if (type === "company") {
       navigate("/companyregister");
     }
   };
@@ -90,7 +90,7 @@ function SignupForm() {
             />
             <input
               {...register("name", {
-                required: true,
+                required: "Name is required",
                 maxLength: 20,
                 minLength: { value: 3, message: "Minimum length should be 3" },
               })}
@@ -103,10 +103,11 @@ function SignupForm() {
               }`}
             />
           </div>
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           <div className="flex items-center mb-4">
             <img src="/email.png" alt="Email_icon" className="h-5 w-5 mr-2" />
             <input
-              {...register("email", { required: true })}
+              {...register("email", { required: "Email is required" })}
               type="text"
               placeholder="Email"
               onFocus={() => setFocusedInput("email")}
@@ -116,13 +117,14 @@ function SignupForm() {
               }`}
             />
           </div>
+          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
           <div className="flex items-center mb-4">
             <img src="/password.png" alt="Pass_icon" className="h-5 w-5 mr-2" />
             <input
               {...register("pass", {
-                required: true,
+                required: "Password is required",
                 maxLength: 20,
-                minLength: 8,
+                minLength: { value: 8, message: "Minimum length should be 8" },
               })}
               type="password"
               placeholder="Password"
@@ -135,13 +137,16 @@ function SignupForm() {
               }`}
             />
           </div>
+          {errors.pass && <p className="text-red-500">{errors.pass.message}</p>}
           <div className="flex items-center mb-4">
             <img src="/password.png" alt="Pass_icon" className="h-5 w-5 mr-2" />
             <input
               {...register("confpass", {
-                required: true,
+                required: "Confirm Password is required",
                 maxLength: 20,
-                minLength: 8,
+                minLength: { value: 8, message: "Minimum length should be 8" },
+                validate: (value) =>
+                  value === watch("pass") || "Passwords do not match",
               })}
               type="password"
               placeholder="Confirm Password"
@@ -154,14 +159,15 @@ function SignupForm() {
               }`}
             />
           </div>
+          {errors.confpass && (
+            <p className="text-red-500">{errors.confpass.message}</p>
+          )}
           <button
             type="submit"
-            disabled={isSubmitting}
+           
             className="bg-pink-500 py-2 px-4 mt-4 w-full font-bold text-white"
           >
-            <Link to="/otpverify" className="text-white-600">
-              SIGNUP
-            </Link>
+            SIGNUP
           </button>
         </form>
         <p className="mt-4">

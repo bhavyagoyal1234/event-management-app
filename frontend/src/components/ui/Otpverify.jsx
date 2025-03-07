@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
-function OTPVerification({ accountType }) {
+function OTPVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const location = useLocation();
-  const { name, email, password } = location.state || {}; // Access passed data
-  console.log(name, email, password, "🎇🎇");
+  const { name, email, password, accountType } = location.state || {}; // Access passed data
+  
 
   const handleChange = (value, index) => {
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+    if (!isNaN(value) && value.length <= 1) { // Ensure only numeric input
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -33,8 +35,23 @@ function OTPVerification({ accountType }) {
       );
 
       console.log("Verification Response:", response.data);
+      // Handle successful verification (e.g., navigate to another page)
     } catch (error) {
       console.error("Error:", error);
+      // Handle error (e.g., show an error message)
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3002/api/auth/resendotp",
+        { email }
+      );
+      console.log("Resend OTP Response:", response.data);
+      // Notify user that OTP has been resent
+    } catch (error) {
+      console.error("Error resending OTP:", error);
       // Handle error (e.g., show an error message)
     }
   };
@@ -44,7 +61,7 @@ function OTPVerification({ accountType }) {
       <div className="flex bg-white rounded-lg shadow-lg max-w-4xl w-full h-full">
         <div className="w-1/2 p-16">
           <img
-            src="your-image-path.jpg"
+            src="/your-image-path.jpg"
             alt="Event"
             className="w-full h-full rounded-lg"
           />
@@ -71,10 +88,14 @@ function OTPVerification({ accountType }) {
               ))}
             </div>
             <p className="text-sm mb-8">
-              Don't receive OTP code?{" "}
-              <a href="#" className="text-blue-500">
+              Didn't receive OTP code?{" "}
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                className="text-blue-500"
+              >
                 Resend OTP
-              </a>
+              </button>
             </p>
             <button
               type="submit"
