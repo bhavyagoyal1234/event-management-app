@@ -12,7 +12,7 @@ function LoginForm() {
 //    }
 
    async function onSubmit(data) {
-    axios.post('https://your-backend-url.com/api/signup', data)
+    axios.post('http://localhost:3002/api/auth/login', data)
       .then(response => {
         console.log('Response:', response.data);
         // Handle success (e.g., show a success message or redirect)

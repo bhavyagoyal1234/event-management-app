@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
         },
         accountType:{
             type:String,
-            enum:["User","Company"],
+            enum:["user","company"],
             required:true,
         },
         token : {
