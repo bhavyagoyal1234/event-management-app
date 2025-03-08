@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import { googleAuth } from "@/googleapi";
+
 function SignupForm() {
   const navigate = useNavigate();
   const [focusedInput, setFocusedInput] = useState(null);
@@ -38,12 +38,16 @@ function SignupForm() {
       console.error("Error:", error);
     }
   }
-  
+ 
   const responseGoogle= async(authResult)=>{
     try{
-      if(authResult['code']){
-         const result=await googleAuth(authResult['code']);
-         const {email,name} =result.data.user;
+      console.log(authResult)
+      if(authResult.code){
+        const result = await axios.post('http://localhost:3002/api/auth/googleLogin', {
+          code: authResult.code,
+          accountType : 'user'// Replace with the actual account type
+        });
+         const {email,name, image} =result.data.user;
          console.log('result.data.user---',result.data.user);
       }
     }
