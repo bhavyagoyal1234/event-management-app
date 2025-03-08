@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { useGoogleLogin } from "@react-oauth/google";
+import { googleAuth } from "@/googleapi";
 function SignupForm() {
   const navigate = useNavigate();
   const [focusedInput, setFocusedInput] = useState(null);
@@ -37,6 +38,24 @@ function SignupForm() {
       console.error("Error:", error);
     }
   }
+  
+  const responseGoogle= async(authResult)=>{
+    try{
+      if(authResult['code']){
+         const result=await googleAuth(authResult['code']);
+         const {email,name} =result.data.user;
+         console.log('result.data.user---',result.data.user);
+      }
+    }
+    catch(err){
+      console.error('Error while reequesting code', err);
+    }
+  }
+  const googleLogin = useGoogleLogin({
+    onSuccess:responseGoogle,
+    onError:responseGoogle,
+    flow:'auth-code'
+  })
 
   const handletypechange = (type) => {
     setAccountType(type);
@@ -177,7 +196,8 @@ function SignupForm() {
           </Link>
         </p>
         <div className="text-center my-4">OR</div>
-        <button className="flex items-center justify-center border border-blue-500 text-blue-500 py-2 px-4 w-full">
+        <button className="flex items-center justify-center border border-blue-500 text-blue-500 py-2 px-4 w-full" 
+        onClick={googleLogin}>
           <img src="/google.png" alt="Google_icon" className="h-5 w-5 mr-2" />
           Sign up with Google
         </button>
