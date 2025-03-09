@@ -48,7 +48,11 @@ function SignupForm() {
           accountType : 'user'// Replace with the actual account type
         });
          const {email,name, image} =result.data.user;
+         const token=result.data.token;
          console.log('result.data.user---',result.data.user);
+         console.log("token is", token);
+         const obj=(email, name,image,token);
+         localStorage.setItem('user-info', JSON.stringify(obj));
       }
     }
     catch(err){

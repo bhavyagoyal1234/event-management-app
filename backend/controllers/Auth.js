@@ -86,57 +86,74 @@ exports.signup = async (req, res) => {
 //login controlller
 exports.login = async (req, res) => {
   try {
-    console.log('in login controller');
+    // console.log('in login controller');
     const { email, password } = req.body;
-    console.log('email', email);
-    console.log('password', password);
-    //validation
+    // console.log('email', email);
+    // console.log('password', password);
+    
+    // Validation
     if (!email || !password) {
       return res.status(403).json({
-        sucess: false,
-        message: "all fields are required",
+        success: false,
+        message: "All fields are required",
       });
     }
 
-    //check if user exsist or not
+    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "user is not registerd",
+        message: "User is not registered",
       });
     }
-    console.log('user', user);
-    //password matching
-    if (await bcrypt.compare(password, user.password)) {
-      const payload = {
-        email: user.email,
-        id: user._id,
-        accountType: user.accountType,
-      };
-      //after password matchign creating token
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "24h",
-      });
+    // console.log('user', user);
 
-      user.token = token;
-      user.password = undefined;
-
-      const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      };
-      //sending token through cookie
-      res.cookie("token", token, options).status(200).json({
-        success: true,
-        token,
-        user,
-        message: "logged in successfully",
+    // Password matching
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
       });
     }
-  } catch (error) { }
+
+    const payload = {
+      email: user.email,
+      id: user._id,
+      accountType: user.accountType,
+    };
+
+    // Create token
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    user.token = token;
+    user.password = undefined;
+
+    const options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+
+    // Send token through cookie
+    console.log("at end step");
+    return res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      user,
+      message: "Logged in successfully",
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 };
-
 //send otp controller
 exports.sendotp = async (req, res) => {
   console.log("in sendotp controller");
@@ -272,9 +289,13 @@ exports.googleLogin = async (req, res) => {
     // console.log('in google Login');
     // console.log('accountType',accountType);
     // console.log('code recieved from frontend',code);
+
     const googleRes = await oauth2client.getToken(code);
+
+    // console.log("googleRes",googleRes);
+
     oauth2client.setCredentials(googleRes.tokens);
-    // console.log('google response',googleRes);
+    console.log('google response',googleRes);
     const userRes = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
     )
@@ -322,6 +343,7 @@ exports.googleLogin = async (req, res) => {
     });
   }
   catch (error) {
+    console.log("printing error ",error);
     return res.status(400).json({
       success:false,
       message:"something went wrong while google sign in"

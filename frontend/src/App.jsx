@@ -6,10 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import OTPVerification from "./components/ui/Otpverify.jsx";
 import ResetPasswordForm from "./components/ui/Resetpass.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import ResetPasswordFormemail from "./components/ui/Resetpassemail.jsx";
 function App() {
   const GoogleAuthWrapper =()=>{
     return (
-      <GoogleOAuthProvider clientId='127988388634-ocf6dq7ts0pjvu7cv0jpd0k61nsdsnq6.apps.googleusercontent.com'>
+      <GoogleOAuthProvider clientId='468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com'>
         <SignupForm></SignupForm>
       </GoogleOAuthProvider>
     )
@@ -25,7 +26,8 @@ function App() {
       <Route path='/login' element={<LoginForm/>}></Route>
       <Route path='/companyregister' element={<CompanySignup/>}></Route>
       <Route path='/otpverify' element={<OTPVerification/>}></Route>
-      <Route path='/resetpass' element={<ResetPasswordForm/>}></Route>
+      <Route path='/update-password/:id' element={<ResetPasswordForm/>}></Route>
+      <Route  path='/update-passwordemail' element={<ResetPasswordFormemail/>}></Route>
     </Routes>
     </BrowserRouter>
     

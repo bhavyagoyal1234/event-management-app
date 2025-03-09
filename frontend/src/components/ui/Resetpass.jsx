@@ -12,10 +12,12 @@ function ResetPasswordForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    const token = window.location.pathname.split("/").at(-1);
     try {
-      const response = await axios.post("http://localhost:3002/api/auth/resetpassword", {
-        newPassword: data.newPassword,
-       
+      const response = await axios.post("http://localhost:3002/api/auth/reset-password", {
+        password: data.newPassword,
+        confirmPassword: data.confirmPassword,
+        token,
       });
       console.log("Password reset response:", response.data);
       // Handle success (e.g., show a success message or redirect)
@@ -71,7 +73,7 @@ function ResetPasswordForm() {
                   value === watch("newPassword") || "Passwords do not match",
               })}
               type="password"
-              placeholder=" Confirm Password"
+              placeholder="Confirm Password"
               onFocus={() => setFocusedInput("confirmPassword")}
               onBlur={() => setFocusedInput(null)}
               className={`border-b-2 w-full py-2 outline-none transition-colors ${
