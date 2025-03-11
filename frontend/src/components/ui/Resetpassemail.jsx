@@ -2,29 +2,48 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaSpinner } from "react-icons/fa";
 
 function ForgotPasswordForm() {
   const navigate = useNavigate();
   const [focusedInput, setFocusedInput] = useState(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({
+    mode: 'onChange' // This will trigger validation on change
+  });
 
   const onSubmit = async (data) => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.post("http://localhost:3002/api/auth/reset-password-token", {
         email: data.email,
       });
       console.log("Password reset response:", response.data);
       setMessage("Password reset email sent successfully!");
-      // Optionally navigate to another page
-      // navigate("/some-page");
+      if (response.data.success) {
+        navigate('/emailsentsuccess');
+      } else {
+        toast.error("Check your Email");
+      }
     } catch (error) {
       console.error("Error resetting password:", error);
-      setMessage("Error resetting password. Please try again.");
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
+  const handleButtonClick = (e) => {
+    if (!isValid) {
+      e.preventDefault();
+      toast.error("Please check your credentials");
     }
   };
 
@@ -51,7 +70,7 @@ function ForgotPasswordForm() {
             />
             <input
               {...register("email", {
-                required: "Email is required",
+                required: true,
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                   message: "Invalid email address",
@@ -61,23 +80,32 @@ function ForgotPasswordForm() {
               placeholder="Email"
               onFocus={() => setFocusedInput("email")}
               onBlur={() => setFocusedInput(null)}
-              className={`border-b-2 w-full py-2 outline-none transition-colors ${
-                focusedInput === "email" ? "border-pink-600" : "border-gray-300"
-              }`}
+              className={`border-b-2 w-full py-2 outline-none transition-colors text-lg font-semibold  ${focusedInput === "email" ? "border-blue-500" : "border-gray-300"
+                }`}
             />
           </div>
-          {errors.email && (
+          {/* {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
-          )}
+          )} */}
           {message && (
             <p className="text-center text-green-500 mb-4">{message}</p>
           )}
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-pink-500 text-white py-2 px-4 rounded font-bold"
+              onClick={handleButtonClick}
+              className={`py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center 
+                ${isValid ? 'bg-gradient-to-r from-blue-400 to-blue-600' : 'bg-gray-400'} text-white`}
+              style={{ width: '100%' }}
             >
-              CONTINUE
+              {loading ? (
+                <>
+                  <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "CONTINUE"
+              )}
             </button>
           </div>
         </form>
