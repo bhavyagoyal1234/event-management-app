@@ -18,9 +18,13 @@ const venueSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  capacity: {
+  paxcapacity: {
     type: Number,
     required: true
+  },
+  roomcount:{
+    type:Number,
+    required:true,
   },
   ratings: [
     {
