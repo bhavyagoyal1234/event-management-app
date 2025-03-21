@@ -7,7 +7,9 @@ import OTPVerification from "./components/ui/Otpverify.jsx";
 import ResetPasswordForm from "./components/ui/Resetpass.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ResetPasswordFormemail from "./components/ui/Resetpassemail.jsx";
-import EmailSentNotification from "./components/emailsendsuccess.jsx";
+import EmailSentNotification from "./components/ui/Emailsendsuccess.jsx";
+import AddVenueForm from "./components/ui/Addvenue.jsx";
+import EventListForm1 from "./components/ui/EventListForm";
 function App() {
   const GoogleAuthWrapper =()=>{
     return (
@@ -30,6 +32,9 @@ function App() {
       <Route path='/update-password/:id' element={<ResetPasswordForm/>}></Route>
       <Route  path='/update-passwordemail' element={<ResetPasswordFormemail/>}></Route>
       <Route  path='/emailsentsuccess' element={<EmailSentNotification/>}></Route>
+      <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
+      <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
+      <Route  path='/listevent1' element={<EventListForm1/>}></Route>
     </Routes>
     </BrowserRouter>
     

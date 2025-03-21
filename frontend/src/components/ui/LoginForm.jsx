@@ -32,7 +32,7 @@ function LoginForm() {
   async function onSubmit(data) {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3002/api/auth/login', data);
+      const response = await axios.post('http://localhost:3002/api/auth/login', data, { withCredentials: true });
       console.log('Response:', response.data);
       // Handle success (e.g., show a success message or redirect)
     } catch (error) {

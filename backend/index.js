@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const{cloudinaryConnect}=require("./config/cloudinary");
 const fileUplaod=require("express-fileupload")
 const PORT = process.env.PORT || 4000;
-
+const multer=require("multer");
 connectDB();
 
 app.use(express.json());
@@ -19,6 +19,12 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", require("./routes/authRoutes"));
+
+
+const storage = multer.memoryStorage(); // You can use diskStorage if you want to save files to disk
+const upload = multer({ storage: storage });
+
+// Route to handle venue addition
 app.use("/api/venue", require("./routes/venueRoutes"));
 
 
