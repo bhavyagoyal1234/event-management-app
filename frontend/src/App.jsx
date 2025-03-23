@@ -10,6 +10,10 @@ import ResetPasswordFormemail from "./components/ui/Resetpassemail.jsx";
 import EmailSentNotification from "./components/ui/Emailsendsuccess.jsx";
 import AddVenueForm from "./components/ui/Addvenue.jsx";
 import EventListForm1 from "./components/ui/EventListForm";
+import Stepper from "./components/ui/Stepper2.jsx";
+import VenueList from "./components/ui/VenueList.jsx";
+import VenueCard from "./components/ui/Venuecard.jsx";
+import EventlistForm2  from "./components/ui/Eventlistform2.jsx";
 function App() {
   const GoogleAuthWrapper =()=>{
     return (
@@ -35,6 +39,11 @@ function App() {
       <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
       <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
       <Route  path='/listevent1' element={<EventListForm1/>}></Route>
+      <Route  path='/step' element={<Stepper/>}></Route>
+      <Route  path='/venuelist' element={<VenueList/>}></Route>
+      <Route  path='/venuecard' element={<VenueCard/>}></Route>
+      <Route  path='/listevent2' element={<EventlistForm2/>}></Route>
+      
     </Routes>
     </BrowserRouter>
     

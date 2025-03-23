@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaChevronDown } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
-// Header Component
-function Header() {
-  return (
-    <div className="bg-white py-4 px-8 shadow-md">
-      <div className="flex justify-center items-center">
-        <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-        <div className="w-4 h-4 bg-gray-300 rounded-full ml-2"></div>
-        <div className="w-4 h-4 bg-gray-300 rounded-full ml-2"></div>
-      </div>
-    </div>
-  );
-}
+import { useNavigate } from "react-router-dom";
+import Stepper from "./Stepper2";
 
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],
@@ -27,6 +16,14 @@ const stateCityMap = {
   "Gujarat": ["Ahmedabad", "Surat"],
   "Haryana": ["Gurgaon", "Faridabad"],
 };
+
+const genreOptions = [
+  "Cultural Fest",
+  "Musical Concerts",
+  "Comedy Shows",
+  "Sports ",
+  "Science Fair",
+];
 
 function AddVenueDetails() {
   const [loading, setLoading] = useState(false);
@@ -40,6 +37,7 @@ function AddVenueDetails() {
     contact: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const isValid =
@@ -58,27 +56,31 @@ function AddVenueDetails() {
       toast.error("Please fill all required fields.");
       return;
     }
-   
+  
     setLoading(true);
   
     const dataToSend = {
       title: formData.title,
-      genre: formData.genre,
-      contact: formData.contact,
       state: selectedState,
       city: selectedCity,
+      genre: formData.genre,
+      contact: formData.contact,
     };
-    
+  
     try {
-      const response = await axios.post("http://localhost:3002/api/venue/addvenue", dataToSend);
+      const response = await axios.post("http://localhost:3002/api/venue/getvenue", {
+        state: selectedState,
+        city: selectedCity,
+      });
       console.log("Response:", response.data);
-      if (response.data.success){
-        toast.success("Venue Added Successfully")
+      if (response.data.success) {
+        toast.success("Venues Retrieved Successfully");
+        console.log(response.data.venues);
+        navigate("/venuelist", { state: { venues: response.data.venues, formData: dataToSend } });
       }
-      
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Failed to submit form. Please try again.");
+      toast.error("Failed to retrieve venues. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -102,11 +104,14 @@ function AddVenueDetails() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
+      <br></br>
+
+      <Stepper currentStep={1} />
+      
       <div className="flex justify-center items-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl w-full overflow-hidden">
           <h2 className="text-2xl font-bold mb-6">General Details</h2>
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Title <span className="text-red-500">*</span>
@@ -131,11 +136,12 @@ function AddVenueDetails() {
                 <button
                   type="button"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className={`border w-full py-2 px-3 rounded outline-none transition-colors text-left ${focusedInput === "state" ? "border-blue-500" : "border-gray-300"}`}
+                  className={`border w-full py-2 px-3 rounded outline-none transition-colors text-left flex justify-between items-center ${focusedInput === "state" ? "border-blue-500" : "border-gray-300"}`}
                   onFocus={() => setFocusedInput("state")}
                   onBlur={() => setFocusedInput("")}
                 >
                   {selectedState || "Select State"}
+                  <FaChevronDown className="ml-2" />
                 </button>
                 {dropdownOpen && (
                   <div className="absolute z-10 bg-white border rounded mt-1 max-h-40 overflow-y-auto w-full">
@@ -183,53 +189,69 @@ function AddVenueDetails() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Genre <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                name="genre"
-                placeholder="Enter Genre"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "genre" ? "border-blue-500" : "border-gray-300"}`}
-                required
-                onFocus={() => setFocusedInput("genre")}
-                onBlur={() => setFocusedInput("")}
-                onChange={handleInputChange}
-              />
+              <div className="relative">
+                <select
+                  name="genre"
+                  className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "genre" ? "border-blue-500" : "border-gray-300"}`}
+                  required
+                  value={formData.genre}
+                  onChange={handleInputChange}
+                  onFocus={() => setFocusedInput("genre")}
+                  onBlur={() => setFocusedInput("")}
+                >
+                  <option value="">Select Genre</option>
+                  {genreOptions.map((genre, index) => (
+                    <option key={index} value={genre}>
+                      {genre}
+                    </option>
+                  ))}
+                </select>
+                <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Contact No. <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                name="contact"
-                placeholder="+91"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "contact" ? "border-blue-500" : "border-gray-300"}`}
-                required
-                onFocus={() => setFocusedInput("contact")}
-                onBlur={() => setFocusedInput("")}
-                onChange={handleInputChange}
-              />
+              <div className="flex items-center border rounded py-2 px-3">
+                <div className="mr-2">
+                  <img src="/indian_flag.png" alt="Flag" className="w-6 h-4" />
+                </div>
+                <span className="mr-2">+91</span>
+                <input
+                  type="text"
+                  name="contact"
+                  placeholder="Enter mobile number"
+                  className="outline-none flex-1"
+                  required
+                  onFocus={() => setFocusedInput("contact")}
+                  onBlur={() => setFocusedInput("")}
+                  onChange={handleInputChange}
+                  style={{ marginLeft: '0.5rem' }}
+                />
+              </div>
             </div>
+
+            <button
+              type="submit"
+              className={`${isFormValid
+                ? "bg-blue-900"
+                : "bg-gray-400"
+                } py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center`}
+              style={{ width: "100%" }}
+              disabled={!isFormValid}
+            >
+              {loading ? (
+                <>
+                  <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Continue to Select Venue"
+              )}
+            </button>
           </form>
-          <button
-            type="submit"
-            onClick={handleFormSubmit}
-            className={`${isFormValid
-              ? "bg-blue-900"
-              : "bg-gray-400"
-              } py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center`}
-            style={{ width: "100%" }}
-            disabled={!isFormValid}
-          >
-            {loading ? (
-              <>
-                <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              "Continue to Select Venue"
-            )}
-          </button>
         </div>
       </div>
     </div>
