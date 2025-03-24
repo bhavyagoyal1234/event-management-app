@@ -10,7 +10,7 @@ exports.addVenue = async(req,res) =>{
        //fetch image 
        const thumbnail = req.files.thumbnailImage;
        //validation 
-       if(!name || !city || !state || !price || !paxcapacity,roomcount){
+       if(!name || !city || !state || !price || !paxcapacity , !roomcount){
         return res.status(400).json({
             success:false,
             message:"all fields are required",
@@ -29,7 +29,6 @@ exports.addVenue = async(req,res) =>{
         imageUrl:thumbnailImage.secure_url,
         paxcapacity,
         roomcount,
-
       })
       //return success status 
       return res.status(200).json({
