@@ -4,13 +4,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSwipeable } from "react-swipeable";
 import Stepper from "./Stepper2";
-import axios from "axios"; // Ensure axios is imported
-import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation and useNavigate
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import GooglePayButton from "@google-pay/button-react";
+import { Button } from "./button";
 
 function OtherDetails() {
   const fileInputRef = useRef(null);
   const formRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState();
+  const [isGooglePayLoaded, setIsGooglePayLoaded] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [venueImage, setVenueImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [formData, setFormData] = useState({
@@ -26,9 +29,12 @@ function OtherDetails() {
   const [focusedInput, setFocusedInput] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Use useLocation to access passed data
-  const { venue, formData: venueFormData } = location.state || {}; // Destructure the data
+  const location = useLocation();
+  const { venue, formData: venueFormData } = location.state || {};
+
+  console.log(venue, "venue ❤️❤️❤️");
 
   useEffect(() => {
     const isValid =
@@ -73,32 +79,37 @@ function OtherDetails() {
       toast.error("Please fill all required fields.");
       return;
     }
-  
+
     setLoading(true);
-  
-    const dataToSend = {
-      startdate: formData.startDate,
-      starttime: formData.startTime,
-      enddate: formData.endDate,
-      endtime: formData.endTime,
-      description: formData.description,
-      file: formData.selectedFile,
-      ...venueFormData, // Append formData from VenueCard
-      
-    };
-    console.log(dataToSend)
+
+    const dataToSend = new FormData();
+    dataToSend.append("startDate", formData.startDate);
+    dataToSend.append("startTime", formData.startTime);
+    dataToSend.append("endDate", formData.endDate);
+    dataToSend.append("endTime", formData.endTime);
+    dataToSend.append("description", formData.description);
+    dataToSend.append("venue", venue._id);
+    dataToSend.append("file", selectedFile);
+    Object.keys(venueFormData).forEach((key) => {
+      dataToSend.append(key, venueFormData[key]);
+    });
+
     try {
-      
-      const response = await axios.post("http://localhost:3002/api/venue/getvenue", dataToSend);
-      console.log("Response:", response.data);
-      if (response.data.success) {
-        toast.success("Booking details");
-        
-        
-      }
+      console.log("Data being sent:", Object.fromEntries(dataToSend.entries()));
+      const response = await axios.post(
+        "http://localhost:3002/api/event/add-event",
+        dataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const data = await response.data;
+      console.log(data.message);
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Failed to retrieve venues. Please try again.");
+      toast.error(error);
     } finally {
       setLoading(false);
     }
@@ -112,7 +123,6 @@ function OtherDetails() {
       formRef.current.scrollBy({ top: -100, behavior: "smooth" });
     },
   });
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <br></br>
@@ -133,7 +143,11 @@ function OtherDetails() {
               <input
                 type="date"
                 name="startDate"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "startDate" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "startDate"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 onChange={handleInputChange}
                 onFocus={() => setFocusedInput("startDate")}
                 onBlur={() => setFocusedInput("")}
@@ -141,7 +155,11 @@ function OtherDetails() {
               <input
                 type="time"
                 name="startTime"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "startTime" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "startTime"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 onChange={handleInputChange}
                 onFocus={() => setFocusedInput("startTime")}
                 onBlur={() => setFocusedInput("")}
@@ -157,7 +175,11 @@ function OtherDetails() {
               <input
                 type="date"
                 name="endDate"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "endDate" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "endDate"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 onChange={handleInputChange}
                 onFocus={() => setFocusedInput("endDate")}
                 onBlur={() => setFocusedInput("")}
@@ -165,7 +187,11 @@ function OtherDetails() {
               <input
                 type="time"
                 name="endTime"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "endTime" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "endTime"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 onChange={handleInputChange}
                 onFocus={() => setFocusedInput("endTime")}
                 onBlur={() => setFocusedInput("")}
@@ -175,11 +201,16 @@ function OtherDetails() {
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description <span className="text-red-500">*</span> (Minimum 150 Words)
+              Description <span className="text-red-500">*</span> (Minimum 150
+              Words)
             </label>
             <textarea
               name="description"
-              className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "description" ? "border-blue-500" : "border-gray-300"}`}
+              className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                focusedInput === "description"
+                  ? "border-blue-500"
+                  : "border-gray-300"
+              }`}
               rows="4"
               onChange={handleInputChange}
               onFocus={() => setFocusedInput("description")}
@@ -192,7 +223,11 @@ function OtherDetails() {
               Upload Photo <span className="text-red-500">*</span>
             </label>
             <div
-              className={`border-dashed border-2 p-6 text-center rounded-md bg-gray-50 w-[60%] ${focusedInput === "uploadPhoto" ? "border-blue-500" : "border-gray-300"}`}
+              className={`border-dashed border-2 p-6 text-center rounded-md bg-gray-50 w-[60%] ${
+                focusedInput === "uploadPhoto"
+                  ? "border-blue-500"
+                  : "border-gray-300"
+              }`}
               onFocus={() => setFocusedInput("uploadPhoto")}
               onBlur={() => setFocusedInput("")}
               tabIndex={0}
@@ -206,14 +241,27 @@ function OtherDetails() {
               />
               <label className="cursor-pointer" onClick={handleBrowseClick}>
                 <p>Drag and drop to upload your files</p>
-                <button type="button" className="bg-blue-500 text-white py-1 px-3 rounded mt-2">Browse Files</button>
+                <button
+                  type="button"
+                  className="bg-blue-500 text-white py-1 px-3 rounded mt-2"
+                >
+                  Browse Files
+                </button>
               </label>
-              {fileName && <p className="mt-2 text-sm text-gray-600">{fileName}</p>}
+              {fileName && (
+                <p className="mt-2 text-sm text-gray-600">{fileName}</p>
+              )}
             </div>
           </div>
 
           <div className="venueImage mb-4 flex justify-start">
-            {venueImage && <img src={venueImage} alt="Selected Venue" className="w-[60%] h-auto object-cover rounded-md" />}
+            {venueImage && (
+              <img
+                src={venueImage}
+                alt="Selected Venue"
+                className="w-[60%] h-auto object-cover rounded-md"
+              />
+            )}
           </div>
 
           <div className="mb-4">
@@ -236,24 +284,69 @@ function OtherDetails() {
             </label>
           </div>
 
-          <button
-            type="submit"
-            className={`${isFormValid
-              ? "bg-gradient-to-r from-blue-400 to-blue-600"
-              : "bg-gray-400"
-              } py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center`}
-            style={{ width: "100%" }}
-            disabled={!isFormValid}
-          >
-            {loading ? (
-              <>
-                <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              "Continue to Add Venue"
-            )}
-          </button>
+          {isFormValid && !paymentDone && (
+            <GooglePayButton
+              environment="TEST"
+              buttonType="pay"
+              paymentRequest={{
+                apiVersion: 2,
+                apiVersionMinor: 0,
+                allowedPaymentMethods: [
+                  {
+                    type: "CARD",
+                    parameters: {
+                      allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                      allowedCardNetworks: ["MASTERCARD", "VISA"],
+                    },
+                    tokenizationSpecification: {
+                      type: "PAYMENT_GATEWAY",
+                      parameters: {
+                        gateway: "example",
+                        gatewayMerchantId: "exampleGatewayMerchantId",
+                      },
+                    },
+                  },
+                ],
+                merchantInfo: {
+                  merchantId: "12345678901234567890",
+                  merchantName: "Demo Merchant",
+                },
+                transactionInfo: {
+                  totalPriceStatus: "FINAL",
+                  totalPriceLabel: "Total",
+                  totalPrice: `${venue.price}`,
+                  currencyCode: "INR",
+                  countryCode: "IN",
+                },
+                shippingAddressRequired: true,
+                callbackIntents: ["SHIPPING_ADDRESS", "PAYMENT_AUTHORIZATION"],
+              }}
+              onLoadPaymentData={(paymentRequest) => {
+                console.log("Success", paymentRequest);
+                setIsGooglePayLoaded(true);
+              }}
+              onReadyToPayChange={({ isReadyToPay }) => {
+                if (isReadyToPay) setIsGooglePayLoaded(true);
+              }}
+              onPaymentAuthorized={(paymentData) => {
+                console.log("Payment Authorised Success", paymentData);
+                setPaymentDone(true); // Hide the button after successful payment
+                return { transactionState: "SUCCESS" };
+              }}
+              onPaymentDataChanged={(paymentData) => {
+                console.log("On Payment Data Changed", paymentData);
+                return {};
+              }}
+              existingPaymentMethodRequired="false"
+              buttonColor="black"
+            />
+          )}
+
+          {isFormValid && paymentDone && (
+            <Button type="submit" disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
+            </Button>
+          )}
         </form>
       </div>
     </div>

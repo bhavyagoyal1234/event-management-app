@@ -8,13 +8,22 @@ exports.addVenue = async (req, res) => {
     console.log("In venue controller");
 
     // Fetch data from req body
-    const { name, city, state, price, paxcapacity, roomcount, description } = req.body;
+    const { name, city, state, price, paxcapacity, roomcount, description } =
+      req.body;
 
     // Fetch image
-    const thumbnail = req.file; // Ensure this matches the field name used in the frontend
-    console.log(req.file)
+    const thumbnail = req.file;
+    console.log(req.file);
     // Validation
-    if (!name || !city || !state || !price || !paxcapacity || !roomcount || !description) {
+    if (
+      !name ||
+      !city ||
+      !state ||
+      !price ||
+      !paxcapacity ||
+      !roomcount ||
+      !description
+    ) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -25,7 +34,7 @@ exports.addVenue = async (req, res) => {
     console.log("before");
     const thumbnailImage = await uploadImageToCloudinary(
       thumbnail,
-      process.env.FOLDER_NAME
+      process.env.VENUE_IMAGES
     );
 
     console.log("after");
@@ -47,7 +56,6 @@ exports.addVenue = async (req, res) => {
       message: "Venue created successfully",
       venue: newVenue, // Optionally return the created venue
     });
-
   } catch (error) {
     console.log("Error:", error);
     return res.status(500).json({
@@ -87,7 +95,6 @@ exports.getVenue = async (req, res) => {
       message: "Returning list of venues",
       venues,
     });
-
   } catch (error) {
     console.error("Error fetching venues:", error);
     res.status(500).json({ message: "Internal Server Error" });

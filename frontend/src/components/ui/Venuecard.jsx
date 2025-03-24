@@ -12,14 +12,14 @@ function VenueCard({ venue, formData }) {
   return (
     <div
       className="bg-white rounded-lg shadow-lg overflow-hidden"
-      style={{ width: '360px', height: '410px' }} // Increased card height
+      style={{ width: "360px", height: "410px" }} // Increased card height
     >
       <div className="relative">
         <img
           src={venue.imageUrl}
           alt={venue.name}
           className="w-full"
-          style={{ height: '214px' }} // Set image height
+          style={{ height: "214px" }} // Set image height
         />
         <button
           onClick={handleBookNow}
@@ -37,7 +37,9 @@ function VenueCard({ venue, formData }) {
         <h3 className="text-lg font-bold">{venue.name}</h3>
         <div className="flex items-center text-gray-600 mb-2">
           <FaMapMarkerAlt className="mr-1" />
-          <span>{venue.city} ({venue.state})</span>
+          <span>
+            {venue.city} ({venue.state})
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <div>

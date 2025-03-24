@@ -13,42 +13,46 @@ import EventListForm1 from "./components/ui/EventListForm";
 import Stepper from "./components/ui/Stepper2.jsx";
 import VenueList from "./components/ui/VenueList.jsx";
 import VenueCard from "./components/ui/Venuecard.jsx";
-import EventlistForm2  from "./components/ui/Eventlistform2.jsx";
+import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
+
 function App() {
-  const GoogleAuthWrapper =()=>{
+  const GoogleAuthWrapper = () => {
     return (
-      <GoogleOAuthProvider clientId='468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com'>
+      <GoogleOAuthProvider clientId="468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com">
         <SignupForm></SignupForm>
       </GoogleOAuthProvider>
-    )
-  }
+    );
+  };
   return (
-   <>
-    
-
-    <BrowserRouter>
-    <Routes>
-    <Route path="/" element={<GoogleAuthWrapper />} /> 
-      <Route path='/register' element={<GoogleAuthWrapper/>}></Route>
-      <Route path='/login' element={<LoginForm/>}></Route>
-      <Route path='/companyregister' element={<CompanySignup/>}></Route>
-      <Route path='/otpverify' element={<OTPVerification/>}></Route>
-      <Route path='/update-password/:id' element={<ResetPasswordForm/>}></Route>
-      <Route  path='/update-passwordemail' element={<ResetPasswordFormemail/>}></Route>
-      <Route  path='/emailsentsuccess' element={<EmailSentNotification/>}></Route>
-      <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
-      <Route  path='/addVenue' element={<AddVenueForm/>}></Route>
-      <Route  path='/listevent1' element={<EventListForm1/>}></Route>
-      <Route  path='/step' element={<Stepper/>}></Route>
-      <Route  path='/venuelist' element={<VenueList/>}></Route>
-      <Route  path='/venuecard' element={<VenueCard/>}></Route>
-      <Route  path='/listevent2' element={<EventlistForm2/>}></Route>
-      
-    </Routes>
-    </BrowserRouter>
-    
-   </>
-
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<GoogleAuthWrapper />} />
+          <Route path="/register" element={<GoogleAuthWrapper />}></Route>
+          <Route path="/login" element={<LoginForm />}></Route>
+          <Route path="/companyregister" element={<CompanySignup />}></Route>
+          <Route path="/otpverify" element={<OTPVerification />}></Route>
+          <Route
+            path="/update-password/:id"
+            element={<ResetPasswordForm />}
+          ></Route>
+          <Route
+            path="/update-passwordemail"
+            element={<ResetPasswordFormemail />}
+          ></Route>
+          <Route
+            path="/emailsentsuccess"
+            element={<EmailSentNotification />}
+          ></Route>
+          <Route path="/addVenue" element={<AddVenueForm />}></Route>
+          <Route path="/listevent1" element={<EventListForm1 />}></Route>
+          <Route path="/step" element={<Stepper />}></Route>
+          <Route path="/venuelist" element={<VenueList />}></Route>
+          <Route path="/venuecard" element={<VenueCard />}></Route>
+          <Route path="/listevent2" element={<EventlistForm2 />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

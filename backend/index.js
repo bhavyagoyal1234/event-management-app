@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/cors");
 const cookieParser = require("cookie-parser");
-const{cloudinaryConnect}=require("./config/cloudinary");
-const fileUplaod=require("express-fileupload")
+const { cloudinaryConnect } = require("./config/cloudinary");
+const fileUplaod = require("express-fileupload");
 const PORT = process.env.PORT || 4000;
-const multer=require("multer");
+const multer = require("multer");
 connectDB();
 
 app.use(express.json());
@@ -20,20 +20,20 @@ app.use(cookieParser());
 
 app.use("/api/auth", require("./routes/authRoutes"));
 
-
 const storage = multer.memoryStorage(); // You can use diskStorage if you want to save files to disk
 const upload = multer({ storage: storage });
 
 // Route to handle venue addition
 app.use("/api/venue", require("./routes/venueRoutes"));
 
+app.use("/api/event", require("./routes/eventRoutes"));
 
 app.use(
   fileUplaod({
-      useTempFiles:true,
-      tempFileDir:"/tmp",
+    useTempFiles: true,
+    tempFileDir: "/tmp",
   })
-)
+);
 cloudinaryConnect();
 
 mongoose.connection.once("open", () => {

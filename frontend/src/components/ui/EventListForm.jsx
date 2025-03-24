@@ -9,12 +9,12 @@ import Stepper from "./Stepper2";
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],
   "Arunachal Pradesh": ["Itanagar", "Tawang"],
-  "Assam": ["Guwahati", "Dibrugarh"],
-  "Bihar": ["Patna", "Gaya"],
-  "Chhattisgarh": ["Raipur", "Bhilai"],
-  "Goa": ["Panaji", "Vasco da Gama"],
-  "Gujarat": ["Ahmedabad", "Surat"],
-  "Haryana": ["Gurgaon", "Faridabad"],
+  Assam: ["Guwahati", "Dibrugarh"],
+  Bihar: ["Patna", "Gaya"],
+  Chhattisgarh: ["Raipur", "Bhilai"],
+  Goa: ["Panaji", "Vasco da Gama"],
+  Gujarat: ["Ahmedabad", "Surat"],
+  Haryana: ["Gurgaon", "Faridabad"],
 };
 
 const genreOptions = [
@@ -56,27 +56,33 @@ function AddVenueDetails() {
       toast.error("Please fill all required fields.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     const dataToSend = {
       title: formData.title,
       state: selectedState,
       city: selectedCity,
       genre: formData.genre,
-      contact: formData.contact,
+      contactNo: formData.contact,
+      user: localStorage.getItem("userid"),
     };
-  
+
     try {
-      const response = await axios.post("http://localhost:3002/api/venue/getvenue", {
-        state: selectedState,
-        city: selectedCity,
-      });
+      const response = await axios.post(
+        "http://localhost:3002/api/venue/getvenue",
+        {
+          state: selectedState,
+          city: selectedCity,
+        }
+      );
       console.log("Response:", response.data);
       if (response.data.success) {
         toast.success("Venues Retrieved Successfully");
         console.log(response.data.venues);
-        navigate("/venuelist", { state: { venues: response.data.venues, formData: dataToSend } });
+        navigate("/venuelist", {
+          state: { venues: response.data.venues, formData: dataToSend },
+        });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -107,7 +113,7 @@ function AddVenueDetails() {
       <br></br>
 
       <Stepper currentStep={1} />
-      
+
       <div className="flex justify-center items-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl w-full overflow-hidden">
           <h2 className="text-2xl font-bold mb-6">General Details</h2>
@@ -120,7 +126,11 @@ function AddVenueDetails() {
                 type="text"
                 name="title"
                 placeholder="Event Title"
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "title" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "title"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 required
                 onFocus={() => setFocusedInput("title")}
                 onBlur={() => setFocusedInput("")}
@@ -136,7 +146,11 @@ function AddVenueDetails() {
                 <button
                   type="button"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className={`border w-full py-2 px-3 rounded outline-none transition-colors text-left flex justify-between items-center ${focusedInput === "state" ? "border-blue-500" : "border-gray-300"}`}
+                  className={`border w-full py-2 px-3 rounded outline-none transition-colors text-left flex justify-between items-center ${
+                    focusedInput === "state"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                   onFocus={() => setFocusedInput("state")}
                   onBlur={() => setFocusedInput("")}
                 >
@@ -168,7 +182,11 @@ function AddVenueDetails() {
                 City <span className="text-red-500">*</span>
               </label>
               <select
-                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "city" ? "border-blue-500" : "border-gray-300"}`}
+                className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                  focusedInput === "city"
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 required
                 value={selectedCity}
                 onChange={handleCitySelect}
@@ -192,7 +210,11 @@ function AddVenueDetails() {
               <div className="relative">
                 <select
                   name="genre"
-                  className={`border w-full py-2 px-3 rounded outline-none transition-colors ${focusedInput === "genre" ? "border-blue-500" : "border-gray-300"}`}
+                  className={`border w-full py-2 px-3 rounded outline-none transition-colors ${
+                    focusedInput === "genre"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                   required
                   value={formData.genre}
                   onChange={handleInputChange}
@@ -228,17 +250,16 @@ function AddVenueDetails() {
                   onFocus={() => setFocusedInput("contact")}
                   onBlur={() => setFocusedInput("")}
                   onChange={handleInputChange}
-                  style={{ marginLeft: '0.5rem' }}
+                  style={{ marginLeft: "0.5rem" }}
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className={`${isFormValid
-                ? "bg-blue-900"
-                : "bg-gray-400"
-                } py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center`}
+              className={`${
+                isFormValid ? "bg-blue-900" : "bg-gray-400"
+              } py-2 px-8 mt-4 font-bold text-white cursor-pointer transform transition-transform duration-200 active:scale-105 mx-auto block rounded-full flex items-center justify-center`}
               style={{ width: "100%" }}
               disabled={!isFormValid}
             >
