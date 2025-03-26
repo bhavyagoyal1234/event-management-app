@@ -7,8 +7,7 @@ const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router
-  .route("/add-event")
-  .post(upload.single("file"), eventController.addEvent);
+router.route("/add-event").post(upload.single("file"), eventController.addEvent);
+router.route("/genre-event").post(eventController.getEventByGenre);
 
 module.exports = router;
