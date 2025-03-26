@@ -14,6 +14,7 @@ import Stepper from "./components/ui/Stepper2.jsx";
 import VenueList from "./components/ui/VenueList.jsx";
 import VenueCard from "./components/ui/Venuecard.jsx";
 import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
+import EventAddHome from "./pages/add-event/home.jsx";
 
 function App() {
   const GoogleAuthWrapper = () => {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/venuelist" element={<VenueList />}></Route>
           <Route path="/venuecard" element={<VenueCard />}></Route>
           <Route path="/listevent2" element={<EventlistForm2 />}></Route>
+          <Route path="/add-event" element={<EventAddHome />}></Route>
         </Routes>
       </BrowserRouter>
     </>

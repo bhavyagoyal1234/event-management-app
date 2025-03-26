@@ -18,6 +18,8 @@ exports.addEvent = async (req, res) => {
       venue,
     } = req.body;
 
+    console.log(req.body);
+
     if (
       !title ||
       !genre ||
@@ -79,10 +81,8 @@ exports.addEvent = async (req, res) => {
       title,
       genre,
       contactNo,
-      startDate,
-      endDate,
-      startTime,
-      endTime,
+      start,
+      end,
       description,
       imageUrl: image.secure_url,
       user,

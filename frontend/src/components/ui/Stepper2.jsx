@@ -4,8 +4,8 @@ function Stepper({ currentStep }) {
   const steps = [1, 2, 3, 4];
 
   return (
-    <div className="flex justify-center items-center mb-16 w-full">
-      <div className="flex items-center justify-center w-full max-w-6xl">
+    <div className="flex justify-center items-center mb-10">
+      <div className="flex items-center justify-center">
         {steps.map((step, index) => (
           <div key={index} className="flex items-center">
             <div
