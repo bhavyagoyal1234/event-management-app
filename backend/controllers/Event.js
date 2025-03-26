@@ -177,3 +177,29 @@ exports.deleteEvent = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+//get event on the basis of genre 
+exports.getEventByGenre = async (req,res) =>{
+  try{
+    const {genre}=req.body;
+
+    if(!genre){
+      return res.status(400).json({
+        success:false,
+        message:"all fields are required"
+      })
+    }
+    const events = await Event.find({genre:genre});
+    return res.status(200).json({
+      success:true,
+      message:"returning list of events on the basis of genre",
+      events
+    })
+  }
+  catch(error){
+    return res.status(400).json({
+      success:false,
+      message:"something went wrong while fetching events on the basis of genre"
+    })
+  }
+};
