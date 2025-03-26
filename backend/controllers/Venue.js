@@ -68,12 +68,12 @@ exports.getVenue = async (req, res) => {
     // Fetch list of venues from database
     const venues = await Venue.find({ state, city });
 
-    if (venues.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No venues found",
-      });
-    }
+    // if (venues.length === 0) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "No venues found",
+    //   });
+    // }
 
     // Returning list of venues in response
     return res.status(200).json({
