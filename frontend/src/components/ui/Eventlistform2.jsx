@@ -3,7 +3,7 @@ import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSwipeable } from "react-swipeable";
-import Stepper from "./Stepper2";
+import Stepper from "../../pages/add-event/Stepper2";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import GooglePayButton from "@google-pay/button-react";

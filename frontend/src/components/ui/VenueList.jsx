@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import VenueCard from "./VenueCard";
-import Stepper from "./Stepper2";
+import Stepper from "../../pages/add-event/Stepper2";
 
 function VenueList() {
   const location = useLocation();

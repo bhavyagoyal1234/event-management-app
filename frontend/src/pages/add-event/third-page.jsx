@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
   const [formValid, setFormValid] = useState(false);
   const [image, setImage] = useState(null);
-  const [paymentDone, setPaymentDone] = useState(true);
+  const [paymentDone, setPaymentDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -31,11 +31,14 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
       formData.endDate.trim() !== "" &&
       formData.endTime.trim() !== "" &&
       formData.agree &&
-      formData.file &&
-      paymentDone;
+      formData.file
 
     setFormValid(isValid);
   }, [formData, paymentDone]);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData])
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;

@@ -28,7 +28,8 @@ import {
   TagIcon,
   FileTextIcon,
 } from "lucide-react";
-import { number } from "zod";
+import Stepper from "./Stepper2";
+
 
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],
@@ -54,6 +55,7 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
   const [availableCities, setAvailableCities] = useState([]);
 
   useEffect(() => {
+    if (!formData) return;
     const isValid =
       formData.title.trim() !== "" &&
       formData.description.trim() !== "" &&
@@ -63,6 +65,7 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
       formData.city !== "";
     setValid(isValid);
   }, [formData]);
+  
 
   useEffect(() => {
     if (formData.state && stateCityMap[formData.state]) {
@@ -78,7 +81,10 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
   }
 
   return (
+    
+    
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
+       
       <CardHeader className="bg-muted/40 border-b">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Information
@@ -88,7 +94,7 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-6">
-        <form className="space-y-8">
+        <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             {/* Event Title */}
             <div className="md:col-span-2">
@@ -229,16 +235,20 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
 
           <div className="pt-4 border-t">
             <Button
-              className="w-full md:w-auto px-8 py-2 h-11 bg-primary hover:bg-primary/90 text-white font-medium"
+               className={`${
+                valid ? "bg-gradient-to-r from-blue-400 to-blue-600" : "bg-gray-800"
+              } w-full md:w-auto px-8 py-2 h-11 text-white font-medium`}
+              type="button"
               onClick={() => handlePageChange(2)}
               disabled={!valid}
             >
               Continue to Select Venue
             </Button>
           </div>
-        </form>
+        </div>
       </CardContent>
     </Card>
+   
   );
 };
 

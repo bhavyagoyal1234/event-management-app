@@ -10,12 +10,14 @@ import ResetPasswordFormemail from "./components/ui/Resetpassemail.jsx";
 import EmailSentNotification from "./components/ui/Emailsendsuccess.jsx";
 import AddVenueForm from "./components/ui/Addvenue.jsx";
 import EventListForm1 from "./components/ui/EventListForm";
-import Stepper from "./components/ui/Stepper2.jsx";
+import Stepper from "./pages/add-event/Stepper2.jsx";
 import VenueList from "./components/ui/VenueList.jsx";
 import VenueCard from "./components/ui/Venuecard.jsx";
 import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
 import EventAddHome from "./pages/add-event/home.jsx";
-
+import FirstPage from "./pages/add-event/first-page.jsx";
+import SecondPage from "./pages/add-event/second-page.jsx";
+import Prior_booking from "./pages/add-event/components/Prior_booking.jsx"
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -52,6 +54,7 @@ function App() {
           <Route path="/venuecard" element={<VenueCard />}></Route>
           <Route path="/listevent2" element={<EventlistForm2 />}></Route>
           <Route path="/add-event" element={<EventAddHome />}></Route>
+          <Route path="/venue-details" element={<Prior_booking />} />
         </Routes>
       </BrowserRouter>
     </>

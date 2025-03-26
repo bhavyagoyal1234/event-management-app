@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Stepper from "./Stepper2";
+import Stepper from "../../pages/add-event/Stepper2";
 
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],

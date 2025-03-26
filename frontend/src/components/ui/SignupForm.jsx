@@ -115,7 +115,7 @@ function SignupForm() {
       <div className="flex bg-white rounded-lg shadow-lg max-w-screen-xl w-full mx-4">
         <div className="w-1/2 flex justify-center items-center p-8">
           <img
-            src="signupimg.jpg"
+            src="signup.png"
             alt="Event Management"
             className="w-full h-auto"
           />

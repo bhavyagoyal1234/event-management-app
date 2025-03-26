@@ -10,7 +10,7 @@ function Stepper({ currentStep }) {
           <div key={index} className="flex items-center">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                currentStep >= step ? "bg-red-500" : "bg-gray-300"
+                currentStep >= step ? "bg-gradient-to-r from-blue-400 to-blue-600" : "bg-gray-300"
               }`}
             >
               <span className="text-white">{step}</span>
@@ -18,7 +18,7 @@ function Stepper({ currentStep }) {
             {index < steps.length - 1 && (
               <div
                 className={`w-70 h-1 mx-6 ${
-                  currentStep > step ? "bg-red-500" : "bg-gray-300"
+                  currentStep > step ? "bg-gradient-to-r from-blue-400 to-blue-600" : "bg-gray-300"
                 }`}
               ></div>
             )}

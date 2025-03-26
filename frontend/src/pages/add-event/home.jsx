@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import FirstPage from "./first-page";
 import SecondPage from "./second-page";
-import Stepper from "@/components/ui/Stepper2";
+import Stepper from "@/pages/add-event/Stepper2";
 import ThirdPage from "./third-page";
 
 const EventAddHome = () => {
@@ -34,50 +35,76 @@ const EventAddHome = () => {
     setPage(page);
   };
 
-  // shows a confirmation dialog if user tries to refresh the page or navigate
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e) => {
+  //     e.preventDefault();
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
+
+  const pageVariants = {
+    initial: { opacity: 0, x: 100 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -100 },
+  };
 
   return (
     <div className="p-6">
-      {/* <Stepper currentStep={page} /> */}
-      {page === 1 && (
-        <FirstPage
-          formData={formData}
-          setFormData={setFormData}
-          handlePageChange={handlePageChange}
-        />
-      )}
-      {page === 2 && (
-        <SecondPage
-          formData={formData}
-          setFormData={setFormData}
-          handlePageChange={handlePageChange}
-        />
-      )}
-      {page === 3 && (
-        <ThirdPage
-          formData={formData}
-          setFormData={setFormData}
-          handlePageChange={handlePageChange}
-        />
-      )}
-      {/* <div className="flex gap-10">
-        {page !== 1 && (
-          <Button onClick={() => handlePageChange(page - 1)}>Back</Button>
+      <Stepper currentStep={page} />
+      <AnimatePresence exitBeforeEnter>
+        {page === 1 && (
+          <motion.div
+            key="firstPage"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.5 }}
+          >
+            <FirstPage
+              formData={formData}
+              setFormData={setFormData}
+              handlePageChange={handlePageChange}
+            />
+          </motion.div>
         )}
-        {page !== 3 && (
-          <Button onClick={() => handlePageChange(page + 1)}>Next</Button>
+        {page === 2 && (
+          <motion.div
+            key="secondPage"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.5 }}
+          >
+            <SecondPage
+              formData={formData}
+              setFormData={setFormData}
+              handlePageChange={handlePageChange}
+            />
+          </motion.div>
         )}
-      </div> */}
+        {page === 3 && (
+          <motion.div
+            key="thirdPage"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={{ duration: 0.5 }}
+          >
+            <ThirdPage
+              formData={formData}
+              setFormData={setFormData}
+              handlePageChange={handlePageChange}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

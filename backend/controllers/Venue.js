@@ -5,11 +5,13 @@ require("dotenv").config();
 exports.addVenue = async(req,res) =>{
     try{
         //fetch data from req body 
-       const {name,city,state,price,paxcapacity,roomcount} = req.body;
+       const {name,city,state,price,paxcapacity,roomcount,description} = req.body;
+       console.log("frontend data",req.body);
        //fetch image 
-       const thumbnail = req.files.thumbnailImage;
+       const thumbnail = req.file;
+       console.log("thumbnail image from frontend",thumbnail);
        //validation 
-       if(!name || !city || !state || !price || !paxcapacity || !roomcount){
+       if(!name || !city || !state || !price || !paxcapacity || !roomcount || !description){
         return res.status(400).json({
             success:false,
             message:"all fields are required",
@@ -20,14 +22,17 @@ exports.addVenue = async(req,res) =>{
         thumbnail,
         process.env.FOLDER_NAME
       )
+
       //create venue in database
-      const newVenue = Venue.create({
+      const newVenue = await Venue.create({
         name,
         city,
+        state,
         price,
         imageUrl:thumbnailImage.secure_url,
         paxcapacity,
         roomcount,
+        description
 
       })
       //return success status 
@@ -38,6 +43,7 @@ exports.addVenue = async(req,res) =>{
 
     }
     catch(error){
+      console.log("printing error",error);
         return res.status(400).json({
             success:false,
             message:"something went wrong while adding venue",
