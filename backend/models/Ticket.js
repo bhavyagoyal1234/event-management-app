@@ -1,11 +1,5 @@
 const Ticket = require("../models/Ticket");
 
-
-//book ticket 
-// frontend-->user id and event id and payment id 
-// response ticket 
-
-
 // Book a ticket
 exports.ticketBooking = async (req, res) => {
     try {
@@ -24,7 +18,7 @@ exports.ticketBooking = async (req, res) => {
             paymentID: paymentID,
         });
 
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             message: "Ticket booked successfully",
             ticket: newTicket,
@@ -37,15 +31,3 @@ exports.ticketBooking = async (req, res) => {
         });
     }
 };
-
-// get all tickets by user id 
-// frontend -->user id 
-
-
-// 
-
-
-
-
-
-
