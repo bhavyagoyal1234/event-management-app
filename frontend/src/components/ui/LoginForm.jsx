@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -20,11 +20,9 @@ function LoginForm() {
     watch,
   } = useForm();
 
-  // Watch the form fields
   const email = watch("email");
   const password = watch("password");
-
-  // Determine if the form is valid
+  const navigate = useNavigate();
   const isFormValid = email && password.length >= 8;
 
   const handleFormSubmit = (e) => {
@@ -34,18 +32,32 @@ function LoginForm() {
     }
   };
 
-  async function onSubmit(data) {
-    setLoading(true);
+  async function login(data) {
     try {
       const response = await axios.post(
         "http://localhost:3002/api/auth/login",
         data,
         { withCredentials: true }
       );
-      const res = await response.data;
-      localStorage.setItem("userid", res.user._id);
+      return response.data;
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Login Error:", error);
+      throw error;
+    }
+  }
+
+  async function onSubmit(data) {
+    setLoading(true);
+    try {
+      const res = await login(data);
+      localStorage.setItem("userid", res.user._id);
+      localStorage.setItem("token", res.token);
+
+      if (res.success) {
+        // Directly navigate to the /home page
+        navigate('/home');
+      }
+    } catch (error) {
       toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -141,7 +153,7 @@ function LoginForm() {
                     ? "bg-gradient-to-r from-blue-400 to-blue-600"
                     : "bg-gray-400"
                 }`}
-                style={{ width: "100%" }} // Set a specific width for the button
+                style={{ width: "100%" }}
               >
                 {loading ? (
                   <>

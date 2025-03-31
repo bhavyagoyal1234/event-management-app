@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import {
@@ -31,14 +31,15 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
       formData.endDate.trim() !== "" &&
       formData.endTime.trim() !== "" &&
       formData.agree &&
-      formData.file
+      formData.file &&
+      formData.ticketPrice.trim() !== 0; 
 
     setFormValid(isValid);
   }, [formData, paymentDone]);
 
   useEffect(() => {
     console.log(formData);
-  }, [formData])
+  }, [formData]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,7 +50,6 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
   };
 
   const handleFileChange = (e) => {
-    console.log("in file change");
     const file = e.target.files[0];
     setFormData({ ...formData, file });
     if (file) {
@@ -74,8 +74,6 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
       if (key === "venue") formDataToSend.append(key, formData[key]._id);
       else formDataToSend.append(key, formData[key]);
     }
-
-    console.log(Object.fromEntries(formDataToSend.entries()));
 
     try {
       const response = await axios.post(
@@ -162,6 +160,19 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Ticket Price Input */}
+            <div className="md:col-span-2">
+              <Label className="font-medium">Ticket Price</Label>
+              <Input
+                type="number"
+                name="ticketPrice"
+                value={formData.ticketPrice}
+                onChange={handleInputChange}
+                className="h-10 mt-1"
+                placeholder="Enter ticket price"
+              />
             </div>
 
             {/* Image Upload */}
