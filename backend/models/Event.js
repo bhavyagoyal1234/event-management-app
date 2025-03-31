@@ -43,6 +43,10 @@ const EventSchema = new mongoose.Schema(
       ref: "Venue",
       required: true,
     },
+    ticketPrice:{
+      type:Number,
+      required:true,
+    }
   },
   { timestamps: true }
 );

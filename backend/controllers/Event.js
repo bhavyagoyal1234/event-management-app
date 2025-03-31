@@ -1,5 +1,7 @@
 const Event = require("../models/Event");
 const mongoose = require("mongoose");
+const User=require("../models/User");
+const Venue=require("../models/Venue");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 
@@ -16,6 +18,7 @@ exports.addEvent = async (req, res) => {
       description,
       user,
       venue,
+      ticketPrice
     } = req.body;
 
     console.log(req.body);
@@ -30,7 +33,8 @@ exports.addEvent = async (req, res) => {
       !endTime ||
       !description ||
       !user ||
-      !venue
+      !venue ||
+      !ticketPrice
     ) {
       return res
         .status(400)
@@ -87,6 +91,7 @@ exports.addEvent = async (req, res) => {
       imageUrl: image.secure_url,
       user,
       venue,
+      ticketPrice
     });
 
     await newEvent.save();
@@ -103,8 +108,14 @@ exports.addEvent = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find().populate("user").populate("venue");
-    res.status(200).json(events);
+    console.log("in get all events controller");
+    const events = await Event.find().populate("venue");
+    res.status(200).json({
+      success:true,
+      message:"RETURNING ALL EVENTS",
+      events
+    });
+    
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -113,6 +124,8 @@ exports.getAllEvents = async (req, res) => {
 // Get Event by ID
 exports.getEventById = async (req, res) => {
   try {
+
+    console.log('1');
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid event ID." });
@@ -130,6 +143,7 @@ exports.getEventById = async (req, res) => {
 // Update Event
 exports.updateEvent = async (req, res) => {
   try {
+    console
     const { id } = req.params;
     const updates = req.body;
 
@@ -181,15 +195,18 @@ exports.deleteEvent = async (req, res) => {
 //get event on the basis of genre 
 exports.getEventByGenre = async (req,res) =>{
   try{
+    console.log("in gemre evemet");
+    console.log('2');
     const {genre}=req.body;
-
     if(!genre){
       return res.status(400).json({
         success:false,
         message:"all fields are required"
       })
     }
-    const events = await Event.find({genre:genre});
+
+    // const events = await Event.find({genre:genre});
+    const events = await Event.find({genre:genre}).populate("venue");
     return res.status(200).json({
       success:true,
       message:"returning list of events on the basis of genre",
