@@ -24,6 +24,7 @@ const EventAddHome = () => {
     agree: false,
     venue: null,
     user: localStorage.getItem("userid"),
+    ticketPrice: 0
   });
 
   useEffect(() => {

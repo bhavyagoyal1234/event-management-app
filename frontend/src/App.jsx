@@ -18,6 +18,11 @@ import EventAddHome from "./pages/add-event/home.jsx";
 import FirstPage from "./pages/add-event/first-page.jsx";
 import SecondPage from "./pages/add-event/second-page.jsx";
 import Prior_booking from "./pages/add-event/components/Prior_booking.jsx"
+import Homepage from "./components/ui/Homepage.jsx";
+import Homepage2 from "./components/ui/Homepage2.jsx";
+ import Genrepage from "./components/ui/Homepagegenre.jsx";
+ import Genrepagefilter from "./components/ui/Homegenrefilteradded.jsx";
+ 
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -55,6 +60,9 @@ function App() {
           <Route path="/listevent2" element={<EventlistForm2 />}></Route>
           <Route path="/add-event" element={<EventAddHome />}></Route>
           <Route path="/venue-details" element={<Prior_booking />} />
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/home2" element={<Homepage2 />} />
+           <Route path="/genrepagefilter" element={<Genrepagefilter />} />
         </Routes>
       </BrowserRouter>
     </>
