@@ -11,12 +11,15 @@ function App() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [sortOrder, setSortOrder] = useState(""); // State for sorting order
+  const [sortOrder, setSortOrder] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState(genreTitle);
 
   useEffect(() => {
     const fetchEventsByGenre = async () => {
       try {
-        const response = await axios.post("http://localhost:3002/api/event/genre-event", { genre: genreTitle });
+        const response = await axios.post("http://localhost:3002/api/event/genre-event", { genre: selectedGenre });
         console.log("API Response:", response.data);
         if (response.data.success) {
           setEvents(response.data.events);
@@ -28,12 +31,12 @@ function App() {
       }
     };
 
-    if (genreTitle) {
+    if (selectedGenre) {
       fetchEventsByGenre();
     } else {
       console.warn("No genre title provided");
     }
-  }, [genreTitle]);
+  }, [selectedGenre]);
 
   const filteredEvents = events
     .filter(event => {
@@ -55,7 +58,10 @@ function App() {
         dateMatch = dateMatch || day === 6 || day === 0;
       }
 
-      return eventPrice >= minPrice && eventPrice <= maxPrice && dateMatch;
+      const stateMatch = selectedState ? event.state === selectedState : true;
+      const cityMatch = selectedCity ? event.city === selectedCity : true;
+
+      return eventPrice >= minPrice && eventPrice <= maxPrice && dateMatch && stateMatch && cityMatch;
     })
     .sort((a, b) => {
       if (sortOrder === "lowToHigh") {
@@ -79,7 +85,13 @@ function App() {
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}
           sortOrder={sortOrder}
-          setSortOrder={setSortOrder} // Pass setSortOrder to Filters
+          setSortOrder={setSortOrder}
+          currentGenre={selectedGenre}
+          setSelectedGenre={setSelectedGenre}
+          selectedState={selectedState}
+          setSelectedState={setSelectedState}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
         />
       </div>
       <div className="w-3/4 p-4 overflow-y-auto">

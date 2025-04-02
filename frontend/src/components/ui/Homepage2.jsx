@@ -6,7 +6,7 @@ const genres = [
   { title: 'Cultural Fest', image: 'combedy.jpeg' },
   { title: 'Sports', image: 'combedy.jpeg' },
   { title: 'Musical Concerts', image: 'combedy.jpeg' },
-  { title: 'Combedy Shows', image: 'combedy.jpeg' },
+  { title: 'Comedy Shows', image: 'combedy.jpeg' },
   { title: 'Science Fair', image: 'combedy.jpeg' },
 ];
 

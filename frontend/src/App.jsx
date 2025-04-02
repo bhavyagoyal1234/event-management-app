@@ -22,7 +22,9 @@ import Homepage from "./components/ui/Homepage.jsx";
 import Homepage2 from "./components/ui/Homepage2.jsx";
  import Genrepage from "./components/ui/Homepagegenre.jsx";
  import Genrepagefilter from "./components/ui/Homegenrefilteradded.jsx";
- 
+ import HomepageBooking from "./components/ui/Homepagebooking.jsx";
+ import Masonry from "./components/ui/Maso2.jsx";
+ import Masonry2 from "./components/ui/Masotest.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -63,6 +65,9 @@ function App() {
           <Route path="/home" element={<Homepage />} />
           <Route path="/home2" element={<Homepage2 />} />
            <Route path="/genrepagefilter" element={<Genrepagefilter />} />
+           <Route path="/ticketbooking" element={< HomepageBooking />} /> 
+            <Route path="/maso" element={< Masonry />} /> 
+            <Route path="/maso2" element={< Masonry2 />} /> 
         </Routes>
       </BrowserRouter>
     </>
