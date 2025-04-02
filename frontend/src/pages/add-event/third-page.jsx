@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css";
 import {
   Card,
   CardContent,
@@ -22,6 +22,7 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
   const [image, setImage] = useState(null);
   const [paymentDone, setPaymentDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +58,49 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
       setImage(imageUrl);
     } else {
       setImage(null);
+    }
+  };
+
+  const checkForOverlappingEvents = async () => {
+    try {
+      const existingEvents = await Promise.all(
+        formData.venue.bookings.map(async (eventId) => {
+          const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${eventId}`);
+          return response.data;
+        })
+      );
+
+      const newEventStart = new Date(`${formData.startDate}T${formData.startTime}`);
+      const newEventEnd = new Date(`${formData.endDate}T${formData.endTime}`);
+
+      for (const event of existingEvents) {
+        const existingEventStart = new Date(event.start);
+        const existingEventEnd = new Date(event.end);
+
+        if (
+          (newEventStart >= existingEventStart && newEventStart < existingEventEnd) ||
+          (newEventEnd > existingEventStart && newEventEnd <= existingEventEnd) ||
+          (newEventStart <= existingEventStart && newEventEnd >= existingEventEnd)
+        ) {
+          toast.error("Another event already exists at this time. Check Prior Booking");
+          return false;
+        }
+      }
+      return true;
+    } catch (error) {
+      console.error("Error checking for overlapping events:", error);
+      toast.error("Error checking for overlapping events.");
+      return false;
+    }
+  };
+
+  const handleCheckAvailability = async (e) => {
+    e.preventDefault(); // Prevent form submission
+    const noOverlap = await checkForOverlappingEvents();
+    if (noOverlap) {
+      setAvailabilityChecked(true);
+    } else {
+      setAvailabilityChecked(false);
     }
   };
 
@@ -220,7 +264,17 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
             </label>
           </div>
 
-          {formValid && !paymentDone && (
+          {formValid && !availabilityChecked && (
+            <Button
+              type="button" // Ensure this is a button, not a submit
+              onClick={handleCheckAvailability}
+              className="w-full md:w-auto px-8 py-2 h-11 bg-primary hover:bg-primary/90 text-white font-medium"
+            >
+              Check Availability
+            </Button>
+          )}
+
+          {formValid && availabilityChecked && !paymentDone && (
             <GooglePaymentButton
               price={formData.venue.price}
               setPaymentDone={setPaymentDone}

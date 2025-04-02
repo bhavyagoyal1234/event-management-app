@@ -32,7 +32,7 @@ function EventDetails() {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3002/api/event/getEventByid/${event_id}`);
+        const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${event_id}`);
         if (response.status === 200) {
           setEvent(response.data);
         } else {
@@ -47,7 +47,11 @@ function EventDetails() {
       fetchEventDetails();
     }
   }, [event_id]);
-
+  useEffect(() => {
+    if (event) {
+      console.log("Venue bookings:", event?.venue?.bookings);
+    }
+  }, [event]);
   useEffect(() => {
     const fetchSimilarEvents = async () => {
       if (!event) return;

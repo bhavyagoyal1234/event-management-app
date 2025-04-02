@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar, FaMapMarkerAlt, FaUser, FaClock } from "react-icons/fa";
+import axios from "axios";
 
 function PriorBooking({ venue }) {
+  const [bookingDetails, setBookingDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      try {
+        const details = await Promise.all(
+          venue.bookings.map(async (booking) => {
+            const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${booking.eventId}`);
+            return response.data;
+          })
+        );
+        setBookingDetails(details);
+      } catch (error) {
+        console.error("Error fetching booking details:", error);
+      }
+    };
+
+    if (venue?.bookings) {
+      fetchBookingDetails();
+    }
+  }, [venue]);
+
   if (!venue) {
     return <div>No venue data available.</div>;
   }
@@ -14,7 +37,7 @@ function PriorBooking({ venue }) {
             src={venue.imageUrl}
             alt={venue.name}
             className="rounded-lg shadow-lg"
-            style={{ width: "450px", height: "270px" }}
+            style={{ width: '450px', height: '270px' }}
           />
         </div>
         <div className="w-1/2 pl-8">
@@ -54,11 +77,11 @@ function PriorBooking({ venue }) {
               </tr>
             </thead>
             <tbody>
-              {venue.bookings.map((booking, index) => (
+              {bookingDetails.map((event, index) => (
                 <tr key={index} className="border-t">
-                  <td className="py-2">{booking.title}</td>
-                  <td className="py-2">{booking.openingTime}</td>
-                  <td className="py-2">{booking.closingTime}</td>
+                  <td className="py-2">{event.title}</td>
+                  <td className="py-2">{new Date(event.start).toLocaleString()}</td>
+                  <td className="py-2">{new Date(event.end).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
