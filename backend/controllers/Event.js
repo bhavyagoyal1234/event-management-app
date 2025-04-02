@@ -220,3 +220,68 @@ exports.getEventByGenre = async (req,res) =>{
     })
   }
 };
+//get event by city
+exports.getEventByCity = async (req, res) => {
+  try {
+    const { city } = req.body;
+
+    if (!city) {
+      return res.status(400).json({
+        success: false,
+        message: "City field is required",
+      });
+    }
+
+    // Find venues that match the city
+    const venues = await Venue.find({ city }).select("_id");
+    const venueIds = venues.map(venue => venue._id);
+
+    // Find events that are held in the found venues
+    const events = await Event.find({ venue: { $in: venueIds } }).populate("venue");
+
+    return res.status(200).json({
+      success: true,
+      events,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+//get event by state
+exports.getEventByState = async (req, res) => {
+  try {
+    const { state } = req.body;
+
+    if (!state) {
+      return res.status(400).json({
+        success: false,
+        message: "State field is required",
+      });
+    }
+
+    // Find venues that match the state
+    const venues = await Venue.find({ state }).select("_id");
+    const venueIds = venues.map(venue => venue._id);
+
+    // Find events that are held in the found venues
+    const events = await Event.find({ venue: { $in: venueIds } }).populate("venue");
+
+    return res.status(200).json({
+      success: true,
+      events,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
