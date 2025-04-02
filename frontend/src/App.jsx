@@ -15,16 +15,15 @@ import VenueList from "./components/ui/VenueList.jsx";
 import VenueCard from "./components/ui/Venuecard.jsx";
 import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
 import EventAddHome from "./pages/add-event/home.jsx";
-import FirstPage from "./pages/add-event/first-page.jsx";
-import SecondPage from "./pages/add-event/second-page.jsx";
-import Prior_booking from "./pages/add-event/components/Prior_booking.jsx"
+import Prior_booking from "./pages/add-event/components/Prior_booking.jsx";
 import Homepage from "./components/ui/Homepage.jsx";
 import Homepage2 from "./components/ui/Homepage2.jsx";
- import Genrepage from "./components/ui/Homepagegenre.jsx";
- import Genrepagefilter from "./components/ui/Homegenrefilteradded.jsx";
- import HomepageBooking from "./components/ui/Homepagebooking.jsx";
- import Masonry from "./components/ui/Maso2.jsx";
- import Masonry2 from "./components/ui/Masotest.jsx";
+import Genrepage from "./components/ui/Homepagegenre.jsx";
+import Genrepagefilter from "./components/ui/Homegenrefilteradded.jsx";
+import HomepageBooking from "./components/ui/Homepagebooking.jsx";
+import { PaymentSuccess } from "./pages/ticket-booking/booking-success.jsx";
+import PaymentForEvent from "./pages/ticket-booking/event-payment.jsx";
+
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -64,10 +63,9 @@ function App() {
           <Route path="/venue-details" element={<Prior_booking />} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/home2" element={<Homepage2 />} />
-           <Route path="/genrepagefilter" element={<Genrepagefilter />} />
-           <Route path="/ticketbooking" element={< HomepageBooking />} /> 
-            <Route path="/maso" element={< Masonry />} /> 
-            <Route path="/maso2" element={< Masonry2 />} /> 
+          <Route path="/genrepagefilter" element={<Genrepagefilter />} />
+          <Route path="/ticketbooking" element={<HomepageBooking />} />
+          <Route path="/event-booking-payment" element={<PaymentForEvent />} />
         </Routes>
       </BrowserRouter>
     </>

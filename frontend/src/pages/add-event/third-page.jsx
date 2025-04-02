@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { CalendarIcon, ImageIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import GooglePaymentButton from "./components/google-payment-button";
+import GooglePaymentButton from "../../components/ui/google-payment-button";
 import { useNavigate } from "react-router-dom";
 
 const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
@@ -32,7 +32,7 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
       formData.endTime.trim() !== "" &&
       formData.agree &&
       formData.file &&
-      formData.ticketPrice.trim() !== 0; 
+      formData.ticketPrice.trim() !== 0;
 
     setFormValid(isValid);
   }, [formData, paymentDone]);

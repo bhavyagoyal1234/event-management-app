@@ -1,7 +1,7 @@
 const Event = require("../models/Event");
 const mongoose = require("mongoose");
-const User=require("../models/User");
-const Venue=require("../models/Venue");
+const User = require("../models/User");
+const Venue = require("../models/Venue");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 
@@ -18,7 +18,7 @@ exports.addEvent = async (req, res) => {
       description,
       user,
       venue,
-      ticketPrice
+      ticketPrice,
     } = req.body;
 
     console.log(req.body);
@@ -91,10 +91,16 @@ exports.addEvent = async (req, res) => {
       imageUrl: image.secure_url,
       user,
       venue,
-      ticketPrice
+      ticketPrice,
     });
 
     await newEvent.save();
+
+    // add this event in the bookings array of venue
+    await Venue.findByIdAndUpdate(venue, {
+      $push: { bookings: newEvent._id },
+    });
+
     res
       .status(201)
       .json({ success: true, message: "Event added successfully", newEvent });
@@ -111,11 +117,10 @@ exports.getAllEvents = async (req, res) => {
     console.log("in get all events controller");
     const events = await Event.find().populate("venue");
     res.status(200).json({
-      success:true,
-      message:"RETURNING ALL EVENTS",
-      events
+      success: true,
+      message: "RETURNING ALL EVENTS",
+      events,
     });
-    
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -124,8 +129,7 @@ exports.getAllEvents = async (req, res) => {
 // Get Event by ID
 exports.getEventById = async (req, res) => {
   try {
-
-    console.log('1');
+    console.log("1");
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid event ID." });
@@ -143,7 +147,7 @@ exports.getEventById = async (req, res) => {
 // Update Event
 exports.updateEvent = async (req, res) => {
   try {
-    console
+    console;
     const { id } = req.params;
     const updates = req.body;
 
@@ -192,32 +196,32 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-//get event on the basis of genre 
-exports.getEventByGenre = async (req,res) =>{
-  try{
+//get event on the basis of genre
+exports.getEventByGenre = async (req, res) => {
+  try {
     console.log("in gemre evemet");
-    console.log('2');
-    const {genre}=req.body;
-    if(!genre){
+    console.log("2");
+    const { genre } = req.body;
+    if (!genre) {
       return res.status(400).json({
-        success:false,
-        message:"all fields are required"
-      })
+        success: false,
+        message: "all fields are required",
+      });
     }
 
     // const events = await Event.find({genre:genre});
-    const events = await Event.find({genre:genre}).populate("venue");
+    const events = await Event.find({ genre: genre }).populate("venue");
     return res.status(200).json({
-      success:true,
-      message:"returning list of events on the basis of genre",
-      events
-    })
-  }
-  catch(error){
+      success: true,
+      message: "returning list of events on the basis of genre",
+      events,
+    });
+  } catch (error) {
     return res.status(400).json({
-      success:false,
-      message:"something went wrong while fetching events on the basis of genre"
-    })
+      success: false,
+      message:
+        "something went wrong while fetching events on the basis of genre",
+    });
   }
 };
 //get event by city
@@ -234,16 +238,17 @@ exports.getEventByCity = async (req, res) => {
 
     // Find venues that match the city
     const venues = await Venue.find({ city }).select("_id");
-    const venueIds = venues.map(venue => venue._id);
+    const venueIds = venues.map((venue) => venue._id);
 
     // Find events that are held in the found venues
-    const events = await Event.find({ venue: { $in: venueIds } }).populate("venue");
+    const events = await Event.find({ venue: { $in: venueIds } }).populate(
+      "venue"
+    );
 
     return res.status(200).json({
       success: true,
       events,
     });
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -267,16 +272,17 @@ exports.getEventByState = async (req, res) => {
 
     // Find venues that match the state
     const venues = await Venue.find({ state }).select("_id");
-    const venueIds = venues.map(venue => venue._id);
+    const venueIds = venues.map((venue) => venue._id);
 
     // Find events that are held in the found venues
-    const events = await Event.find({ venue: { $in: venueIds } }).populate("venue");
+    const events = await Event.find({ venue: { $in: venueIds } }).populate(
+      "venue"
+    );
 
     return res.status(200).json({
       success: true,
       events,
     });
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({

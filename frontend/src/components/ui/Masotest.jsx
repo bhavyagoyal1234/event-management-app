@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 function App({ city }) {
   const [events, setEvents] = useState([]);
@@ -10,15 +10,19 @@ function App({ city }) {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.post('http://localhost:3002/api/event/getAllEvent');
+        const response = await axios.post(
+          "http://localhost:3002/api/event/getAllEvent"
+        );
         if (response.data.success) {
-          const filteredEvents = response.data.events.filter(event => event.venue.city === city);
+          const filteredEvents = response.data.events.filter(
+            (event) => event.venue.city === city
+          );
           setEvents(filteredEvents);
         } else {
-          console.error('Failed to fetch events');
+          console.error("Failed to fetch events");
         }
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
       }
     };
 
@@ -32,7 +36,7 @@ function App({ city }) {
 
   const handleCardClick = (event) => {
     // Navigate to the ticket booking page with event information
-    navigate('/ticketbooking', { state: { event } });
+    navigate("/ticketbooking", { state: { event } });
   };
 
   return (
@@ -52,7 +56,9 @@ function App({ city }) {
             {event.genre}
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2">
-            <h3 className="text-white font-bold text-lg shadow-md">{event.title}</h3>
+            <h3 className="text-white font-bold text-lg shadow-md">
+              {event.title}
+            </h3>
           </div>
         </div>
       ))}

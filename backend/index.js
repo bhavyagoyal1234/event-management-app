@@ -28,6 +28,8 @@ app.use("/api/venue", require("./routes/venueRoutes"));
 
 app.use("/api/event", require("./routes/eventRoutes"));
 
+app.use("/api/ticket", require("./routes/ticketRoutes"));
+
 app.use(
   fileUplaod({
     useTempFiles: true,
