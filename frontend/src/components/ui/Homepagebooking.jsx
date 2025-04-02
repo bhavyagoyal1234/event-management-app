@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EventCard from "./Homeeventcard"; // Import your Card component
 import {
@@ -16,9 +16,9 @@ import { PaymentSuccess } from "@/pages/ticket-booking/booking-success";
 
 function EventDetails() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const event = location.state?.event || {};
-  console.log("event", event);
+  const { event_id } = useParams(); // Extract event_id from the URL
+  console.log("event_id",event_id)
+  const [event, setEvent] = useState(null);
   const [similarEvents, setSimilarEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -30,7 +30,27 @@ function EventDetails() {
   const userId = localStorage.getItem("userid");
 
   useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3002/api/event/getEventByid/${event_id}`);
+        if (response.status === 200) {
+          setEvent(response.data);
+        } else {
+          console.error("Failed to fetch event details");
+        }
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+      }
+    };
+  
+    if (event_id) {
+      fetchEventDetails();
+    }
+  }, [event_id]);
+
+  useEffect(() => {
     const fetchSimilarEvents = async () => {
+      if (!event) return;
       try {
         const response = await axios.post(
           "http://localhost:3002/api/event/genre-event",
@@ -49,10 +69,10 @@ function EventDetails() {
       }
     };
 
-    if (event.genre) {
+    if (event?.genre) {
       fetchSimilarEvents();
     }
-  }, [event.genre, event._id]);
+  }, [event]);
 
   useEffect(() => {
     if (paymentDone) {
@@ -71,14 +91,14 @@ function EventDetails() {
             setBookedTicket(response.data.ticket);
           }
         } catch (error) {
-          console.error("Error fetching similar events:", error);
+          console.error("Error booking ticket:", error);
         } finally {
           setLoading(false);
         }
       };
       bookTicket();
     }
-  }, [paymentDone]);
+  }, [paymentDone, event, userId]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -93,6 +113,8 @@ function EventDetails() {
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
+
+  if (!event) return <div>Loading event details...</div>;
 
   const description = showFullDescription
     ? event.description
@@ -130,14 +152,6 @@ function EventDetails() {
           <p className="text-xl font-bold mt-2 mb-4">
             ₹{event.ticketPrice || "ticket price"}
           </p>
-          {/* <Button
-            onClick={handleBookNow}
-            className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105"
-            size="sm"
-          >
-            Proceed to make payment
-          </Button> */}
-
           <GooglePaymentButton
             price={event.ticketPrice}
             setPaymentDone={setPaymentDone}

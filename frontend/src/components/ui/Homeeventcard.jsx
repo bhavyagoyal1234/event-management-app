@@ -1,20 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
 
 export default function EventCard({ event }) {
-  const navigate = useNavigate();
-
-  const handleBookNow = () => {
-    // Scroll to the top of the page
-    window.scrollTo(0, 0);
-
-    // Navigate to the ticket booking page with event information
-    navigate('/ticketbooking', { state: { event } });
-  };
-
   return (
     <Card className="overflow-hidden w-[360px] shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
       {/* Image Section */}
@@ -53,13 +43,12 @@ export default function EventCard({ event }) {
         <span className="text-primary font-bold text-lg">
           ₹{event.ticketPrice || "Location not available"} 
         </span>
-        <Button
-          onClick={handleBookNow}
-          className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105"
-          size="sm"
+        <Link
+          to={`/ticketbooking/${event._id}`}
+          className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105 px-4 py-2 rounded"
         >
           Book Now
-        </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

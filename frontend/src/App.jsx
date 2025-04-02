@@ -23,6 +23,8 @@ import Genrepagefilter from "./components/ui/Homegenrefilteradded.jsx";
 import HomepageBooking from "./components/ui/Homepagebooking.jsx";
 import { PaymentSuccess } from "./pages/ticket-booking/booking-success.jsx";
 import PaymentForEvent from "./pages/ticket-booking/event-payment.jsx";
+import Navbar from "./components/ui/Homenavbar.jsx";
+import Sidebar from "./components/ui/Homesidebar.jsx";
 
 function App() {
   const GoogleAuthWrapper = () => {
@@ -64,8 +66,10 @@ function App() {
           <Route path="/home" element={<Homepage />} />
           <Route path="/home2" element={<Homepage2 />} />
           <Route path="/genrepagefilter" element={<Genrepagefilter />} />
-          <Route path="/ticketbooking" element={<HomepageBooking />} />
+          <Route path="/ticketbooking/:event_id" element={<HomepageBooking />} />
           <Route path="/event-booking-payment" element={<PaymentForEvent />} />
+          <Route path="/navbar" element={<Navbar/>} />
+          <Route path="/sidebar" element={<Sidebar/>} />
         </Routes>
       </BrowserRouter>
     </>
