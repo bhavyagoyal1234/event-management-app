@@ -129,7 +129,6 @@ exports.getAllEvents = async (req, res) => {
 // Get Event by ID
 exports.getEventById = async (req, res) => {
   try {
-    console.log("1");
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid event ID." });

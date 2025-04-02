@@ -12,4 +12,6 @@ router.route("/genre-event").post(eventController.getEventByGenre);
 router.route("/getAllEvent").post(eventController.getAllEvents);
 router.route("/getEventByCity").post(eventController.getEventByCity);
 router.route("/getEventByState").post(eventController.getEventByState);
+router.route("/get-event-by-id/:id").get(eventController.getEventById);
+
 module.exports = router;
