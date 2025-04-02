@@ -1,33 +1,20 @@
-const Ticket = require("../models/Ticket");
+const mongoose = require("mongoose");
 
-// Book a ticket
-exports.ticketBooking = async (req, res) => {
-    try {
-        const { userID, eventID, paymentID } = req.body;
-
-        if (!userID || !eventID || !paymentID) {
-            return res.status(400).json({
-                success: false,
-                message: "Missing required fields",
-            });
-        }
-
-        const newTicket = await Ticket.create({
-            user: userID,
-            event: eventID,
-            paymentID: paymentID,
-        });
-
-        return res.status(200).json({
-            success: true,
-            message: "Ticket booked successfully",
-            ticket: newTicket,
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            success: false,
-            message: "Something went wrong while booking ticket",
-        });
+const ticketSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    event: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event",
+        required: true,
+    },
+    paymentID: {
+        type: String,
+        required: true,
     }
-};
+}, { timestamps: true });
+
+module.exports = mongoose.model("Ticket", ticketSchema);
