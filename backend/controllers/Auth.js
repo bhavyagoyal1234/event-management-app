@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 const axios = require("axios");
 const {oauth2client} = require("../utils/googleConfig");
+const Profile = require("../models/Profile");
+
 require("dotenv").config();
 
 //sign up controller
@@ -61,14 +63,16 @@ exports.signup = async (req, res) => {
 
     //hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
       accountType: accountType,
     });
-
+    const newProfile=await Profile.create({
+      user:user._id,
+    });
     console.log("4")
 
     return res.status(200).json({

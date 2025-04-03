@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary").v2; //! Cloudinary is being required
-
+const {imageUploader} = require("../utils/imageUploader");
 exports.cloudinaryConnect = () => {
 	try {
 		

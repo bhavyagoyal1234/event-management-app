@@ -78,7 +78,7 @@ exports.addEvent = async (req, res) => {
 
     const image = await uploadImageToCloudinary(
       imageFile,
-      process.env.EVENT_IMAGES
+      process.env.FOLDER_NAME
     );
 
     const newEvent = new Event({
