@@ -20,7 +20,7 @@ exports.addVenue = async(req,res) =>{
        //upload image on cloudinary
        const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,
-        process.env.FOLDER_NAME
+        process.env.VENUE_IMAGES
       )
 
       //create venue in database

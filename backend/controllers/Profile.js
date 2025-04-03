@@ -6,10 +6,12 @@ require("dotenv").config();
 
 exports.updateProfile = async (req, res) => {
     try {
+        console.log("in update profile controller");
         const { gender, dob, addressLine, city, state, mobileNo, userID } = req.body;
-        const profilePhoto = req.file ? req.file.path : null; // Assuming profile photo is uploaded as a file
-
+        const profilePhoto = req.file // Assuming profile photo is uploaded as a file
+        console.log("priting image 😂",profilePhoto);
         // Check if userID is provided
+        console.log("userID",userID);
         if (!userID) {
             return res.status(400).json({
                 success: false,
@@ -25,13 +27,15 @@ exports.updateProfile = async (req, res) => {
             city,
             state,
             mobileNo,
+            profilePhoto
         };
 
         // Add profilePhoto if it is uploaded
         if (profilePhoto) {
+            console.log("priting image 😂",profilePhoto);
             const image = await uploadImageToCloudinary(
                 profilePhoto,
-                process.env.FOLDER_NAME
+                process.env.PROFILE_IMAGES
             );
             updatedFields.profilePhoto = image.secure_url;
         }
@@ -57,6 +61,7 @@ exports.updateProfile = async (req, res) => {
         });
 
     } catch (error) {
+       console.log("printing error",error); 
         console.error(error);
         return res.status(500).json({
             success: false,
@@ -68,7 +73,9 @@ exports.updateProfile = async (req, res) => {
 exports.getProfileData = async(req,res) =>{
     try{
         const {userID}=req.body;
-        const profile=await Profile.find({user:userID});
+        console.log("userID",userID);
+        const profile=await Profile.findOne({user:userID});
+
         return res.status(200).json({
             success:true,
             message:"successfully fetched data of profile",

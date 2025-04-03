@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import EventsPage from "./HomePage3"; // Adjust the import path as necessary
-import EventGenres from "./HomePage2"; // Adjust the import path as necessary
+import EventsPage from "./HomePage3";
+import EventGenres from "./HomePage2";
 import Navbar from "./HomeNavbar";
 import Sidebar from "./Homesidebar";
 
@@ -9,7 +9,7 @@ function HomePage() {
   const sidebarRef = useRef();
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   const handleClickOutside = (event) => {
@@ -32,12 +32,10 @@ function HomePage() {
 
   return (
     <div className="pt-16">
-      {/* Fixed Navbar */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Navbar toggleSidebar={toggleSidebar} />
       </div>
 
-      {/* Sidebar */}
       {isSidebarOpen && (
         <div
           ref={sidebarRef}
@@ -47,12 +45,10 @@ function HomePage() {
         </div>
       )}
 
-      {/* Events Carousel */}
       <section className="mb-8">
         <EventsPage />
       </section>
 
-      {/* Event Genres */}
       <section>
         <EventGenres />
       </section>

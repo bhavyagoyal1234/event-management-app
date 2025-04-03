@@ -11,10 +11,10 @@ const profileSchema = new mongoose.Schema({
     
   },
   dob: {
-    type: Date,
+    type: String,
    
   },
-  address_line: { // Fixed typo in "adddress_line"
+  addressLine: { // Fixed typo in "adddress_line"
     type: String,
     
   },
@@ -26,7 +26,7 @@ const profileSchema = new mongoose.Schema({
     type: String,
     
   },
-  profile_photo: {
+  profilePhoto: {
     type: String, // Store the URL or file path of the profile photo
   },
   mobileNo: {

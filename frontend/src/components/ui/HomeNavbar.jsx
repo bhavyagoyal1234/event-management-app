@@ -4,7 +4,6 @@ import { FaBars } from 'react-icons/fa';
 function Navbar({ toggleSidebar }) {
   return (
     <header className="flex items-center justify-between bg-[#0C172F] p-4" style={{ height: '55px' }}>
-      {/* Navigation Links and Hamburger Menu */}
       <nav className="flex items-center space-x-6 ml-auto mr-2">
         {['Home', 'List Your Event', 'About Us', 'Contact Us'].map((text) => (
           <div key={text} className="relative">
@@ -14,7 +13,6 @@ function Navbar({ toggleSidebar }) {
             >
               {text}
             </button>
-            {/* Border Effect */}
             <span className="absolute inset-0 rounded-full border border-white opacity-30 hover:opacity-100 hover:border-2"></span>
           </div>
         ))}

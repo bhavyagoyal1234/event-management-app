@@ -25,6 +25,10 @@ import { PaymentSuccess } from "./pages/ticket-booking/booking-success.jsx";
 import PaymentForEvent from "./pages/ticket-booking/event-payment.jsx";
 import Navbar from "./components/ui/Homenavbar.jsx";
 import Sidebar from "./components/ui/Homesidebar.jsx";
+import Myprofile from "./components/ui/Myprofilesidebar.jsx";
+;
+import MyBooking from "./components/ui/Mybookingsidebar.jsx";
+
 
 function App() {
   const GoogleAuthWrapper = () => {
@@ -70,6 +74,8 @@ function App() {
           <Route path="/event-booking-payment" element={<PaymentForEvent />} />
           <Route path="/navbar" element={<Navbar/>} />
           <Route path="/sidebar" element={<Sidebar/>} />
+          <Route path="/myprofile" element={<Myprofile/>} />
+          <Route path="/mybooking" element={<MyBooking/>} />
         </Routes>
       </BrowserRouter>
     </>

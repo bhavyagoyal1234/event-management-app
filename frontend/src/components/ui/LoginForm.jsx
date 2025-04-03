@@ -18,7 +18,12 @@ function LoginForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    }
+  });
 
   const email = watch("email");
   const password = watch("password");
@@ -50,11 +55,16 @@ function LoginForm() {
     setLoading(true);
     try {
       const res = await login(data);
-      localStorage.setItem("userid", res.user._id);
+      
+      if (res.user && typeof res.user === 'object') {
+        localStorage.setItem("user", JSON.stringify(res.user));
+      } else {
+        console.error('User data is not an object');
+      }
+      
       localStorage.setItem("token", res.token);
 
       if (res.success) {
-        // Directly navigate to the /home page
         navigate('/home');
       }
     } catch (error) {
