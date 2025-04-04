@@ -226,6 +226,7 @@ exports.getEventByGenre = async (req, res) => {
 //get event by city
 exports.getEventByCity = async (req, res) => {
   try {
+    console.log("in geteventbycity")
     const { city } = req.body;
 
     if (!city) {
@@ -261,7 +262,7 @@ exports.getEventByCity = async (req, res) => {
 exports.getEventByState = async (req, res) => {
   try {
     const { state } = req.body;
-
+   console.log("in geteventbystate")
     if (!state) {
       return res.status(400).json({
         success: false,
@@ -277,7 +278,7 @@ exports.getEventByState = async (req, res) => {
     const events = await Event.find({ venue: { $in: venueIds } }).populate(
       "venue"
     );
-
+     console.log("events",events)
     return res.status(200).json({
       success: true,
       events,

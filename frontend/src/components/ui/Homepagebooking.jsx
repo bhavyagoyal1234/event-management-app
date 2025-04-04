@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import EventCard from "./Homeeventcard"; // Import your Card component
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,22 +10,24 @@ import {
   Building,
 } from "lucide-react";
 import CityApp from "./Masotest";
-import GooglePaymentButton from "./google-payment-button";
-import { PaymentSuccess } from "@/pages/ticket-booking/booking-success";
+import NavSidebar from "./HomeNavbarandSidebar";
+
+// Lazy load components
+const EventCard = lazy(() => import("./Homeeventcard"));
+const GooglePaymentButton = lazy(() => import("./google-payment-button"));
+const PaymentSuccess = lazy(() => import("@/pages/ticket-booking/booking-success"));
 
 function EventDetails() {
   const navigate = useNavigate();
-  const { event_id } = useParams(); // Extract event_id from the URL
-  console.log("event_id",event_id)
+  const { event_id } = useParams();
   const [event, setEvent] = useState(null);
   const [similarEvents, setSimilarEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
   const [bookedTicket, setBookedTicket] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const visibleCards = 3;
 
+  const visibleCards = 3;
   const userId = localStorage.getItem("userid");
 
   useEffect(() => {
@@ -42,16 +43,18 @@ function EventDetails() {
         console.error("Error fetching event details:", error);
       }
     };
-  
+
     if (event_id) {
       fetchEventDetails();
     }
   }, [event_id]);
+
   useEffect(() => {
     if (event) {
       console.log("Venue bookings:", event?.venue?.bookings);
     }
   }, [event]);
+
   useEffect(() => {
     const fetchSimilarEvents = async () => {
       if (!event) return;
@@ -81,14 +84,13 @@ function EventDetails() {
   useEffect(() => {
     if (paymentDone) {
       const bookTicket = async () => {
-        setLoading(true);
         try {
           const response = await axios.post(
             "http://localhost:3002/api/ticket/book-ticket",
             {
               paymentID: `TXN-${userId}-${Math.floor(Math.random() * 100000)}`,
               userID: userId,
-              eventID: event._id,
+              eventID: event?._id,
             }
           );
           if (response.data.success) {
@@ -96,13 +98,18 @@ function EventDetails() {
           }
         } catch (error) {
           console.error("Error booking ticket:", error);
-        } finally {
-          setLoading(false);
         }
       };
       bookTicket();
     }
   }, [paymentDone, event, userId]);
+
+  // Navigate to /mybooking when booking is successful
+  useEffect(() => {
+    if (bookedTicket) {
+      navigate("/mybooking");
+    }
+  }, [bookedTicket, navigate]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -118,48 +125,51 @@ function EventDetails() {
     setShowFullDescription(!showFullDescription);
   };
 
-  if (!event) return <div>Loading event details...</div>;
-
   const description = showFullDescription
-    ? event.description
+    ? event?.description
     : `${event?.description?.slice(0, 100)}...`;
 
-  if (loading) return <div>Loading</div>;
-
   if (bookedTicket) {
-    return <PaymentSuccess event={event} ticket={bookedTicket} />;
+    return (
+      <Suspense fallback={<div>Loading payment success...</div>}>
+        <PaymentSuccess event={event} ticket={bookedTicket} />
+      </Suspense>
+    );
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto pt-16">
+      <NavSidebar />
       <div className="flex mt-8 ml-8">
         <img
-          src={event.imageUrl}
-          alt={event.title}
+          src={event?.imageUrl}
+          alt={event?.title}
           className="rounded-lg"
           style={{ width: "600px", height: "400px", objectFit: "cover" }}
         />
         <div className="w-1/2 p-4 ml-8">
-          <h2 className="text-2xl font-bold mb-4">{event.title}</h2>
+          <h2 className="text-2xl font-bold mb-4">{event?.title}</h2>
           <p className="text-gray-600 flex items-center mb-4">
-            <Music className="mr-2" /> {event.genre}
+            <Music className="mr-2" /> {event?.genre}
           </p>
           <p className="text-gray-600 flex items-center mb-4">
-            <Clock className="mr-2" /> {new Date(event.start).toLocaleString()}
+            <Clock className="mr-2" /> {new Date(event?.start).toLocaleString()}
           </p>
           <p className="text-gray-600 flex items-center mb-4">
-            <Building className="mr-2" /> {event.venue.name}
+            <Building className="mr-2" /> {event?.venue?.name}
           </p>
           <p className="text-gray-600 flex items-center mb-4">
-            <MapPin className="mr-2" /> {event.venue.city}, {event.venue.state}
+            <MapPin className="mr-2" /> {event?.venue?.city}, {event?.venue?.state}
           </p>
           <p className="text-xl font-bold mt-2 mb-4">
-            ₹{event.ticketPrice || "ticket price"}
+            ₹{event?.ticketPrice || "ticket price"}
           </p>
-          <GooglePaymentButton
-            price={event.ticketPrice}
-            setPaymentDone={setPaymentDone}
-          />
+          <Suspense fallback={<div>Loading payment button...</div>}>
+            <GooglePaymentButton
+              price={event?.ticketPrice}
+              setPaymentDone={setPaymentDone}
+            />
+          </Suspense>
         </div>
       </div>
 
@@ -181,11 +191,13 @@ function EventDetails() {
             <ChevronLeft className="h-8 w-8 text-pink-500" />
           </button>
           <div className="flex overflow-hidden space-x-4 p-4">
-            {similarEvents
-              .slice(currentIndex, currentIndex + visibleCards)
-              .map((similarEvent) => (
-                <EventCard key={similarEvent._id} event={similarEvent} />
-              ))}
+            <Suspense fallback={<div>Loading similar events...</div>}>
+              {similarEvents
+                .slice(currentIndex, currentIndex + visibleCards)
+                .map((similarEvent) => (
+                  <EventCard key={similarEvent._id} event={similarEvent} />
+                ))}
+            </Suspense>
           </div>
           <button
             onClick={handleNext}
@@ -198,9 +210,9 @@ function EventDetails() {
       </div>
       <div className="mt-8 ml-8">
         <h3 className="text-xl font-bold">
-          Similar events in your {event.venue.city}
+          Similar events in your {event?.venue?.city}
         </h3>
-        <CityApp city={event.venue.city} />
+        <CityApp city={event?.venue?.city} />
       </div>
     </div>
   );

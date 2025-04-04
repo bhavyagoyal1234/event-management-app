@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GooglePaymentButton from "../../components/ui/google-payment-button";
 import { useNavigate } from "react-router-dom";
-
+import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
 const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
   const [formValid, setFormValid] = useState(false);
   const [image, setImage] = useState(null);
@@ -142,6 +142,7 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
 
   return (
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
+       <NavSidebar />
       <CardHeader className="bg-muted/40 border-b py-0">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Schedule

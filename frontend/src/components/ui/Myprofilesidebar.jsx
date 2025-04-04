@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { UserIcon, CalendarIcon, MapPinIcon, PhoneIcon, MailIcon, CameraIcon } from 'lucide-react';
-
+import NavSidebar from "./HomeNavbarandSidebar";
 function Profile() {
     const [profile, setProfile] = useState({
         name: '',
@@ -149,7 +149,8 @@ function Profile() {
     };
 
     return (
-        <Card className="w-full max-w-4xl mx-auto border shadow-md mt-6">
+        <Card className="w-full max-w-4xl mx-auto border shadow-md mt-6 pt-16">
+               <NavSidebar />
             <CardHeader className="bg-muted/40 border-b">
                 <CardTitle className="text-2xl font-semibold text-primary">
                     My Profile

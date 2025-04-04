@@ -29,7 +29,7 @@ import {
   FileTextIcon,
 } from "lucide-react";
 import Stepper from "./Stepper2";
-
+import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
 
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],
@@ -84,7 +84,7 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
     
     
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
-       
+        <NavSidebar />
       <CardHeader className="bg-muted/40 border-b">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Information

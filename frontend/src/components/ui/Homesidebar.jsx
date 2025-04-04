@@ -41,17 +41,16 @@ function Sidebar() {
         ].map((item, index) => (
           <li key={index}>
             <div className="flex items-center justify-between cursor-pointer hover:bg-gray-100 p-3 rounded">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 w-full">
                 {item.icon}
-                <div>
+                <div className="flex-grow">
                   <button
                     onClick={item.onClick}
-                    className="text-gray-800 focus:outline-none"
+                    className="text-gray-800 focus:outline-none text-left"
                   >
                     {item.text}
                     <p className="text-sm text-gray-500">{item.subtext}</p>
                   </button>
-                 
                 </div>
               </div>
               <FaChevronRight className="text-gray-400" />

@@ -2,6 +2,9 @@ import React from "react";
 import EventCard from "./Homeeventcard"; // Adjust the import path as necessary
 
 function GenrePage({ events }) {
+  // Log the events to verify the data
+  console.log("Events in GenrePage:", events);
+
   // Extract genre from the first event if available
   const genre = events.length > 0 ? events[0].genre : "Genre";
 

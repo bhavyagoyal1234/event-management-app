@@ -3,10 +3,11 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Filters from "./Homepagegenrefilter"; // Adjust the import path as necessary
 import GenrePage from "./Homepagegenre"; // Adjust the import path as necessary
+import NavSidebar from "./HomeNavbarandSidebar";
 
 function App() {
   const location = useLocation();
-  const genreTitle = location.state?.genreTitle || "";
+  const genreTitle = location.state?.genreTitle || "Default Genre"; // Use a default genre if none is provided
   const [events, setEvents] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
@@ -20,7 +21,6 @@ function App() {
     const fetchEventsByGenre = async () => {
       try {
         const response = await axios.post("http://localhost:3002/api/event/genre-event", { genre: selectedGenre });
-        console.log("API Response:", response.data);
         if (response.data.success) {
           setEvents(response.data.events);
         } else {
@@ -37,6 +37,41 @@ function App() {
       console.warn("No genre title provided");
     }
   }, [selectedGenre]);
+
+  useEffect(() => {
+    const fetchEventsByStateAndCity = async () => {
+      try {
+        let stateEvents = [];
+        let cityEvents = [];
+
+        if (selectedState) {
+          const stateResponse = await axios.post("http://localhost:3002/api/event/getEventByState", { state: selectedState });
+          stateEvents = stateResponse.data.success ? stateResponse.data.events : [];
+        }
+
+        if (selectedCity) {
+          const cityResponse = await axios.post("http://localhost:3002/api/event/getEventByCity", { city: selectedCity });
+          cityEvents = cityResponse.data.success ? cityResponse.data.events : [];
+        }
+        console.log("stateevents", stateEvents);
+
+        const combinedEvents = [...stateEvents, ...cityEvents];
+        const uniqueEvents = Array.from(new Set(combinedEvents.map(event => event._id)))
+          .map(id => combinedEvents.find(event => event._id === id));
+
+        const filteredByGenre = uniqueEvents.filter(event => event.genre === selectedGenre || !selectedGenre);
+
+        setEvents(filteredByGenre);
+        console.log("filterbygenre", filteredByGenre)
+      } catch (error) {
+        console.error("Error fetching events by state or city:", error);
+      }
+    };
+
+    if (selectedState || selectedCity) {
+      fetchEventsByStateAndCity();
+    }
+  }, [selectedState, selectedCity, selectedGenre]);
 
   const filteredEvents = events
     .filter(event => {
@@ -58,9 +93,10 @@ function App() {
         dateMatch = dateMatch || day === 6 || day === 0;
       }
 
-      const stateMatch = selectedState ? event.state === selectedState : true;
-      const cityMatch = selectedCity ? event.city === selectedCity : true;
-
+      const stateMatch = selectedState ? event.venue.state === selectedState : true;
+      const cityMatch = selectedCity ? event.venue.city === selectedCity : true;
+      console.log(stateMatch, "stateMatch")
+      console.log(`Event State: ${event.venue.state}, Selected State: ${selectedState}`);
       return eventPrice >= minPrice && eventPrice <= maxPrice && dateMatch && stateMatch && cityMatch;
     })
     .sort((a, b) => {
@@ -71,12 +107,11 @@ function App() {
       }
       return 0;
     });
-
-  console.log("Filtered Events:", filteredEvents);
-
+  console.log("filteredEvents", filteredEvents)
   return (
-    <div className="flex">
-      <div className="w-1/4 flex items-center justify-center p-4 sticky top-0 h-screen">
+    <div className="flex pt-16">
+      <NavSidebar />
+      <div className="w-1/4 flex items-center justify-center p-4 pt-20 mt-10 h-screen overflow-y-auto">
         <Filters
           minPrice={minPrice}
           maxPrice={maxPrice}
@@ -93,7 +128,9 @@ function App() {
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
         />
+
       </div>
+
       <div className="w-3/4 p-4 overflow-y-auto">
         <GenrePage events={filteredEvents} />
       </div>
