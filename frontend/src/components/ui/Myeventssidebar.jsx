@@ -10,11 +10,12 @@ function MyBooking() {
     useEffect(() => {
         const fetchBookedEvents = async () => {
             try {
-                const response = await axios.post("http://localhost:3002/api/ticket/myBookedEvents", {
+                const response = await axios.post("http://localhost:3002/api/event/getListedEventsByUser", {
                     userID: localStorage.getItem("userid"),
                 });
+                console.log(response.data.events);
                 if (response.data.success) {
-                    setBookedEvents(response.data.tickets);
+                    setBookedEvents(response.data.events);
                 } else {
                     console.error("Failed to fetch booked events");
                 }
@@ -28,11 +29,11 @@ function MyBooking() {
 
     const now = new Date();
 
-    const upcomingEvents = bookedEvents.filter(ticket => new Date(ticket.event.start) > now);
-    const pastEvents = bookedEvents.filter(ticket => new Date(ticket.event.start) <= now);
+    const upcomingEvents = bookedEvents.filter(event => new Date(event.start) > now);
+    const pastEvents = bookedEvents.filter(event => new Date(event.start) <= now);
 
-    const sortedUpcomingEvents = upcomingEvents.sort((a, b) => new Date(a.event.start) - new Date(b.event.start));
-    const sortedPastEvents = pastEvents.sort((a, b) => new Date(b.event.start) - new Date(a.event.start));
+    const sortedUpcomingEvents = upcomingEvents.sort((a, b) => new Date(a.start) - new Date(b.start));
+    const sortedPastEvents = pastEvents.sort((a, b) => new Date(b.start) - new Date(a.start));
 
     return (
         <div className="container mx-auto p-16">
@@ -56,52 +57,52 @@ function MyBooking() {
                 {selectedTab === "upcoming" && (
                     <>
                         {sortedUpcomingEvents.length > 0 ? (
-                            sortedUpcomingEvents.map((ticket) => (
+                            sortedUpcomingEvents.map((event) => (
                                 <div
-                                    key={ticket._id}
+                                    key={event._id}
                                     className="border rounded-lg shadow-md p-6 flex flex-col md:flex-row items-center md:items-start w-full md:w-3/4 mx-auto"
                                 >
                                     <div className="relative">
                                         <img
-                                            src={ticket.event.imageUrl}
-                                            alt={ticket.event.title}
+                                            src={event.imageUrl}
+                                            alt={event.title}
                                             className="w-75 h-75 object-cover rounded-lg mb-4 md:mb-0 md:mr-8"
                                         />
                                         <div className="absolute top-3 left-3 bg-pink-500 text-white rounded-full px-3 py-1 text-xs font-bold">
-                                            {ticket.event.genre || "SPORTS"}
+                                            {event.genre || "SPORTS"}
                                         </div>
                                     </div>
                                     <div className="flex flex-col justify-between flex-grow space-y-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-xl font-bold text-blue-500">{ticket.event.title}</h3>
+                                            <h3 className="text-xl font-bold text-blue-500">{event.title}</h3>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <MapPin />
                                                 <p>
-                                                    <strong>Venue:</strong> {ticket.event.venue.name}
+                                                    <strong>Venue:</strong> {event.venue.name}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <MapPin />
                                                 <p>
-                                                    <strong>Location:</strong> {ticket.event.venue.city}, {ticket.event.venue.state}
+                                                    <strong>Location:</strong> {event.venue.city}, {event.venue.state}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <Calendar />
                                                 <p>
-                                                    <strong>Opening time:</strong> {new Date(ticket.event.start).toLocaleString()}
+                                                    <strong>Opening time:</strong> {new Date(event.start).toLocaleString()}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <Clock />
                                                 <p>
-                                                    <strong>Closing time:</strong> {new Date(ticket.event.end).toLocaleString()}
+                                                    <strong>Closing time:</strong> {new Date(event.end).toLocaleString()}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="mt-4 p-4 bg-blue-50 rounded-lg flex justify-between items-center w-full">
                                             <p className="text-gray-600 font-bold">Amount Paid</p>
-                                            <p className="text-xl font-bold">₹{ticket.event.ticketPrice}</p>
+                                            <p className="text-xl font-bold">₹{event.ticketPrice}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -115,52 +116,52 @@ function MyBooking() {
                 {selectedTab === "previous" && (
                     <>
                         {sortedPastEvents.length > 0 ? (
-                            sortedPastEvents.map((ticket) => (
+                            sortedPastEvents.map((event) => (
                                 <div
-                                    key={ticket._id}
+                                    key={event._id}
                                     className="border rounded-lg shadow-md p-6 flex flex-col md:flex-row items-center md:items-start w-full md:w-3/4 mx-auto"
                                 >
                                     <div className="relative">
                                         <img
-                                            src={ticket.event.imageUrl}
-                                            alt={ticket.event.title}
+                                            src={event.imageUrl}
+                                            alt={event.title}
                                             className="w-75 h-75 object-cover rounded-lg mb-4 md:mb-0 md:mr-8"
                                         />
                                         <div className="absolute top-3 left-3 bg-pink-500 text-white rounded-full px-3 py-1 text-xs font-bold">
-                                            {ticket.event.genre || "SPORTS"}
+                                            {event.genre || "SPORTS"}
                                         </div>
                                     </div>
                                     <div className="flex flex-col justify-between flex-grow space-y-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-xl font-bold text-blue-500">{ticket.event.title}</h3>
+                                            <h3 className="text-xl font-bold text-blue-500">{event.title}</h3>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <MapPin />
                                                 <p>
-                                                    <strong>Venue Name:</strong> {ticket.event.venue.name}
+                                                    <strong>Venue Name:</strong> {event.venue.name}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <MapPin />
                                                 <p>
-                                                    <strong>Location:</strong> {ticket.event.venue.city}, {ticket.event.venue.state}
+                                                    <strong>Location:</strong> {event.venue.city}, {event.venue.state}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <Calendar />
                                                 <p>
-                                                    <strong>Start Time:</strong> {new Date(ticket.event.start).toLocaleString()}
+                                                    <strong>Start Time:</strong> {new Date(event.start).toLocaleString()}
                                                 </p>
                                             </div>
                                             <div className="flex items-center text-gray-600 space-x-2">
                                                 <Clock />
                                                 <p>
-                                                    <strong>End Time:</strong> {new Date(ticket.event.end).toLocaleString()}
+                                                    <strong>End Time:</strong> {new Date(event.end).toLocaleString()}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="mt-4 p-4 bg-blue-50 rounded-lg flex justify-between items-center w-full">
                                             <p className="text-gray-600 font-bold">Amount Paid</p>
-                                            <p className="text-xl font-bold">₹{ticket.event.ticketPrice}</p>
+                                            <p className="text-xl font-bold">₹{event.ticketPrice}</p>
                                         </div>
                                     </div>
                                 </div>

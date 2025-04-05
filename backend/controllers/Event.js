@@ -291,3 +291,26 @@ exports.getEventByState = async (req, res) => {
     });
   }
 };
+
+exports.getEventsByUser = async (req,res) =>{
+  try{
+    const {userID} = req.body;
+    console.log(userID, 'userId');
+    const events =await Event.find({user:userID});
+    
+    console.log(events, 'events');
+    return res.status(200).json({
+      success:true,
+      message:"events fetched successfully",
+      events,
+    })
+  }
+  catch(error){
+    return res.status(400).json({
+      success:false,
+      message:"events not fetched successfully"
+    })
+  }
+ 
+
+}

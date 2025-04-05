@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import FirstPage from "./first-page";
 import SecondPage from "./second-page";
-import Stepper from "@/pages/add-event/Stepper2";
 import ThirdPage from "./third-page";
+import Stepper from "@/pages/add-event/Stepper2";
 
 const EventAddHome = () => {
   const [page, setPage] = useState(1);
@@ -35,17 +34,6 @@ const EventAddHome = () => {
     if (page < 1 || page > 3) return;
     setPage(page);
   };
-
-  // useEffect(() => {
-  //   const handleBeforeUnload = (e) => {
-  //     e.preventDefault();
-  //   };
-
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, []);
 
   const pageVariants = {
     initial: { opacity: 0, x: 100 },

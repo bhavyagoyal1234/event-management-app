@@ -1,9 +1,11 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import VenueCard from "./components/venue-card";
 import Prior_Booking from "./components/Prior_booking";
 import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
+import { Button } from "@/components/ui/button";
+
 const SecondPage = ({ formData, setFormData, handlePageChange }) => {
   const [loading, setLoading] = useState(false);
   const [venues, setVenues] = useState([]);
@@ -43,7 +45,7 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
 
   return (
     <div className="relative">
-       <NavSidebar />
+      <NavSidebar />
       <div className={`max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-20 gap-x-10 ${selectedVenue ? 'filter blur-sm' : ''}`}>
         {venues.map((venue, index) => (
           <VenueCard
@@ -70,6 +72,16 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
           </div>
         </div>
       )}
+
+      <div className="flex justify-center items-center mt-4">
+        <Button
+          className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105 px-4 py-2 rounded"
+          type="button"
+          onClick={() => handlePageChange(1)}
+        >
+          Back to Event Information
+        </Button>
+      </div>
     </div>
   );
 };

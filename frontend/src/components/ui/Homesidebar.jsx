@@ -1,8 +1,9 @@
 import React from 'react';
 import { FaUser, FaCalendarAlt, FaTicketAlt, FaLifeRing, FaChevronRight } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router
-
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 function Sidebar() {
   const navigate = useNavigate();
 
@@ -11,7 +12,7 @@ function Sidebar() {
   };
 
   const handleEventsClick = () => {
-    navigate('/events');
+    navigate('/myevent');
   };
 
   const handleBookingsClick = () => {
@@ -23,8 +24,18 @@ function Sidebar() {
   };
 
   const handleLogOut = () => {
-    // Add logout logic here
-    console.log('Logged out');
+    // Remove user and token from local storage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+
+    // Log the action for debugging
+    console.log('User and token removed from local storage');
+
+    // Show a toast notification
+    toast.success('Logout successful');
+
+    // Navigate to the login page
+    navigate('/login');
   };
 
   return (

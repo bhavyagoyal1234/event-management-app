@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -10,13 +10,13 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
 import { CalendarIcon, ImageIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GooglePaymentButton from "../../components/ui/google-payment-button";
 import { useNavigate } from "react-router-dom";
 import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
+
 const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
   const [formValid, setFormValid] = useState(false);
   const [image, setImage] = useState(null);
@@ -142,7 +142,7 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
 
   return (
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
-       <NavSidebar />
+      <NavSidebar />
       <CardHeader className="bg-muted/40 border-b py-0">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Schedule
@@ -293,6 +293,16 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
               </Button>
             </div>
           )}
+
+          <div className="pt-4 border-t">
+            <Button
+              className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105 px-4 py-2 rounded"
+              type="button"
+              onClick={() => handlePageChange(2)}
+            >
+              Back to Select Venue
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

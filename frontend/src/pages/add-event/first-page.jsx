@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -10,8 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,13 +18,11 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import {
-  CalendarIcon,
+  FileTextIcon,
   MapPinIcon,
   PhoneIcon,
   TagIcon,
-  FileTextIcon,
 } from "lucide-react";
-import Stepper from "./Stepper2";
 import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
 
 const stateCityMap = {
@@ -65,7 +59,6 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
       formData.city !== "";
     setValid(isValid);
   }, [formData]);
-  
 
   useEffect(() => {
     if (formData.state && stateCityMap[formData.state]) {
@@ -81,10 +74,8 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
   }
 
   return (
-    
-    
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
-        <NavSidebar />
+      <NavSidebar />
       <CardHeader className="bg-muted/40 border-b">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Information
@@ -235,7 +226,7 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
 
           <div className="pt-4 border-t">
             <Button
-               className={`${
+              className={`${
                 valid ? "bg-gradient-to-r from-blue-400 to-blue-600" : "bg-gray-800"
               } w-full md:w-auto px-8 py-2 h-11 text-white font-medium`}
               type="button"
@@ -248,7 +239,6 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
         </div>
       </CardContent>
     </Card>
-   
   );
 };
 
