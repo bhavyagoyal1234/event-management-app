@@ -1,8 +1,27 @@
 const Profile = require("../models/Profile");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
 
+function extractPublicId(url) {
+    const regex = /\/upload\/(?:v\d+\/)?(.+?)\.(jpg|jpeg|png|webp|gif|svg)$/;
+    const match = url.match(regex);
+    if (match && match[1]) {
+      return match[1]; // This is your public_id
+    }
+    return null;
+}
+
+async function deleteImage(publicId) {
+    try {
+      const result = await cloudinary.uploader.destroy(publicId);
+      console.log('Delete result:', result);
+    } 
+    catch (error) {
+      console.log('Error deleting image:', error);
+    }
+}
 
 exports.updateProfile = async (req, res) => {
     try {
@@ -37,10 +56,24 @@ exports.updateProfile = async (req, res) => {
                 profilePhoto,
                 process.env.PROFILE_IMAGES
             );
+
             updatedFields.profilePhoto = image.secure_url;
         }
 
         // Find and update profile
+        const prevProfile = await Profile.findOne({user:userID});
+        
+        //delteting prev profile photo 
+        if(profilePhoto && prevProfile.profilePhoto){
+            const url=prevProfile.profilePhoto;
+            const publicId = extractPublicId(url);
+            console.log('Public ID:', publicId); // -> "folder/image123"
+            if(publicId){
+                deleteImage(publicId);
+            }
+            
+
+        }
         const updatedProfile = await Profile.findOneAndUpdate(
             { user: userID }, // Assuming Profile model has a `user` field referencing User
             updatedFields,
