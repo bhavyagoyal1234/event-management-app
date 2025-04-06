@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import EventCard from "./Homeeventcard"; // Adjust the import path as necessary
+import EventCard from "../../components/ui/event-card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function EventsPage() {
@@ -11,7 +11,9 @@ function EventsPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.post("http://localhost:3002/api/event/getAllEvent");
+        const response = await axios.post(
+          "http://localhost:3002/api/event/getAllEvent"
+        );
         if (response.data.success) {
           console.log(response.data.events);
           setEvents(response.data.events);
@@ -48,9 +50,11 @@ function EventsPage() {
           <ChevronLeft className="h-8 w-8 text-pink-500" />
         </button>
         <div className="flex overflow-hidden space-x-4 p-4">
-          {events.slice(currentIndex, currentIndex + visibleCards).map((event) => (
-            <EventCard key={event.id || event._id} event={event} />
-          ))}
+          {events
+            .slice(currentIndex, currentIndex + visibleCards)
+            .map((event) => (
+              <EventCard key={event.id || event._id} event={event} />
+            ))}
         </div>
         <button
           onClick={handleNext}

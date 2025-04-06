@@ -4,6 +4,7 @@ import FirstPage from "./first-page";
 import SecondPage from "./second-page";
 import ThirdPage from "./third-page";
 import Stepper from "@/pages/add-event/Stepper2";
+import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
 
 const EventAddHome = () => {
   const [page, setPage] = useState(1);
@@ -23,7 +24,7 @@ const EventAddHome = () => {
     agree: false,
     venue: null,
     user: localStorage.getItem("userid"),
-    ticketPrice: 0
+    ticketPrice: 0,
   });
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const EventAddHome = () => {
 
   return (
     <div className="p-6">
+      <NavSidebar />
       <Stepper currentStep={page} />
       <AnimatePresence exitBeforeEnter>
         {page === 1 && (

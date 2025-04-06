@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import Filters from "./Homepagegenrefilter"; // Adjust the import path as necessary
-import GenrePage from "./Homepagegenre"; // Adjust the import path as necessary
-import NavSidebar from "./HomeNavbarandSidebar";
+import Filters from "./filters";
+import GenrePage from "./genre-page";
+import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
 
-function App() {
+function GennreWiseEvents() {
   const location = useLocation();
   const genreTitle = location.state?.genreTitle || "Default Genre"; // Use a default genre if none is provided
   const [events, setEvents] = useState([]);
@@ -20,7 +20,10 @@ function App() {
   useEffect(() => {
     const fetchEventsByGenre = async () => {
       try {
-        const response = await axios.post("http://localhost:3002/api/event/genre-event", { genre: selectedGenre });
+        const response = await axios.post(
+          "http://localhost:3002/api/event/genre-event",
+          { genre: selectedGenre }
+        );
         if (response.data.success) {
           setEvents(response.data.events);
         } else {
@@ -45,24 +48,37 @@ function App() {
         let cityEvents = [];
 
         if (selectedState) {
-          const stateResponse = await axios.post("http://localhost:3002/api/event/getEventByState", { state: selectedState });
-          stateEvents = stateResponse.data.success ? stateResponse.data.events : [];
+          const stateResponse = await axios.post(
+            "http://localhost:3002/api/event/getEventByState",
+            { state: selectedState }
+          );
+          stateEvents = stateResponse.data.success
+            ? stateResponse.data.events
+            : [];
         }
 
         if (selectedCity) {
-          const cityResponse = await axios.post("http://localhost:3002/api/event/getEventByCity", { city: selectedCity });
-          cityEvents = cityResponse.data.success ? cityResponse.data.events : [];
+          const cityResponse = await axios.post(
+            "http://localhost:3002/api/event/getEventByCity",
+            { city: selectedCity }
+          );
+          cityEvents = cityResponse.data.success
+            ? cityResponse.data.events
+            : [];
         }
         console.log("stateevents", stateEvents);
 
         const combinedEvents = [...stateEvents, ...cityEvents];
-        const uniqueEvents = Array.from(new Set(combinedEvents.map(event => event._id)))
-          .map(id => combinedEvents.find(event => event._id === id));
+        const uniqueEvents = Array.from(
+          new Set(combinedEvents.map((event) => event._id))
+        ).map((id) => combinedEvents.find((event) => event._id === id));
 
-        const filteredByGenre = uniqueEvents.filter(event => event.genre === selectedGenre || !selectedGenre);
+        const filteredByGenre = uniqueEvents.filter(
+          (event) => event.genre === selectedGenre || !selectedGenre
+        );
 
         setEvents(filteredByGenre);
-        console.log("filterbygenre", filteredByGenre)
+        console.log("filterbygenre", filteredByGenre);
       } catch (error) {
         console.error("Error fetching events by state or city:", error);
       }
@@ -74,7 +90,7 @@ function App() {
   }, [selectedState, selectedCity, selectedGenre]);
 
   const filteredEvents = events
-    .filter(event => {
+    .filter((event) => {
       const eventPrice = event.ticketPrice || 0;
       const eventDate = new Date(event.start);
       const today = new Date();
@@ -83,21 +99,33 @@ function App() {
 
       let dateMatch = selectedOptions.length === 0;
       if (selectedOptions.includes("Today")) {
-        dateMatch = dateMatch || eventDate.toDateString() === today.toDateString();
+        dateMatch =
+          dateMatch || eventDate.toDateString() === today.toDateString();
       }
       if (selectedOptions.includes("Tomorrow")) {
-        dateMatch = dateMatch || eventDate.toDateString() === tomorrow.toDateString();
+        dateMatch =
+          dateMatch || eventDate.toDateString() === tomorrow.toDateString();
       }
       if (selectedOptions.includes("This Weekend")) {
         const day = eventDate.getDay();
         dateMatch = dateMatch || day === 6 || day === 0;
       }
 
-      const stateMatch = selectedState ? event.venue.state === selectedState : true;
+      const stateMatch = selectedState
+        ? event.venue.state === selectedState
+        : true;
       const cityMatch = selectedCity ? event.venue.city === selectedCity : true;
-      console.log(stateMatch, "stateMatch")
-      console.log(`Event State: ${event.venue.state}, Selected State: ${selectedState}`);
-      return eventPrice >= minPrice && eventPrice <= maxPrice && dateMatch && stateMatch && cityMatch;
+      console.log(stateMatch, "stateMatch");
+      console.log(
+        `Event State: ${event.venue.state}, Selected State: ${selectedState}`
+      );
+      return (
+        eventPrice >= minPrice &&
+        eventPrice <= maxPrice &&
+        dateMatch &&
+        stateMatch &&
+        cityMatch
+      );
     })
     .sort((a, b) => {
       if (sortOrder === "lowToHigh") {
@@ -107,7 +135,7 @@ function App() {
       }
       return 0;
     });
-  console.log("filteredEvents", filteredEvents)
+  console.log("filteredEvents", filteredEvents);
   return (
     <div className="flex pt-16">
       <NavSidebar />
@@ -128,7 +156,6 @@ function App() {
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
         />
-
       </div>
 
       <div className="w-3/4 p-4 overflow-y-auto">
@@ -138,4 +165,4 @@ function App() {
   );
 }
 
-export default App;
+export default GennreWiseEvents;

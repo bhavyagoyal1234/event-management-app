@@ -17,13 +17,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import {
-  FileTextIcon,
-  MapPinIcon,
-  PhoneIcon,
-  TagIcon,
-} from "lucide-react";
-import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
+import { FileTextIcon, MapPinIcon, PhoneIcon, TagIcon } from "lucide-react";
 
 const stateCityMap = {
   "Andhra Pradesh": ["Vijayawada", "Visakhapatnam"],
@@ -75,7 +69,6 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
 
   return (
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
-      <NavSidebar />
       <CardHeader className="bg-muted/40 border-b">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Information
@@ -227,7 +220,9 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
           <div className="pt-4 border-t">
             <Button
               className={`${
-                valid ? "bg-gradient-to-r from-blue-400 to-blue-600" : "bg-gray-800"
+                valid
+                  ? "bg-gradient-to-r from-blue-400 to-blue-600"
+                  : "bg-gray-800"
               } w-full md:w-auto px-8 py-2 h-11 text-white font-medium`}
               type="button"
               onClick={() => handlePageChange(2)}

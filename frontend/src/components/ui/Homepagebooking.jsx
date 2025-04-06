@@ -13,9 +13,11 @@ import CityApp from "./Masotest";
 import NavSidebar from "./HomeNavbarandSidebar";
 
 // Lazy load components
-const EventCard = lazy(() => import("./Homeeventcard"));
+const EventCard = lazy(() => import("./event-card"));
 const GooglePaymentButton = lazy(() => import("./google-payment-button"));
-const PaymentSuccess = lazy(() => import("@/pages/ticket-booking/booking-success"));
+const PaymentSuccess = lazy(() =>
+  import("@/pages/ticket-booking/booking-success")
+);
 
 function EventDetails() {
   const navigate = useNavigate();
@@ -33,7 +35,9 @@ function EventDetails() {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${event_id}`);
+        const response = await axios.get(
+          `http://localhost:3002/api/event/get-event-by-id/${event_id}`
+        );
         if (response.status === 200) {
           setEvent(response.data);
         } else {
@@ -159,7 +163,8 @@ function EventDetails() {
             <Building className="mr-2" /> {event?.venue?.name}
           </p>
           <p className="text-gray-600 flex items-center mb-4">
-            <MapPin className="mr-2" /> {event?.venue?.city}, {event?.venue?.state}
+            <MapPin className="mr-2" /> {event?.venue?.city},{" "}
+            {event?.venue?.state}
           </p>
           <p className="text-xl font-bold mt-2 mb-4">
             ₹{event?.ticketPrice || "ticket price"}

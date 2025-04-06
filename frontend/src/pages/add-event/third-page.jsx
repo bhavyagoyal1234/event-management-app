@@ -65,12 +65,16 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
     try {
       const existingEvents = await Promise.all(
         formData.venue.bookings.map(async (eventId) => {
-          const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${eventId}`);
+          const response = await axios.get(
+            `http://localhost:3002/api/event/get-event-by-id/${eventId}`
+          );
           return response.data;
         })
       );
 
-      const newEventStart = new Date(`${formData.startDate}T${formData.startTime}`);
+      const newEventStart = new Date(
+        `${formData.startDate}T${formData.startTime}`
+      );
       const newEventEnd = new Date(`${formData.endDate}T${formData.endTime}`);
 
       for (const event of existingEvents) {
@@ -78,11 +82,16 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
         const existingEventEnd = new Date(event.end);
 
         if (
-          (newEventStart >= existingEventStart && newEventStart < existingEventEnd) ||
-          (newEventEnd > existingEventStart && newEventEnd <= existingEventEnd) ||
-          (newEventStart <= existingEventStart && newEventEnd >= existingEventEnd)
+          (newEventStart >= existingEventStart &&
+            newEventStart < existingEventEnd) ||
+          (newEventEnd > existingEventStart &&
+            newEventEnd <= existingEventEnd) ||
+          (newEventStart <= existingEventStart &&
+            newEventEnd >= existingEventEnd)
         ) {
-          toast.error("Another event already exists at this time. Check Prior Booking");
+          toast.error(
+            "Another event already exists at this time. Check Prior Booking"
+          );
           return false;
         }
       }
@@ -142,7 +151,6 @@ const ThirdPage = ({ formData, setFormData, handlePageChange }) => {
 
   return (
     <Card className="w-full max-w-4xl mx-auto border shadow-md">
-      <NavSidebar />
       <CardHeader className="bg-muted/40 border-b py-0">
         <CardTitle className="text-2xl font-semibold text-primary">
           Event Schedule
