@@ -49,12 +49,10 @@ function EventsPage() {
         >
           <ChevronLeft className="h-8 w-8 text-pink-500" />
         </button>
-        <div className="flex overflow-hidden space-x-4 p-4">
-          {events
-            .slice(currentIndex, currentIndex + visibleCards)
-            .map((event) => (
-              <EventCard key={event.id || event._id} event={event} />
-            ))}
+        <div className="flex overflow-hidden space-x-8 p-4">
+          {events.slice(currentIndex, currentIndex + visibleCards).map((event) => (
+            <EventCard key={event.id || event._id} event={event} />
+          ))}
         </div>
         <button
           onClick={handleNext}

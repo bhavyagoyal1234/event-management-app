@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUser, FaCalendarAlt, FaTicketAlt, FaLifeRing, FaChevronRight } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+
 function Sidebar() {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleProfileClick = () => {
     navigate('/myprofile');
@@ -24,6 +26,11 @@ function Sidebar() {
   };
 
   const handleLogOut = () => {
+    // Open the modal
+    setIsModalOpen(true);
+  };
+
+  const confirmLogOut = () => {
     // Remove user and token from local storage
     localStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -36,10 +43,18 @@ function Sidebar() {
 
     // Navigate to the login page
     navigate('/login');
+
+    // Close the modal
+    setIsModalOpen(false);
+  };
+
+  const cancelLogOut = () => {
+    // Close the modal
+    setIsModalOpen(false);
   };
 
   return (
-    <div className="w-85 h-full bg-white shadow-md flex flex-col">
+    <div className="w-85 h-full bg-white shadow-md flex flex-col relative">
       <div className="p-4 border-b shadow-md" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' }}>
         <h2 className="text-xl font-bold">Hey!</h2>
       </div>
@@ -79,6 +94,28 @@ function Sidebar() {
           Log Out
         </Button>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h3 className="text-lg font-bold mb-4">Are you sure you want to log out?</h3>
+            <div className="flex justify-end space-x-4">
+              <Button
+                onClick={cancelLogOut}
+                className="bg-gray-300 text-gray-800 cursor-pointer hover:bg-gray-300 hover:text-gray-800"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={confirmLogOut}
+                className="bg-red-500 text-white cursor-pointer hover:bg-red-500 hover:text-white"
+              >
+                Log out
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

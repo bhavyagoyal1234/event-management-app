@@ -7,7 +7,7 @@ function GenrePage({ events }) {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Upcoming {genre}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {events.length > 0 ? (
           events.map((event) => (
             <EventCard key={event.id || event._id} event={event} />

@@ -30,7 +30,9 @@ import AboutUS from "./components/ui/HomeaboutusNavbar.jsx";
 import ContactUS from "./components/ui/HomefooterContactus.jsx";
 import ProtectedRoute from "./components/ui/Protectedroute.jsx";
 import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the ProtectedRoute component
-
+import Reviewpage from  "./components/ui/Homereviewpage.jsx";
+import Homeimage from  "./components/ui/Homepageimages.jsx";
+import Homestart from  "./components/ui/Homestartingpage.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -105,30 +107,15 @@ function App() {
             element={<ProtectedRoute element={PaymentForEvent} />}
           />
           <Route path="/navbar" element={<ProtectedRoute element={Navbar} />} />
-          <Route
-            path="/sidebar"
-            element={<ProtectedRoute element={Sidebar} />}
-          />
-          <Route
-            path="/myprofile"
-            element={<ProtectedRoute element={Myprofile} />}
-          />
-          <Route
-            path="/mybooking"
-            element={<ProtectedRoute element={MyBooking} />}
-          />
-          <Route
-            path="/aboutus"
-            element={<ProtectedRoute element={AboutUS} />}
-          />
-          <Route
-            path="/contactus"
-            element={<ProtectedRoute element={ContactUS} />}
-          />
-          <Route
-            path="/myevent"
-            element={<ProtectedRoute element={MyEvents} />}
-          />
+          <Route path="/sidebar" element={<ProtectedRoute element={Sidebar} />} />
+          <Route path="/myprofile" element={<ProtectedRoute element={Myprofile} />} />
+          <Route path="/mybooking" element={<ProtectedRoute element={MyBooking} />} />
+          <Route path="/aboutus" element={<ProtectedRoute element={AboutUS} />} />
+          <Route path="/contactus" element={<ProtectedRoute element={ContactUS} />} />
+          <Route path="/myevent" element={<ProtectedRoute element={MyEvents} />} />
+          <Route path="/reviewpage" element={<ProtectedRoute element={Reviewpage} />} />
+          <Route path="/homeimage" element={<ProtectedRoute element={Homeimage} />} />
+          <Route path="/homestart" element={<ProtectedRoute element={Homestart} />} />
         </Routes>
       </BrowserRouter>
     </>
