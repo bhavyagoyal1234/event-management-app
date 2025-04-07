@@ -3,7 +3,7 @@ import React from "react";
 import EventsPage from "./HomePage3";
 import EventGenres from "./HomePage2";
 import NavSidebar from "./HomeNavbarandSidebar";
-import Homeimage from "./Homepageimages";
+import Homeimage from "../../pages/home/events-carousel";
 import Homestart from "./Homestartingpage";
 
 function HomePage() {

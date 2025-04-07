@@ -16,9 +16,9 @@ function Navbar({ toggleSidebar }) {
   };
 
   return (
-    <header className="bg-white/70 border border-white/40 backdrop-blur supports-[backdrop-filter]:bg-background/60  shadow-md px-6 py-3 h-[60px] flex items-center justify-between">
+    <header className="text-white backdrop-blur-lg backdrop-saturate-150 backdrop-brightness-150 bg-black/70 hover:bg-black shadow-md px-6 py-3 h-[60px] flex items-center justify-between transition-all duration-300 ease-in-out">
       {/* Logo or App Name */}
-      <div className="text-lg md:text-xl font-bold text-gray-800">Evently</div>
+      <div className="text-lg md:text-xl font-bold">Evently</div>
 
       {/* Navigation Links */}
       <nav className="hidden md:flex items-center space-x-4">
@@ -41,7 +41,7 @@ function Navbar({ toggleSidebar }) {
 
       {/* Always-visible Sidebar Toggle (extra options) */}
       <button
-        className="text-gray-700 hover:text-blue-600 transition-colors duration-200 ml-4"
+        className="hover:text-blue-600 transition-colors duration-200 ml-4"
         onClick={handleClick}
       >
         <FaBars size={20} />

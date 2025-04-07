@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const genres = [
   { title: 'Cultural Fest', image: 'combedy.jpeg' },
-  { title: 'Sports', image: 'combedy.jpeg' },
+  { title: 'Sports', image: 'sportsgenre.jpg' },
   { title: 'Musical Concerts', image: 'combedy.jpeg' },
   { title: 'Comedy Shows', image: 'combedy.jpeg' },
   { title: 'Science Fair', image: 'combedy.jpeg' },

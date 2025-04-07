@@ -1,8 +1,10 @@
-import EventsCarousel from "./events-page";
+import EventsCarousel from "./events-carousel";
+import EventsPage from './events-page'
 import EventGenres from "./event-genres";
 import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
 // import NavSidebar from "./nav-sidebar";
 import { CalendarDays, MapPin, TrendingUp } from "lucide-react";
+import HeroSection from "@/components/ui/Homestartingpage";
 
 export default function HomePage() {
   return (
@@ -11,7 +13,8 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-purple-700 to-pink-600 text-white">
-        <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
+        <HeroSection />
+        {/* <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               Discover Amazing Events Near You
@@ -29,10 +32,10 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Stats */}
-        <div className="container mx-auto px-4 pb-8">
+        {/* <div className="container mx-auto px-4 pb-8">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 flex flex-wrap justify-between gap-4">
             <div className="flex items-center gap-3">
               <CalendarDays className="h-8 w-8 text-pink-300" />
@@ -56,12 +59,16 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+      </section>
+
+      <section>
+        <EventsCarousel />
       </section>
 
       {/* Upcoming Events Section */}
       <section className="container mx-auto px-4 py-12 md:py-16 overflow-hidden">
-        <EventsCarousel />
+        <EventsPage />
       </section>
 
       {/* Event Genres Section */}

@@ -17,6 +17,7 @@ import VenueCard from "./components/ui/Venuecard.jsx";
 import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
 import EventAddHome from "./pages/add-event/home.jsx";
 import Prior_booking from "./pages/add-event/components/Prior_booking.jsx";
+// import Homepage from "@/components/ui/Homepage.jsx";
 import Homepage from "./pages/home/home.jsx";
 import Homepage2 from "./pages/home/event-genres.jsx";
 import Genrepagefilter from "./pages/genre-wise-events/genre-events-home.jsx";
@@ -31,7 +32,7 @@ import ContactUS from "./components/ui/HomefooterContactus.jsx";
 import ProtectedRoute from "./components/ui/Protectedroute.jsx";
 import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the ProtectedRoute component
 import Reviewpage from  "./components/ui/Homereviewpage.jsx";
-import Homeimage from  "./components/ui/Homepageimages.jsx";
+import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
