@@ -6,9 +6,9 @@ const ratingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  venue: {
+  event: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Venue',
+    ref: 'Event',
     required: true
   },
   rating: {

@@ -30,6 +30,7 @@ app.use("/api/event", require("./routes/eventRoutes"));
 
 app.use("/api/ticket", require("./routes/ticketRoutes"));
 app.use("/api/profile", require("./routes/Profile"));
+app.use("/api/rating", require("./routes/ratingRoutes"));
 app.use(
   fileUplaod({
     useTempFiles: true,
