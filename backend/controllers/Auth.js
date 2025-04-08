@@ -354,3 +354,21 @@ exports.googleLogin = async (req, res) => {
     })
   }
 }
+
+// log out 
+exports.logout = async(req,res)=>{
+  try{
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
+    });
+    res.json({ message: 'Logged out, cookie removed!' });
+  }
+  catch(error){
+    return res.status(400).json({
+      success:false,
+      message:"error while logout"
+    })
+  }
+}
