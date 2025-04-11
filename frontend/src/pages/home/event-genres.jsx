@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const genres = [
-  { title: 'Cultural Fest', image: 'combedy.jpeg' },
+  { title: 'Cultural Fest', image: 'culturalgenre2.jpeg' },
   { title: 'Sports', image: 'sportsgenre.jpg' },
-  { title: 'Musical Concerts', image: 'combedy.jpeg' },
-  { title: 'Comedy Shows', image: 'combedy.jpeg' },
-  { title: 'Science Fair', image: 'combedy.jpeg' },
+  { title: 'Musical Concerts', image: 'concertgenre.jpg' },
+  { title: 'Comedy Shows', image: 'combedygenre.jpg' },
+  { title: 'Science Fair', image: 'sciencegenre.jpg' },
 ];
 
 const EventGenres = () => {

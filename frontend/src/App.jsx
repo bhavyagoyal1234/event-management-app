@@ -35,6 +35,7 @@ import Reviewpage from  "./components/ui/Homereviewpage.jsx";
 import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
 import ScrollToTop from "./utils/scroll-to-top.jsx";
+import HomePage from "./pages/home/home.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -50,7 +51,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<GoogleAuthWrapper />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<GoogleAuthWrapper />} />
           <Route path="/companyregister" element={<CompanySignup />} />
           <Route path="/otpverify" element={<OTPVerification />} />
