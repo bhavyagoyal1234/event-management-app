@@ -39,6 +39,14 @@ function AddVenueDetails() {
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
 
+  const userDataString = localStorage.getItem("user")
+  let userID
+
+  if (userDataString) {
+    const userData = JSON.parse(userDataString)
+    userID = userData._id
+  }
+
   useEffect(() => {
     const isValid =
       formData.title.trim() !== "" &&
@@ -65,7 +73,7 @@ function AddVenueDetails() {
       city: selectedCity,
       genre: formData.genre,
       contactNo: formData.contact,
-      user: localStorage.getItem("userid"),
+      user: userID,
     };
 
     try {

@@ -9,6 +9,14 @@ import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
 const EventAddHome = () => {
   const [page, setPage] = useState(1);
 
+  const userDataString = localStorage.getItem("user")
+  let userID
+
+  if (userDataString) {
+    const userData = JSON.parse(userDataString)
+    userID = userData._id
+  }
+
   const [formData, setFormData] = useState({
     state: "Andhra Pradesh",
     city: "Vijayawada",
@@ -23,7 +31,7 @@ const EventAddHome = () => {
     file: null,
     agree: false,
     venue: null,
-    user: localStorage.getItem("userid"),
+    user: userID,
     ticketPrice: 0,
   });
 

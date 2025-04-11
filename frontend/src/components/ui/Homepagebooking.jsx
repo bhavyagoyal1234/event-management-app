@@ -30,7 +30,13 @@ function EventDetails() {
   const [bookedTicket, setBookedTicket] = useState(false);
 
   const visibleCards = 3;
-  const userId = localStorage.getItem("userid");
+  const userDataString = localStorage.getItem("user")
+  let userId
+
+  if (userDataString) {
+    const userData = JSON.parse(userDataString)
+    userId = userData._id
+  }
 
   useEffect(() => {
     const fetchEventDetails = async () => {

@@ -7,11 +7,19 @@ function MyBooking() {
     const [bookedEvents, setBookedEvents] = useState([]);
     const [selectedTab, setSelectedTab] = useState("upcoming");
 
+    const userDataString = localStorage.getItem("user")
+    let userID
+
+    if (userDataString) {
+      const userData = JSON.parse(userDataString)
+      userID = userData._id
+    }
+
     useEffect(() => {
         const fetchBookedEvents = async () => {
             try {
                 const response = await axios.post("http://localhost:3002/api/event/getListedEventsByUser", {
-                    userID: localStorage.getItem("userid"),
+                    userID
                 });
                 console.log(response.data.events);
                 if (response.data.success) {
@@ -25,7 +33,7 @@ function MyBooking() {
         };
 
         fetchBookedEvents();
-    }, []);
+    }, [userID]);
 
     const now = new Date();
 

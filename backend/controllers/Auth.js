@@ -7,6 +7,8 @@ const axios = require("axios");
 const {oauth2client} = require("../utils/googleConfig");
 const Profile = require("../models/Profile");
 const {passwordUpdated} = require("../utils/passwordUpdate");
+const mailSender = require("../utils/mailsender");
+
 require("dotenv").config();
 
 //sign up controller
@@ -87,6 +89,7 @@ exports.signup = async (req, res) => {
     });
   }
 };
+
 //login controlller
 exports.login = async (req, res) => {
   try {
@@ -158,6 +161,7 @@ exports.login = async (req, res) => {
     });
   }
 };
+
 //send otp controller
 exports.sendotp = async (req, res) => {
   console.log("in sendotp controller");
@@ -217,19 +221,17 @@ exports.sendotp = async (req, res) => {
 //change password controller
 exports.changePassword = async (req, res) => {
   try {
-    // Get user data from req.user
-    const userDetails = await User.findById(req.user.id);
+    const {userID, oldPassword, newPassword } = req.body;
 
-    // Get old password, new password, and confirm new password from req.body
-    const { oldPassword, newPassword } = req.body;
+    console.log(req.body, 'req.body');
 
-    // Validate old password
+    const userDetails = await User.findById(userID);
+
     const isPasswordMatch = await bcrypt.compare(
       oldPassword,
       userDetails.password
     );
     if (!isPasswordMatch) {
-      // If old password does not match, return a 401 (Unauthorized) error
       return res
         .status(401)
         .json({ success: false, message: "The password is incorrect" });
@@ -247,11 +249,11 @@ exports.changePassword = async (req, res) => {
     // Update password
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
     const updatedUserDetails = await User.findByIdAndUpdate(
-      req.user.id,
+      userID,
       { password: encryptedPassword },
       { new: true }
     );
-
+    console.log('password saved succesfully');
     // Send notification email
     try {
       const emailResponse = await mailSender(
