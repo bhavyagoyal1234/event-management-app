@@ -34,6 +34,7 @@ import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the Protec
 import Reviewpage from  "./components/ui/Homereviewpage.jsx";
 import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
+import ScrollToTop from "./utils/scroll-to-top.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -47,6 +48,7 @@ function App() {
     <>
       <ToastContainer />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<GoogleAuthWrapper />} />
           <Route path="/register" element={<GoogleAuthWrapper />} />

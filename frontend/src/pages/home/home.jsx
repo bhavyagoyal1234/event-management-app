@@ -5,6 +5,7 @@ import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
 // import NavSidebar from "./nav-sidebar";
 import { CalendarDays, MapPin, TrendingUp } from "lucide-react";
 import HeroSection from "@/components/ui/Homestartingpage";
+import FAQAccordion from "./faq-accordian";
 
 export default function HomePage() {
   return (
@@ -74,6 +75,10 @@ export default function HomePage() {
       {/* Event Genres Section */}
       <section className="container mx-auto px-4 py-12 md:py-16 bg-white">
         <EventGenres />
+      </section>
+
+      <section className="container mx-auto px-4 py-12 md:py-16 bg-white">
+        <FAQAccordion />
       </section>
 
       {/* Footer */}

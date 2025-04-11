@@ -359,19 +359,21 @@ exports.googleLogin = async (req, res) => {
 }
 
 // log out 
-exports.logout = async(req,res)=>{
-  try{
+exports.logout = async (req, res) => {
+  try {
     res.clearCookie('token', {
       httpOnly: true,
       secure: false,
       sameSite: 'Lax',
+      path: '/',
     });
-    res.json({ message: 'Logged out, cookie removed!' });
-  }
-  catch(error){
+    console.log('in logout handler');
+    return res.json({ success: true, message: 'Logged out, cookie removed!' });
+  } catch (error) {
+    console.error('Logout error:', error);
     return res.status(400).json({
-      success:false,
-      message:"error while logout"
-    })
+      success: false,
+      message: 'Error while logout',
+    });
   }
-}
+};

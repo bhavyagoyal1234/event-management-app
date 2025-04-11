@@ -25,7 +25,6 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
 
         const data = await res.data;
         setVenues(data.venues);
-        toast.success("Venues fetched successfully.");
       } catch (error) {
         toast.error("Failed to retrieve venues. Please try again.");
       } finally {
