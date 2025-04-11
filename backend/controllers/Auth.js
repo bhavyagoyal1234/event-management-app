@@ -6,7 +6,7 @@ const otpGenerator = require("otp-generator");
 const axios = require("axios");
 const {oauth2client} = require("../utils/googleConfig");
 const Profile = require("../models/Profile");
-
+const {passwordUpdated} = require("../utils/passwordUpdate");
 require("dotenv").config();
 
 //sign up controller
@@ -256,6 +256,7 @@ exports.changePassword = async (req, res) => {
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,
+        "Password Changed",
         passwordUpdated(
           updatedUserDetails.email,
           `Password updated successfully for ${updatedUserDetails.name}`
