@@ -5,4 +5,5 @@ const ratingController = require("../controllers/Rating");
 
 router.route("/rate-event").post(ratingController.rateEvent);
 router.route("/getAvgRating").post(ratingController.getAverageRating);
+router.route("/getEventRating").post(ratingController.getEventRating);
 module.exports = router;

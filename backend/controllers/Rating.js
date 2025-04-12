@@ -1,5 +1,6 @@
 const Rating = require('../models/Rating');
 const Event = require('../models/Event'); // Assuming this exists
+const Profile = require('../models/Profile'); // Make sure you import this if not already
 const mongoose = require('mongoose');
 
 // Add or update rating
@@ -105,6 +106,40 @@ exports.getAverageRating = async (req, res) => {
     return res.status(500).json({ 
         success:false,
         message: 'Server error' 
+    });
+  }
+};
+
+
+
+exports.getEventRating = async (req, res) => {
+  try {
+    const { eventID } = req.body;
+
+    // Find ratings for the given event and populate user and their profile
+    const ratings = await Rating.find({ event: eventID })
+      .populate({
+        path: 'user',
+        select: 'name email', // only selecting needed fields
+        populate: {
+          path: 'profile',
+          model: 'Profile',
+          select: 'gender dob addressLine city state profilePhoto mobileNo'
+        }
+      });
+
+    return res.status(200).json({
+      success: true,
+      message:"event rating of particular event fetched successfully",
+      ratings
+    });
+
+  } catch (error) {
+    console.log("Error fetching event ratings:");
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch event ratings',
+      error: error.message
     });
   }
 };

@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import CityApp from "./Masotest";
 import NavSidebar from "./HomeNavbarandSidebar";
+import Ratingpage from "./Homereviewpage";
+import Giverating from "./Homereviewpage2";
 
 // Lazy load components
 const EventCard = lazy(() => import("./event-card"));
@@ -30,12 +32,12 @@ function EventDetails() {
   const [bookedTicket, setBookedTicket] = useState(false);
 
   const visibleCards = 3;
-  const userDataString = localStorage.getItem("user")
-  let userId
+  const userDataString = localStorage.getItem("user");
+  let userId;
 
   if (userDataString) {
-    const userData = JSON.parse(userDataString)
-    userId = userData._id
+    const userData = JSON.parse(userDataString);
+    userId = userData._id;
   }
 
   useEffect(() => {
@@ -157,36 +159,41 @@ function EventDetails() {
           className="rounded-lg"
           style={{ width: "600px", height: "400px", objectFit: "cover" }}
         />
-        <div className="w-1/2 p-4 ml-8">
-          <h2 className="text-2xl font-bold mb-4">{event?.title}</h2>
-          <p className="text-gray-600 flex items-center mb-4">
-            <Music className="mr-2" /> {event?.genre}
-          </p>
-          <p className="text-gray-600 flex items-center mb-4">
-            <Clock className="mr-2" /> {new Date(event?.start).toLocaleString()}
-          </p>
-          <p className="text-gray-600 flex items-center mb-4">
-            <Building className="mr-2" /> {event?.venue?.name}
-          </p>
-          <p className="text-gray-600 flex items-center mb-4">
-            <MapPin className="mr-2" /> {event?.venue?.city},{" "}
-            {event?.venue?.state}
-          </p>
-          <p className="text-xl font-bold mt-2 mb-4">
-            ₹{event?.ticketPrice || "ticket price"}
-          </p>
-          <Suspense fallback={<div>Loading payment button...</div>}>
-            <GooglePaymentButton
-              price={event?.ticketPrice}
-              setPaymentDone={setPaymentDone}
-            />
-          </Suspense>
-        </div>
+        <div className="w-1/3 p-6 bg-white shadow-md rounded-lg border border-gray-200 ml-10">
+  <h2 className="text-2xl font-bold mb-4">{event?.title}</h2>
+  <p className="text-gray-600 flex items-center mb-4">
+    <Music className="mr-2" /> {event?.genre}
+  </p>
+  <p className="text-gray-600 flex items-center mb-4">
+    <Clock className="mr-2" /> {new Date(event?.start).toLocaleString()}
+  </p>
+  <p className="text-gray-600 flex items-center mb-4">
+    <Clock className="mr-2" /> {new Date(event?.end).toLocaleString()}
+  </p>
+  <p className="text-gray-600 flex items-center mb-4">
+    <Building className="mr-2" /> {event?.venue?.name}
+  </p>
+  <p className="text-gray-600 flex items-center mb-4">
+    <MapPin className="mr-2" /> {event?.venue?.city}, {event?.venue?.state}
+  </p>
+  <div className="flex justify-between items-center mt-4">
+    <p className="text-xl font-bold">₹{event?.ticketPrice || "ticket price"}</p>
+    <Suspense fallback={<div>Loading payment button...</div>}>
+      <GooglePaymentButton
+        price={event?.ticketPrice}
+        setPaymentDone={setPaymentDone}
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+      >
+        Book Now
+      </GooglePaymentButton>
+    </Suspense>
+  </div>
+</div>
       </div>
 
       <div className="mt-8 ml-8">
         <h3 className="text-xl font-bold">About the Event</h3>
-        <p className="text-gray-700">{description}</p>
+        <p className="text-gray-700 whitespace-pre-wrap">{description}</p>
         <button onClick={toggleDescription} className="text-blue-500">
           {showFullDescription ? "Show Less" : "Show More"}
         </button>
@@ -224,6 +231,12 @@ function EventDetails() {
           Similar events in your {event?.venue?.city}
         </h3>
         <CityApp city={event?.venue?.city} />
+      </div>
+      <div className="mt-8 mr-180">
+        <Giverating eventId={event_id} userId={userId} />
+      </div>
+      <div className="mt-8 mr-160">
+        <Ratingpage eventId={event_id} />
       </div>
     </div>
   );

@@ -40,16 +40,18 @@ export default function EventCard({ event }) {
 
         {/* Footer Section */}
         <CardFooter className="px-4 pb-2 pt-0">
-          <div className="flex justify-between items-center bg-blue-50 p-2 w-full rounded-lg">
-            <span className="text-black font-bold text-sm">
-              ₹{event.ticketPrice} ONWARDS
-            </span>
-            <div className="border-l border-blue-500 h-5 -mr-25"></div>
-            <span className="text-blue-500 font-bold text-sm">
-              BUY NOW
-            </span>
-          </div>
-        </CardFooter>
+  <div className="flex justify-between items-center bg-blue-50 p-2 w-full rounded-lg">
+    <span className="text-black font-bold text-sm">
+      ₹{event.ticketPrice} ONWARDS
+    </span>
+    <div className="flex items-center">
+      <div className="border-l border-blue-500 h-5 mx-2"></div>
+      <span className="text-blue-500 font-bold text-sm">
+        BUY NOW
+      </span>
+    </div>
+  </div>
+</CardFooter>
       </Card>
     </Link>
   );

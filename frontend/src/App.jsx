@@ -36,6 +36,7 @@ import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
 import ScrollToTop from "./utils/scroll-to-top.jsx";
 import HomePage from "./pages/home/home.jsx";
+import Rating from "./components/ui/Homereviewpage2.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -120,6 +121,7 @@ function App() {
           <Route path="/reviewpage" element={<ProtectedRoute element={Reviewpage} />} />
           <Route path="/homeimage" element={<ProtectedRoute element={Homeimage} />} />
           <Route path="/homestart" element={<ProtectedRoute element={Homestart} />} />
+          <Route path="/homerating" element={<ProtectedRoute element={Rating} />} />
         </Routes>
       </BrowserRouter>
     </>
