@@ -111,31 +111,50 @@ exports.getAverageRating = async (req, res) => {
 };
 
 
-
 exports.getEventRating = async (req, res) => {
   try {
     const { eventID } = req.body;
+    console.log("in get event rating controller");
 
-    // Find ratings for the given event and populate user and their profile
+    // Step 1: Get ratings with user data
     const ratings = await Rating.find({ event: eventID })
       .populate({
         path: 'user',
-        select: 'name email', // only selecting needed fields
-        populate: {
-          path: 'profile',
-          model: 'Profile',
-          select: 'gender dob addressLine city state profilePhoto mobileNo'
+        select: 'name email'
+      })
+      .lean(); // .lean() makes the documents plain JS objects so we can add to them
+
+    // Step 2: Get all unique user IDs
+    const userIds = ratings.map(r => r.user._id.toString());
+
+    // Step 3: Get profiles for those user IDs
+    const profiles = await Profile.find({ user: { $in: userIds } }).lean();
+
+    // Step 4: Attach profile data to the corresponding user in ratings
+    const profileMap = {};
+    for (const profile of profiles) {
+      profileMap[profile.user.toString()] = profile;
+    }
+
+    const ratingsWithProfile = ratings.map(rating => {
+      const userId = rating.user._id.toString();
+      return {
+        ...rating,
+        user: {
+          ...rating.user,
+          profile: profileMap[userId] || null
         }
-      });
+      };
+    });
 
     return res.status(200).json({
       success: true,
-      message:"event rating of particular event fetched successfully",
-      ratings
+      message: "Event rating of particular event fetched successfully",
+      ratings: ratingsWithProfile
     });
 
   } catch (error) {
-    console.log("Error fetching event ratings:");
+    console.log("Error fetching event ratings:", error.message);
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch event ratings',
