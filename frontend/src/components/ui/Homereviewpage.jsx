@@ -32,7 +32,7 @@ function Reviews({ eventId }) {
         const response = await axios.post('http://localhost:3002/api/rating/getEventRating', {
           eventID: eventId,
         });
-
+        
         if (response.data.success) {
           setReviews(response.data.ratings);
         }
