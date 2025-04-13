@@ -6,28 +6,31 @@ function Reviews({ eventId }) {
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const [reviews, setReviews] = useState([]);
+
   useEffect(() => {
-    const fetchRatings = async () => {
+    const fetchAverageRating = async () => {
       try {
         const response = await axios.post('http://localhost:3002/api/rating/getAvgRating', {
           eventId,
         });
 
         if (response.data.success) {
-          setAverageRating(response.data.averageRating);
-          setTotalRatings(response.data.totalRatings);
+          setAverageRating(response.data.averageRating || 0);
+          setTotalRatings(response.data.totalRatings || 0);
+          console.log("response data success",response.data)
         }
       } catch (error) {
-        console.error('Error fetching ratings:', error);
+        console.error('Error fetching average rating:', error);
       }
     };
 
     if (eventId) {
-      fetchRatings();
+      fetchAverageRating();
     }
   }, [eventId]);
+
   useEffect(() => {
-    const fetchRatings = async () => {
+    const fetchEventRatings = async () => {
       try {
         const response = await axios.post('http://localhost:3002/api/rating/getEventRating', {
           eventID: eventId,
@@ -37,16 +40,14 @@ function Reviews({ eventId }) {
           setReviews(response.data.ratings);
         }
       } catch (error) {
-        console.error('Error fetching ratings:', error);
+        console.error('Error fetching event ratings:', error);
       }
     };
 
     if (eventId) {
-      fetchRatings();
+      fetchEventRatings();
     }
   }, [eventId]);
-
- 
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -59,7 +60,7 @@ function Reviews({ eventId }) {
         <div className="text-center">
           <h3 className="text-lg font-bold">Average rating</h3>
           <div className="flex items-center justify-center">
-            <p className="text-3xl font-bold">{averageRating.toFixed(1)}</p>
+            <p className="text-3xl font-bold">{averageRating}</p>
             <div className="flex ml-2">
               {[...Array(5)].map((_, i) => (
                 <FaStar
