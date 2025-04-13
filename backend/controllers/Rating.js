@@ -110,7 +110,7 @@ exports.getAverageRating = async (req, res) => {
   }
 };
 
-
+// get event rating 
 exports.getEventRating = async (req, res) => {
   try {
     const { eventID } = req.body;
@@ -159,6 +159,33 @@ exports.getEventRating = async (req, res) => {
       success: false,
       message: 'Failed to fetch event ratings',
       error: error.message
+    });
+  }
+};
+// get event rating cnt 
+exports.ratingCnt = async (req, res) => {
+  try {
+    const { eventID } = req.body;
+    const oneCnt = await Event.countDocuments({ event: eventID, rating: 1 });
+    const twoCnt = await Event.countDocuments({ event: eventID, rating: 2 });
+    const threeCnt = await Event.countDocuments({ event: eventID, rating: 3 });
+    const fourCnt = await Event.countDocuments({ event: eventID, rating: 4 });
+    const fiveCnt = await Event.countDocuments({ event: eventID, rating: 5 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Rating count fetched successfully",
+      oneCnt,
+      twoCnt,
+      threeCnt,
+      fourCnt,
+      fiveCnt
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
     });
   }
 };
