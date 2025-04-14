@@ -38,7 +38,7 @@ function NavSidebar() {
       }`}
     >
       <div ref={sidebarRef}>
-        <Navbar toggleSidebar={toggleSidebar} />
+        <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
         {isSidebarOpen && (
           <div className="fixed top-16 right-0 w-80 h-[calc(100%-4rem)] z-40">
             <Sidebar />

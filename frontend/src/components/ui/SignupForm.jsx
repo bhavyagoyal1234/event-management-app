@@ -9,6 +9,7 @@ import { FaSpinner } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "@/context/userContext";
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ function SignupForm() {
     formState: { errors },
     watch,
   } = useForm();
+
+  const { login } = useUser();
 
   const name = watch("name");
   const email = watch("email");
@@ -78,12 +81,9 @@ function SignupForm() {
             accountType: "user",
           }
         );
-        const { email, name, image } = result.data.user;
+        const user = result.data.user;
         const token = result.data.token;
-        console.log("result.data.user---", result.data.user);
-        console.log("token is", token);
-        const obj = { email, name, image, token };
-        localStorage.setItem("user-info", JSON.stringify(obj));
+        login(user, token)
       }
     } catch (err) {
       console.error("Error while requesting code", err);

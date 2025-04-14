@@ -27,8 +27,8 @@ import Navbar from "./components/ui/Homenavbar.jsx";
 import Sidebar from "./components/ui/Homesidebar.jsx";
 import Myprofile from "./pages/Profile/profile.jsx";
 import MyBooking from "./components/ui/Mybookingsidebar.jsx";
-import AboutUS from "./components/ui/HomeaboutusNavbar.jsx";
-import ContactUS from "./components/ui/HomefooterContactus.jsx";
+import AboutUS from "./pages/about-us/about-us-page.jsx";
+import ContactUS from "./pages/contact-us/HomefooterContactus.jsx";
 import ProtectedRoute from "./components/ui/Protectedroute.jsx";
 import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the ProtectedRoute component
 import Reviewpage from  "./components/ui/Homereviewpage.jsx";

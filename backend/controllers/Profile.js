@@ -98,7 +98,7 @@ exports.updateProfile = async (req, res) => {
 exports.getProfileData = async (req, res) => {
   try {
     const { userID } = req.body;
-    console.log("userID", userID);
+    console.log("hello there", userID);
     const profile = await Profile.findOne({ user: userID });
 
     return res.status(200).json({

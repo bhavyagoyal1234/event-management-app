@@ -13,6 +13,8 @@ export default function EventCard({ event }) {
             src={event.imageUrl || "/placeholder.svg?height=220&width=324"}
             alt={event.title}
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute top-3 left-3 bg-pink-500 text-white rounded-full px-3 py-1 text-xs font-bold">
             {event.title || "SPORTS"}

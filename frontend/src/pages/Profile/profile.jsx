@@ -53,7 +53,7 @@ function Profile() {
 
         const res = await axios.post("http://localhost:3002/api/profile/getProfileData", {
           userID,
-        })
+        }, {withCredentials: true})
 
         if (res.data.success) {
           const profileData = res.data.profile
