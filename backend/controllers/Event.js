@@ -53,6 +53,14 @@ exports.addEvent = async (req, res) => {
     const start = new Date(`${startDate}T${startTime}:00`);
     const end = new Date(`${endDate}T${endTime}:00`);
 
+    const now = new Date();
+    if (start < now) {
+      return res.status(400).json({
+        success: false,
+        message: "Start date and time must not be in the past.",
+      });
+    }
+
     if (start >= end) {
       return res.status(400).json({
         success: false,
@@ -146,7 +154,6 @@ exports.getEventById = async (req, res) => {
 // Update Event
 exports.updateEvent = async (req, res) => {
   try {
-    console;
     const { id } = req.params;
     const updates = req.body;
 
@@ -296,7 +303,13 @@ exports.getEventsByUser = async (req,res) =>{
   try{
     const {userID} = req.body;
     console.log(userID, 'userId');
-    const events =await Event.find({user:userID});
+    if(!userID){
+      return res.status(400).json({
+        success:false,
+        message:"userID is required",
+      })
+    }
+    const events = await Event.find({user:userID}).populate('venue');
     
     console.log(events, 'events');
     return res.status(200).json({

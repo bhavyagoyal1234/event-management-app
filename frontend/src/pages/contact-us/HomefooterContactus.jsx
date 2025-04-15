@@ -1,9 +1,14 @@
+import NavSidebar from '@/components/ui/HomeNavbarandSidebar';
 import React from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaFacebook, FaTwitter } from 'react-icons/fa';
 
 const ContactSection = () => {
     return (
         <div className="bg-[#10172b] text-white py-10 px-5">
+
+            <div>
+              <NavSidebar />
+            </div>
             <div className="max-w-6xl mx-auto flex justify-between">
                 {/* Contact Us Section */}
                 <div className="w-1/3">

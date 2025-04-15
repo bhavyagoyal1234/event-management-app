@@ -7,6 +7,12 @@ const crypto = require("crypto");
 exports.resetPasswordToken = async (req,res) =>{
     try{
         const {email} = req.body;
+        if(!email){
+            return res.status(400).json({
+                success:false,
+                message:"email is required",
+            })
+        }
         const user = await User.findOne({email:email});
 
         if(!user){
@@ -47,7 +53,12 @@ exports.resetPassword=async (req,res)=>{
         //data fetch
         const {password,confirmPassword,token}=req.body;
 
-
+        if(!password || !confirmPassword || !token){
+            return res.status(400).json({
+                success:false,
+                message:"all fields are required",
+            })
+        }
         //validation
         if(password!==confirmPassword){
 

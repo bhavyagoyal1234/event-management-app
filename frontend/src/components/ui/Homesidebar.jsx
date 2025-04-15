@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import axios from "axios"
+import { useUser } from "@/context/userContext"
 
 function Sidebar() {
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeItem, setActiveItem] = useState(null)
+  const {logout, userData} = useUser();
 
   const handleProfileClick = () => {
     navigate("/myprofile")
@@ -31,13 +33,11 @@ function Sidebar() {
   }
 
   const confirmLogOut = async () => {
-    localStorage.removeItem("user")
-    localStorage.removeItem("token")
-
     try {
       const res = await axios.post("http://localhost:3002/api/auth/logout", {}, {
         withCredentials: true,
       });
+      logout();
 
       if (res.data.success) {
         toast.success("Logout successful");
@@ -87,7 +87,8 @@ function Sidebar() {
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          Hey!
+          Hey! {userData.name.split(" ")[0]}{" "}
+          <span className="text-yellow-400 bg-none text-2xl">👋</span>
         </h2>
       </div>
 
@@ -102,8 +103,8 @@ function Sidebar() {
                 ${activeItem === index ? "bg-gray-50" : "hover:bg-gray-50"}
               `}
               onClick={() => {
-                setActiveItem(index)
-                item.onClick()
+                setActiveItem(index);
+                item.onClick();
               }}
             >
               <div className="flex items-center space-x-4 w-full">
@@ -136,7 +137,9 @@ function Sidebar() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
           <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 animate-scaleIn">
-            <h3 className="text-xl font-bold mb-6 text-gray-800">Are you sure you want to log out?</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-800">
+              Are you sure you want to log out?
+            </h3>
             <div className="flex justify-end space-x-4">
               <Button
                 onClick={cancelLogOut}
@@ -155,7 +158,7 @@ function Sidebar() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default Sidebar

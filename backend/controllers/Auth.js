@@ -169,6 +169,12 @@ exports.sendotp = async (req, res) => {
     //fetch email from req body
     const { email } = req.body;
     //check if email already exsist or not
+    if(!email){
+      return res.status(400).json({
+        success:false,
+        message:"email is missing",
+      })
+    }
     const checkuserpresent = await User.findOne({ email });
 
     if (checkuserpresent) {
@@ -222,7 +228,12 @@ exports.sendotp = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const {userID, oldPassword, newPassword } = req.body;
-
+    if(!userID || !oldPassword || newPassword){
+      return res.status(400).json({
+        success:false,
+        message:"all fields are required",
+      })
+    }
     console.log(req.body, 'req.body');
 
     const userDetails = await User.findById(userID);
@@ -296,7 +307,12 @@ exports.googleLogin = async (req, res) => {
     // console.log('in google Login');
     // console.log('accountType',accountType);
     // console.log('code recieved from frontend',code);
-
+    if(!code || !accountType){
+      return res.status(400).json({
+        success:false,
+        message:"all fields are required",
+      })
+    }
     const googleRes = await oauth2client.getToken(code);
 
     // console.log("googleRes",googleRes);

@@ -27,8 +27,8 @@ import Navbar from "./components/ui/Homenavbar.jsx";
 import Sidebar from "./components/ui/Homesidebar.jsx";
 import Myprofile from "./pages/Profile/profile.jsx";
 import MyBooking from "./components/ui/Mybookingsidebar.jsx";
-import AboutUS from "./components/ui/HomeaboutusNavbar.jsx";
-import ContactUS from "./components/ui/HomefooterContactus.jsx";
+import AboutUS from "./pages/about-us/about-us-page.jsx";
+import ContactUS from "./pages/contact-us/HomefooterContactus.jsx";
 import ProtectedRoute from "./components/ui/Protectedroute.jsx";
 import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the ProtectedRoute component
 import Reviewpage from  "./components/ui/Homereviewpage.jsx";
@@ -40,7 +40,7 @@ import Rating from "./components/ui/Homereviewpage2.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
-      <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+      <GoogleOAuthProvider clientId="468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com">
         <SignupForm />
       </GoogleOAuthProvider>
     );

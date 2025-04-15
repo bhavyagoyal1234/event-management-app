@@ -21,7 +21,7 @@ function MyBooking() {
                 const response = await axios.post("http://localhost:3002/api/event/getListedEventsByUser", {
                     userID
                 });
-                console.log(response.data.events);
+                console.log('listed events',response.data.events);
                 if (response.data.success) {
                     setBookedEvents(response.data.events);
                 } else {

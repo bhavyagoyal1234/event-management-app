@@ -98,7 +98,13 @@ exports.updateProfile = async (req, res) => {
 exports.getProfileData = async (req, res) => {
   try {
     const { userID } = req.body;
-    console.log("userID", userID);
+    console.log("hello there", userID);
+    if(!userID){
+      return res.status(400).json({
+        success:false,
+        message:"userID is required",
+      })
+    }
     const profile = await Profile.findOne({ user: userID });
 
     return res.status(200).json({

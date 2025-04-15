@@ -158,6 +158,8 @@ function EventDetails() {
           alt={event?.title}
           className="rounded-lg"
           style={{ width: "600px", height: "400px", objectFit: "cover" }}
+          loading="lazy"
+          decoding="async"
         />
         <div className="w-1/3 p-6 bg-white shadow-md rounded-lg border border-gray-200 ml-10">
   <h2 className="text-2xl font-bold mb-4">{event?.title}</h2>

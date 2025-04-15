@@ -20,6 +20,8 @@ function VenueCard({ venue, formData }) {
           alt={venue.name}
           className="w-full"
           style={{ height: "214px" }} // Set image height
+          loading="lazy"
+          decoding="async"
         />
         <button
           onClick={handleBookNow}

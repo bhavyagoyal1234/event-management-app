@@ -53,6 +53,8 @@ function EventsCarousel() {
             src={event.imageUrl || "/placeholder.svg"}
             alt={event.title}
             className="w-[425px] h-[330px] object-cover rounded-lg"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute top-3 left-3 bg-pink-500 text-white rounded-full px-3 py-1 text-xs font-bold">
             {event.genre || "SPORTS"}

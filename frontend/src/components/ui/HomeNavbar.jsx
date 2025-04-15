@@ -1,9 +1,15 @@
+import { useUser } from "@/context/userContext";
 import React from "react";
 import { FaBars } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { IoMenu } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-function Navbar({ toggleSidebar }) {
+function Navbar({ toggleSidebar, isSidebarOpen }) {
   const navigate = useNavigate();
+
+  const {isLoggedIn} = useUser();
+  console.log('isLoggedIn', isLoggedIn);
 
   const handleNavigation = (path) => {
     console.log(`Navigating to ${path}`);
@@ -31,7 +37,7 @@ function Navbar({ toggleSidebar }) {
           <button
             key={text}
             onClick={() => handleNavigation(path)}
-            className="relative text-sm font-medium  hover:text-blue-600 px-4 py-2 transition duration-200"
+            className="relative text-sm font-medium hover:text-blue-600 px-4 py-2 transition duration-200"
           >
             {text}
             <span className="absolute inset-0 rounded-md border border-transparent hover:border-black hover:shadow-md transition-all duration-200"></span>
@@ -39,13 +45,23 @@ function Navbar({ toggleSidebar }) {
         ))}
       </nav>
 
-      {/* Always-visible Sidebar Toggle (extra options) */}
-      <button
-        className="hover:text-blue-600 transition-colors duration-200 ml-4"
-        onClick={handleClick}
-      >
-        <FaBars size={20} />
-      </button>
+      {/* Right-side actions: Login and Sidebar */}
+      <div className="flex items-center space-x-4">
+        {!isLoggedIn && <button
+          onClick={() => handleNavigation("/login")}
+          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md transition duration-200"
+        >
+          Login
+        </button>}
+
+        {/* Sidebar Toggle */}
+        <button
+          className="hover:text-blue-600 transition-colors duration-200"
+          onClick={handleClick}
+        >
+          {isSidebarOpen? <IoClose size={30}/> : <IoMenu size={30} /> }
+        </button>
+      </div>
     </header>
   );
 }
