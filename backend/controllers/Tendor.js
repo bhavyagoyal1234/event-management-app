@@ -35,56 +35,76 @@ exports.allotTendor = async(req,res)=>{
     }
 }
 
-exports.getAllMyBookings = async(req,res)=>{
-    try{
-        const{userID}=req.body;
-        const myEvents = await Tendor.find({user:userID});
-        
-        return res.status(200).json({
-            success:true,
-            message:"returning all your bookings",
-            myEvents,
-        })
+exports.getAllMyBookings = async (req, res) => {
+    try {
+      const { userID } = req.body;
+  
+      const myEvents = await Tendor.find({ user: userID })
+        .populate({
+          path: "event",
+          populate: {
+            path: "venue",
+          },
+        });
+  
+      return res.status(200).json({
+        success: true,
+        message: "Returning all your bookings",
+        myEvents,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Something went wrong",
+        error,
+      });
+    }
+  };
+  
 
-    }
-    catch(error){
-        return res.status(400).json({
-            success:false,
-            message:"something went wrong",
-            error
-        })
-    }
-}
 exports.getEmptyEvents = async (req, res) => {
-  try {
-    // Step 1: Get all event IDs from Tendor
-    const tendorEvents = await Tendor.find({}, { event: 1 }).populate("event");
-    const usedEventIds = new Set(tendorEvents.map(t => t.event._id.toString()));
-
-    // Step 2: Find events not used in Tendor
-    const emptyEvents = await Event.find({
-      _id: { $nin: Array.from(usedEventIds) }
-    });
-
-    // Step 3: Return full Event docs
-    return res.status(200).json({
-      success: true,
-      data: emptyEvents,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: 'Something went wrong',
-      error,
-    });
-  }
-};
+    try {
+      // Step 1: Get all event IDs from Tendor (with safe null check)
+      const tendorEvents = await Tendor.find({}, { event: 1 }).populate("event");
+  
+      const usedEventIds = new Set(
+        tendorEvents
+          .filter(t => t.event) // skip null events
+          .map(t => t.event._id.toString())
+      );
+  
+      // Step 2: Find events not used in Tendor and populate venue
+      const emptyEvents = await Event.find({
+        _id: { $nin: Array.from(usedEventIds) }
+      }).populate("venue"); // populate venue here
+  
+      // Step 3: Return full Event docs
+      return res.status(200).json({
+        success: true,
+        data: emptyEvents,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Something went wrong',
+        error,
+      });
+    }
+  };
+  
 
 exports.getAllotedEvents = async (req, res) => {
     try {
-      // Step 1: Get all event IDs from Tendor
-      const tendorEvents = await Tendor.find({}, { event: 1 }).populate("event");
-      // Step 3: Return full Event docs
+      // Step 1: Get all tendors, populate event and nested venue
+      const tendorEvents = await Tendor.find({}, { event: 1 })
+        .populate({
+          path: "event",
+          populate: {
+            path: "venue", // nested populate for event.venue
+          },
+        });
+  
+      // Step 2: Return full Event docs with venue populated
       return res.status(200).json({
         success: true,
         data: tendorEvents,
