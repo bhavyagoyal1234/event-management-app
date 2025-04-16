@@ -9,5 +9,6 @@ const tendorController = require("../controllers/Tendor");
 
 router.route('/allotTendor').post(tendorController.allotTendor);
 router.route("/getAllMyBooking").post(tendorController.getAllMyBookings);
-
+router.route("/getEmptyEvent").post(tendorController.getEmptyEvents);
+router.route("/getAllotedEvent").post(tendorController.getAllotedEvents);
 module.exports = router;

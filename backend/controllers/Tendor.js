@@ -1,5 +1,5 @@
 const Tendor =require("../models/Tendor");
-
+const Event = require('../models/Event'); // Adjust path as needed
 exports.allotTendor = async(req,res)=>{
     try{
 
@@ -55,4 +55,45 @@ exports.getAllMyBookings = async(req,res)=>{
         })
     }
 }
+exports.getEmptyEvents = async (req, res) => {
+  try {
+    // Step 1: Get all event IDs from Tendor
+    const tendorEvents = await Tendor.find({}, { event: 1 }).populate("event");
+    const usedEventIds = new Set(tendorEvents.map(t => t.event._id.toString()));
 
+    // Step 2: Find events not used in Tendor
+    const emptyEvents = await Event.find({
+      _id: { $nin: Array.from(usedEventIds) }
+    });
+
+    // Step 3: Return full Event docs
+    return res.status(200).json({
+      success: true,
+      data: emptyEvents,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: 'Something went wrong',
+      error,
+    });
+  }
+};
+
+exports.getAllotedEvents = async (req, res) => {
+    try {
+      // Step 1: Get all event IDs from Tendor
+      const tendorEvents = await Tendor.find({}, { event: 1 }).populate("event");
+      // Step 3: Return full Event docs
+      return res.status(200).json({
+        success: true,
+        data: tendorEvents,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Something went wrong',
+        error,
+      });
+    }
+  };
