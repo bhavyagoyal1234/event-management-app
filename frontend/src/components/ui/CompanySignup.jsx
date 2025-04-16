@@ -61,8 +61,12 @@ function CompanySignup() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="flex bg-white rounded-lg shadow-lg max-w-screen-xl w-full mx-4">
-        <div className="w-1/2 flex justify-center items-center p-8">
-          <img src="signupimg.jpg" alt="Event Management" className="w-full h-auto" />
+      <div className="w-1/2 relative">
+        <img
+          src="loginpage5.jpg"
+          alt="Event Management"
+          className="w-full h-full object-cover"
+        />
         </div>
         <div className="w-1/2 flex justify-center items-center p-8">
           <div className="max-w-md w-full text-center">

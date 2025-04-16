@@ -21,7 +21,7 @@ export default function VenueCard({
 
   return (
     <Card
-      className="overflow-hidden w-[360px] transition-all duration-200 hover:shadow-xl"
+      className="overflow-hidden w-[360px] transition-all duration-200 hover:shadow-xl pt-0"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onCardClick(venue)}

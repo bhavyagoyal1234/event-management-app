@@ -47,7 +47,7 @@ function EventsCarousel() {
   } 
 
   return (
-    <div className="flex justify-center items-center space-x-8 p-4 bg-black">
+    <div className="flex justify-center items-center space-x-8 p-4 py-15 bg-black">
       {getVisibleEvents().map((event, index) => (
         <div
           key={event._id}

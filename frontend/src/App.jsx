@@ -35,6 +35,7 @@ import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
 import ScrollToTop from "./utils/scroll-to-top.jsx";
 import HomePage from "./pages/home/home.jsx";
+import Footer from "./pages/home/Footer.jsx";
 import Rating from "./components/ui/Homereviewpage2.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
@@ -95,6 +96,7 @@ function App() {
             element={<ProtectedRoute element={Prior_booking} />}
           />
           <Route path="/home" element={<ProtectedRoute element={Homepage} />} />
+          <Route path="/contactus" element={<ProtectedRoute element={Footer} />} />
           <Route
             path="/home2"
             element={<ProtectedRoute element={Homepage2} />}
@@ -115,7 +117,7 @@ function App() {
           <Route path="/sidebar" element={<ProtectedRoute element={Sidebar} />} />
           <Route path="/myprofile" element={<ProtectedRoute element={Myprofile} />} />
           <Route path="/myticket" element={<ProtectedRoute element={MyBooking} />} />
-          <Route path="/contactus" element={<ProtectedRoute element={ContactUS} />} />
+         
           <Route path="/myevent" element={<ProtectedRoute element={MyEvents} />} />
           <Route path="/reviewpage" element={<ProtectedRoute element={Reviewpage} />} />
           <Route path="/homeimage" element={<ProtectedRoute element={Homeimage} />} />

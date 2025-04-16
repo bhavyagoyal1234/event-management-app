@@ -1,9 +1,8 @@
-// Homestart.js
 import React, { useState, useEffect } from "react";
 
 function HeroSection({ scrollToEventGenres }) {
   const [wordIndex, setWordIndex] = useState(0);
-  const words = ["Scalable", "Efficient"];
+  const words = ["Scalable", "Efficient", "List Your Event", "Manage Your Event", "Book Your Event"];
   const [animationClass, setAnimationClass] = useState("slide-in");
 
   useEffect(() => {
@@ -33,8 +32,7 @@ function HeroSection({ scrollToEventGenres }) {
       </div>
 
       <p className="text-xl mb-8 text-center max-w-3xl">
-        Eventtia’s all-in-one event management platform guarantees a seamless
-        attendee experience, optimizes event planning and boosts ROI.
+      Evently is your ultimate all-in-one event management platform — delivering unforgettable attendee experiences, streamlining every step of event planning, and maximizing your ROI like never before.
       </p>
       <button
         onClick={scrollToEventGenres}
