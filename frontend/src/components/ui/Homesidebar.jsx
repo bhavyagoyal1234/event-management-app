@@ -21,7 +21,7 @@ function Sidebar() {
   }
 
   const handleBookingsClick = () => {
-    navigate("/mybooking")
+    navigate("/myticket")
   }
 
   const handleSupportClick = () => {
@@ -70,7 +70,7 @@ function Sidebar() {
     },
     {
       icon: <FaTicketAlt className="text-gray-600" />,
-      text: "My Bookings",
+      text: "My Tickets",
       subtext: "View all your bookings and purchases",
       onClick: handleBookingsClick,
     },
@@ -87,7 +87,7 @@ function Sidebar() {
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          Hey! {userData.name.split(" ")[0]}{" "}
+          Hey! {userData?.name?.split(" ")[0]}{" "}
           <span className="text-yellow-400 bg-none text-2xl">👋</span>
         </h2>
       </div>

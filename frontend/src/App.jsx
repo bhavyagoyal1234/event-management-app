@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import SignupForm from "./components/ui/SignupForm.jsx";
-import LoginForm from "./components/ui/LoginForm.jsx";
+import LoginForm from "./pages/auth/LoginForm.jsx";
 import CompanySignup from "./components/ui/companysignup.jsx";
 import OTPVerification from "./components/ui/Otpverify.jsx";
 import ResetPasswordForm from "./components/ui/Resetpass.jsx";
@@ -17,20 +17,19 @@ import VenueCard from "./components/ui/Venuecard.jsx";
 import EventlistForm2 from "./components/ui/Eventlistform2.jsx";
 import EventAddHome from "./pages/add-event/home.jsx";
 import Prior_booking from "./pages/add-event/components/Prior_booking.jsx";
-// import Homepage from "@/components/ui/Homepage.jsx";
 import Homepage from "./pages/home/home.jsx";
 import Homepage2 from "./pages/home/event-genres.jsx";
 import Genrepagefilter from "./pages/genre-wise-events/genre-events-home.jsx";
-import HomepageBooking from "./components/ui/Homepagebooking.jsx";
+import HomepageBooking from "./pages/ticket-booking/temp1.jsx";
 import PaymentForEvent from "./pages/ticket-booking/event-payment.jsx";
 import Navbar from "./components/ui/Homenavbar.jsx";
 import Sidebar from "./components/ui/Homesidebar.jsx";
 import Myprofile from "./pages/Profile/profile.jsx";
-import MyBooking from "./components/ui/Mybookingsidebar.jsx";
+import MyBooking from "./components/ui/my-ticket.jsx";
 import AboutUS from "./pages/about-us/about-us-page.jsx";
 import ContactUS from "./pages/contact-us/HomefooterContactus.jsx";
 import ProtectedRoute from "./components/ui/Protectedroute.jsx";
-import MyEvents from "./components/ui/Myeventssidebar.jsx"; // Import the ProtectedRoute component
+import MyEvents from "./components/ui/my-events.jsx";
 import Reviewpage from  "./components/ui/Homereviewpage.jsx";
 import Homeimage from  "./pages/home/events-carousel.jsx";
 import Homestart from  "./components/ui/Homestartingpage.jsx";
@@ -40,7 +39,7 @@ import Rating from "./components/ui/Homereviewpage2.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
-      <GoogleOAuthProvider clientId="468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="127988388634-ocf6dq7ts0pjvu7cv0jpd0k61nsdsnq6.apps.googleusercontent.com">
         <SignupForm />
       </GoogleOAuthProvider>
     );
@@ -63,6 +62,7 @@ function App() {
           />
           <Route path="/emailsentsuccess" element={<EmailSentNotification />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/aboutus" element={<AboutUS />} />
 
           {/* Protected Routes */}
           <Route
@@ -114,8 +114,7 @@ function App() {
           <Route path="/navbar" element={<ProtectedRoute element={Navbar} />} />
           <Route path="/sidebar" element={<ProtectedRoute element={Sidebar} />} />
           <Route path="/myprofile" element={<ProtectedRoute element={Myprofile} />} />
-          <Route path="/mybooking" element={<ProtectedRoute element={MyBooking} />} />
-          <Route path="/aboutus" element={<ProtectedRoute element={AboutUS} />} />
+          <Route path="/myticket" element={<ProtectedRoute element={MyBooking} />} />
           <Route path="/contactus" element={<ProtectedRoute element={ContactUS} />} />
           <Route path="/myevent" element={<ProtectedRoute element={MyEvents} />} />
           <Route path="/reviewpage" element={<ProtectedRoute element={Reviewpage} />} />

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function EventsCarousel() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleCards = 3;
@@ -40,14 +42,19 @@ function EventsCarousel() {
     return events.slice(currentIndex, end).concat(events.slice(0, Math.max(0, end - events.length)));
   };
 
+  const handleNaviate = (id) => {
+    navigate(`/ticketbooking/${id}`)
+  } 
+
   return (
     <div className="flex justify-center items-center space-x-8 p-4 bg-black">
       {getVisibleEvents().map((event, index) => (
         <div
-          key={event.id || event._id}
-          className={`transition-transform duration-500 transform ${
-            index === 1 ? 'scale-105' : 'scale-95 '
+          key={event._id}
+          className={`cursor-pointer transition-transform duration-500 transform ${
+            index === 1 ? 'scale-105' : 'scale-95'
           }`}
+          onClick={() => handleNaviate(event._id)}
         >
           <img
             src={event.imageUrl || "/placeholder.svg"}

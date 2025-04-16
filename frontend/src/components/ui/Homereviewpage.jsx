@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
-import { Bar } from 'react-chartjs-2';
 
 function Reviews({ eventId }) {
   const [averageRating, setAverageRating] = useState(0);

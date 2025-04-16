@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/context/userContext";
+import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
 
 function LoginForm() {
   const [focusedInput, setFocusedInput] = useState(null);
@@ -67,6 +68,7 @@ function LoginForm() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <NavSidebar />
       <div className="flex bg-white rounded-lg shadow-lg max-w-screen-xl w-full mx-4">
         <div className="w-1/2 flex justify-center items-center p-8">
           <img

@@ -9,17 +9,14 @@ import {
   MapPin,
   Building,
 } from "lucide-react";
-import CityApp from "./Masotest";
-import NavSidebar from "./HomeNavbarandSidebar";
-import Ratingpage from "./Homereviewpage";
-import Giverating from "./Homereviewpage2";
+import CityApp from "../../components/ui/Masotest";
+import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
+import Ratingpage from "../../components/ui/Homereviewpage";
+import Giverating from "../../components/ui/Homereviewpage2";
+import { PaymentSuccess } from "./booking-success";
 
-// Lazy load components
-const EventCard = lazy(() => import("./event-card"));
-const GooglePaymentButton = lazy(() => import("./google-payment-button"));
-const PaymentSuccess = lazy(() =>
-  import("@/pages/ticket-booking/booking-success")
-);
+const EventCard = lazy(() => import("../../components/ui/event-card"));
+const GooglePaymentButton = lazy(() => import("../../components/ui/google-payment-button"));
 
 function EventDetails() {
   const navigate = useNavigate();
@@ -29,7 +26,7 @@ function EventDetails() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
-  const [bookedTicket, setBookedTicket] = useState(false);
+  const [bookedTicket, setBookedTicket] = useState(null);
 
   const visibleCards = 3;
   const userDataString = localStorage.getItem("user");
@@ -115,13 +112,6 @@ function EventDetails() {
       bookTicket();
     }
   }, [paymentDone, event, userId]);
-
-  // Navigate to /mybooking when booking is successful
-  useEffect(() => {
-    if (bookedTicket) {
-      navigate("/mybooking");
-    }
-  }, [bookedTicket, navigate]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -228,7 +218,7 @@ function EventDetails() {
           </button>
         </div>
       </div>
-      <div className="mt-8 ml-8">
+      <div>
         <h3 className="text-xl font-bold">
           Similar events in your {event?.venue?.city}
         </h3>
