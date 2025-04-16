@@ -6,6 +6,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true); // Add this
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -22,19 +23,19 @@ export const UserProvider = ({ children }) => {
         localStorage.removeItem('token');
       }
     }
+    setLoading(false);
   }, []);
 
   const login = (user, token) => {
-    if(!token){
+    if (!token) {
       toast.error('token not available');
       return;
     }
     if (user && typeof user === 'object') {
-      const data = JSON.stringify(user);
-      localStorage.setItem('user', data);
-      localStorage.setItem('token',token);
-      setIsLoggedIn(true);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
       setUserData(user);
+      setIsLoggedIn(true);
     } else {
       console.error('User data is not an object');
     }
@@ -43,16 +44,17 @@ export const UserProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
     setUserData(null);
+    setIsLoggedIn(false);
   };
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, userData, login, logout }}>
+    <UserContext.Provider value={{ isLoggedIn, userData, login, logout, loading }}>
       {children}
     </UserContext.Provider>
   );
 };
+
 
 export const useUser = () => {
   const context = useContext(UserContext);

@@ -84,22 +84,6 @@ export default function FAQAccordion() {
             </AccordionContent>
           </AccordionItem>
 
-          <AccordionItem value="item-5">
-            <AccordionTrigger>What is tender filing and how does it work?</AccordionTrigger>
-            <AccordionContent>
-              Tender filing is a feature for vendors (service providers) to offer their services for events:
-              <ol className="list-decimal pl-5 mt-2 space-y-1">
-                <li>As a vendor, register or log in to your vendor account</li>
-                <li>Browse events that are open for tender</li>
-                <li>Select an event and review its requirements</li>
-                <li>Submit your tender proposal with service details and pricing</li>
-                <li>Wait for review by administrators and event organizers</li>
-                <li>If accepted, you'll be notified and can proceed with service arrangements</li>
-              </ol>
-              This feature connects event organizers with quality service providers for successful event execution.
-            </AccordionContent>
-          </AccordionItem>
-
           <AccordionItem value="item-6">
             <AccordionTrigger>How can I search for specific events?</AccordionTrigger>
             <AccordionContent>
@@ -111,21 +95,6 @@ export default function FAQAccordion() {
                 <li>Sort results by date, popularity, or price</li>
               </ul>
               These tools help you quickly find events that match your interests and preferences.
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-7">
-            <AccordionTrigger>Is my payment information secure?</AccordionTrigger>
-            <AccordionContent>
-              Yes, we prioritize the security of your financial transactions and personal data:
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>We integrate with Razorpay, a secure and trusted payment gateway</li>
-                <li>All sensitive data is encrypted using industry-standard protocols</li>
-                <li>We implement secure authentication mechanisms</li>
-                <li>Our system complies with data protection regulations</li>
-                <li>We never store your complete payment information</li>
-              </ul>
-              You can confidently make transactions on our platform knowing your information is protected.
             </AccordionContent>
           </AccordionItem>
 
@@ -142,20 +111,6 @@ export default function FAQAccordion() {
                 <li>Experience fast loading times and smooth navigation on all devices</li>
               </ul>
               Whether you're using a desktop, tablet, or smartphone, you'll have full access to all platform features.
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-9">
-            <AccordionTrigger>What happens if an event is canceled?</AccordionTrigger>
-            <AccordionContent>
-              In the event of a cancellation:
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>You'll be notified via email immediately</li>
-                <li>Refunds will be processed automatically through the same payment method you used</li>
-                <li>You can check the status of your refund in your user dashboard</li>
-                <li>If you have any questions, our customer support team is available to assist</li>
-              </ul>
-              We strive to make the cancellation and refund process as smooth and hassle-free as possible.
             </AccordionContent>
           </AccordionItem>
 

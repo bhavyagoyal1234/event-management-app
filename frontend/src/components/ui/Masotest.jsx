@@ -30,13 +30,11 @@ function App({ city }) {
   }, [city]);
 
   useEffect(() => {
-    // Scroll to the top of the page whenever the location changes
     window.scrollTo(0, 0);
   }, [location]);
 
-  const handleCardClick = (event) => {
-    // Navigate to the ticket booking page with event information
-    navigate("/ticketbooking", { state: { event } });
+  const handleCardClick = (id) => {
+    navigate(`/ticketbooking/${id}`);
   };
 
   return (
@@ -45,7 +43,7 @@ function App({ city }) {
         <div
           key={index}
           className="relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
-          onClick={() => handleCardClick(event)}
+          onClick={() => handleCardClick(event._id)}
         >
           <img
             src={event.imageUrl}

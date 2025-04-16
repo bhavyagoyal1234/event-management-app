@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
+import DownloadTicket from "./download-ticket";
 
 export function PaymentSuccess({ event, ticket }) {
   const navigate = useNavigate();
 
   const handleDownloadTicket = () => {
-    // Logic to download ticket as PDF
     console.log("Download ticket clicked");
   };
 
@@ -73,15 +73,14 @@ export function PaymentSuccess({ event, ticket }) {
             variant="outline"
             className="w-full"
           >
-            <Download className="w-4 h-4 mr-2" />
-            Download Ticket
+            <DownloadTicket event={event} ticket={ticket}/>
           </Button>
 
           <div className="flex gap-3 w-full">
             <Button
               variant="outline"
               className="flex-1"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
@@ -89,7 +88,7 @@ export function PaymentSuccess({ event, ticket }) {
 
             <Button
               className="flex-1 bg-gradient-to-r from-blue-400 to-blue-600"
-              onClick={() => navigate("/my-tickets")}
+              onClick={() => navigate("/myticket")}
             >
               View My Tickets
             </Button>

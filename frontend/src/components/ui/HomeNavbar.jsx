@@ -29,7 +29,7 @@ function Navbar({ toggleSidebar, isSidebarOpen }) {
       {/* Navigation Links */}
       <nav className="hidden md:flex items-center space-x-4">
         {[
-          { text: "Home", path: "/home" },
+          { text: "Home", path: "/" },
           { text: "List Your Event", path: "/add-event" },
           { text: "About Us", path: "/aboutus" },
           { text: "Contact Us", path: "/contactus" },
