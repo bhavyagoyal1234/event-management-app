@@ -6,8 +6,14 @@ const userSchema = new mongoose.Schema(
     {
         name:{
             type:String,
-            required:true,
             trim:true,
+            required:true,
+        },
+        RepresentativeName:{
+            type:String,
+        },
+        CompanyRegNo:{
+            type:Number,
         },
         email:{
             type:String,

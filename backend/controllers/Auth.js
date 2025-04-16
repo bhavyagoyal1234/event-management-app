@@ -15,7 +15,7 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     //fetching data from request
-    const { name, email, password, accountType, otp } = req.body;
+    const { name, email, password, accountType, otp,Rname,Rno } = req.body;
     console.log("req.body", req.body);
 
     //validation
@@ -65,13 +65,25 @@ exports.signup = async (req, res) => {
 
     //hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      accountType: accountType,
-    });
+    let user;
+    if(!Rname && !Rno){
+      user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        accountType: accountType,
+      });
+    }
+    else{
+      user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        accountType: accountType,
+        RepresentativeName:Rname,
+        CompanyRegNo:Rno
+      });
+    }
     const newProfile=await Profile.create({
       user:user._id,
     });
