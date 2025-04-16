@@ -16,7 +16,7 @@ const AboutUs = () => {
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-orange-500 opacity-20"></div>
+        <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
         <div className="relative z-10 flex items-center justify-between px-10">
           <div className="text-left">
             <h1 className="text-5xl font-extrabold mb-4 text-white">
@@ -83,37 +83,51 @@ const AboutUs = () => {
       </section>
 
       {/* Our Team Section */}
-      <section className="py-20 bg-orange-50 bg-opacity-20 text-center">
-        <h2 className="text-orange-500 text-lg mb-2">Our Great</h2>
-        <h2 className="text-3xl font-bold mb-4">Our Team Members</h2>
-        <p className="text-gray-600 mb-8">
-          Meet the talented individuals who drive our success. <br />
-          Their expertise and dedication are unmatched.
-        </p>
-        <div className="flex justify-center space-x-12">
-          <div className="w-48 h-48 bg-gray-300 flex items-center justify-center rounded-lg">
-            <img
-              src="teammember.png"
-              alt="Team Member 1"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-          <div className="w-48 h-48 bg-gray-300 flex items-center justify-center rounded-lg">
-            <img
-              src="teammember.png"
-              alt="Team Member 2"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-          <div className="w-48 h-48 bg-gray-300 flex items-center justify-center rounded-lg">
-            <img
-              src="teammember.png"
-              alt="Team Member 3"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-        </div>
-      </section>
+      {/* Our Team Section */}
+{/* Our Team Section */}
+<section className="py-20 bg-blue-50 bg-opacity-20 text-center">
+  <h2 className="text-orange-500 text-lg mb-2">Our Great</h2>
+  <h2 className="text-3xl font-bold mb-4">Our Team Members</h2>
+  <p className="text-gray-600 mb-8">
+    Meet the talented individuals who drive our success. <br />
+    Their expertise and dedication are unmatched.
+  </p>
+  <div className="flex justify-center space-x-12">
+    <div className="w-48 flex flex-col items-center">
+      <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
+        <img
+          src="teammember.png"
+          alt="Team Member 1"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="mt-4 font-bold">BHARAT SINGH</h3>
+      <p className="text-gray-600">Frontend Developer</p>
+    </div>
+    <div className="w-48 flex flex-col items-center">
+      <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
+        <img
+          src="teammember.png"
+          alt="Team Member 2"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="mt-4 font-bold">AMIT BHAGAT</h3>
+      <p className="text-gray-600">Project Manager</p>
+    </div>
+    <div className="w-48 flex flex-col items-center">
+      <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
+        <img
+          src="teammember.png"
+          alt="Team Member 3"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="mt-4 font-bold">BHAVYA GOYAL</h3>
+      <p className="text-gray-600">Backend Developer</p>
+    </div>
+  </div>
+</section>
     </div>
   );
 };

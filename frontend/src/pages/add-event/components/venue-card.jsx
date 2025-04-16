@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ export default function VenueCard({
   setFormData,
   handlePageChange,
   onPriorBookingClick,
+  onCardClick,
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -23,6 +24,7 @@ export default function VenueCard({
       className="overflow-hidden w-[360px] transition-all duration-200 hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onCardClick(venue)}
     >
       {/* Image Section */}
       <div className="relative">
@@ -30,26 +32,20 @@ export default function VenueCard({
           <img
             src={venue.imageUrl || "/placeholder.svg?height=214&width=360"}
             alt={venue.name}
-            className={`w-full h-full object-cover 
-             
-            }`}
+            className={`w-full h-full object-cover`}
             loading="lazy"
             decoding="async"
           />
         </div>
 
         {/* Rating Badge */}
-        <div className="absolute top-3 right-3 bg-white/90 rounded-full px-2 py-1 flex items-center shadow-sm">
-          <Star className="h-4 w-4 text-amber-500 mr-1 fill-amber-500" />
-          <span className="font-medium text-sm">{venue.rating || 4.7}</span>
-          <span className="text-muted-foreground text-xs ml-1">
-            ({venue.reviewCount || 40})
-          </span>
-        </div>
-
+        
         {/* Book Now Button */}
         <Button
-          onClick={handleBookNow}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleBookNow();
+          }}
           className="absolute bottom-3 right-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md cursor-pointer transform transition-transform duration-200 hover:scale-105"
           size="sm"
         >
@@ -92,7 +88,10 @@ export default function VenueCard({
         </Badge>
 
         <Button
-          onClick={onPriorBookingClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPriorBookingClick();
+          }}
           className="bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-md flex items-center gap-1 cursor-pointer transform transition-transform duration-200 hover:scale-105"
           size="sm"
         >

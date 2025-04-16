@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import VenueCard from "./components/venue-card";
-import Prior_Booking from "./components/Prior_booking";
-import NavSidebar from "../../components/ui/HomeNavbarandSidebar";
+import PriorBooking from "./components/Prior_booking";
+import Venuedetailpage from "./components/Venuedetailpage";
 import { Button } from "@/components/ui/button";
 
 const SecondPage = ({ formData, setFormData, handlePageChange }) => {
   const [loading, setLoading] = useState(false);
   const [venues, setVenues] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null);
+  const [modalVenue, setModalVenue] = useState(null);
 
   useEffect(() => {
     const handleGetVenues = async () => {
@@ -32,21 +33,21 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
       }
     };
     handleGetVenues();
-  }, []);
+  }, [formData.state, formData.city]);
 
   const openModal = (venue) => {
-    setSelectedVenue(venue);
+    setModalVenue(venue);
   };
 
   const closeModal = () => {
-    setSelectedVenue(null);
+    setModalVenue(null);
   };
 
   return (
     <div className="relative">
       <div
-        className={`max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-20 gap-x-10 ${
-          selectedVenue ? "filter blur-sm" : ""
+        className={`max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-20 gap-x-10 transition ${
+          modalVenue || selectedVenue ? "blur-sm" : ""
         }`}
       >
         {venues.map((venue, index) => (
@@ -56,13 +57,14 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
             formData={formData}
             setFormData={setFormData}
             handlePageChange={handlePageChange}
-            onPriorBookingClick={() => openModal(venue)}
+            onPriorBookingClick={() => setSelectedVenue(venue)}
+            onCardClick={openModal}
           />
         ))}
       </div>
 
-      {selectedVenue && (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+      {modalVenue && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg w-1/2 p-6 relative">
             <button
               onClick={closeModal}
@@ -70,7 +72,21 @@ const SecondPage = ({ formData, setFormData, handlePageChange }) => {
             >
               &times;
             </button>
-            <Prior_Booking venue={selectedVenue} />
+            <Venuedetailpage venue={modalVenue} onClose={closeModal} />
+          </div>
+        </div>
+      )}
+
+      {selectedVenue && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg w-1/2 p-6 relative">
+            <button
+              onClick={() => setSelectedVenue(null)}
+              className="absolute top-2 right-2 text-gray-600"
+            >
+              &times;
+            </button>
+            <PriorBooking venue={selectedVenue} />
           </div>
         </div>
       )}

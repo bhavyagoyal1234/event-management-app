@@ -1,21 +1,19 @@
+// Homestart.js
 import React, { useState, useEffect } from "react";
 
-function HeroSection() {
+function HeroSection({ scrollToEventGenres }) {
   const [wordIndex, setWordIndex] = useState(0);
   const words = ["Scalable", "Efficient"];
-
   const [animationClass, setAnimationClass] = useState("slide-in");
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Start slide-out
       setAnimationClass("slide-out");
 
       setTimeout(() => {
-        // Change word & slide it in
         setWordIndex((prev) => (prev + 1) % words.length);
         setAnimationClass("slide-in");
-      }, 1000); // Match this to animation duration
+      }, 1000);
     }, 3000);
 
     return () => clearInterval(interval);
@@ -38,11 +36,13 @@ function HeroSection() {
         Eventtia’s all-in-one event management platform guarantees a seamless
         attendee experience, optimizes event planning and boosts ROI.
       </p>
-      <button className="bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-gray-200 transition">
+      <button
+        onClick={scrollToEventGenres}
+        className="bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-gray-200 transition cursor-pointer"
+      >
         Get Started
       </button>
 
-      {/* Custom styles */}
       <style jsx>{`
         @keyframes slide-in {
           from {

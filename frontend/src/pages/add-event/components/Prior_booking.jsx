@@ -32,38 +32,31 @@ function PriorBooking({ venue }) {
   return (
     <div className="flex flex-col items-center p-8">
       <div className="flex w-full max-w-4xl">
-        <div className="w-1/2">
+      <div className="flex">
           <img
-            src={venue.imageUrl}
+            src={venue.imageUrl || "/placeholder.svg"}
             alt={venue.name}
-            className="rounded-lg shadow-lg"
-            style={{ width: '450px', height: '270px' }}
+            className="w-1/2 h-auto object-cover rounded-lg"
           />
-        </div>
-        <div className="w-1/2 pl-8">
-          <h2 className="text-2xl font-bold">{venue.name}</h2>
-          <div className="flex items-center text-gray-600 mt-2">
-            <FaMapMarkerAlt className="mr-2" />
-            <span>
-              {venue.city}, {venue.state}
-            </span>
-          </div>
-          <div className="flex items-center mt-2">
-            <FaClock className="mr-2" />
-            <span>{venue.roomcount} Rooms</span>
-          </div>
-          <div className="flex items-center mt-2">
-            <FaUser className="mr-2" />
-            <span>Max ({venue.paxcapacity} pax)</span>
-          </div>
-          <div className="mt-4">
-            <p className="text-blue-500 font-bold text-xl">₹{venue.price}</p>
-          </div>
-          <div className="flex items-center mt-2">
-            <FaStar className="text-yellow-500 mr-2" />
-            <span className="font-bold">4.7</span>
+          <div className="w-1/2 p-6 bg-white shadow-md rounded-lg border border-gray-200 ml-10">
+            <div>
+              <h2 className="text-2xl font-bold">{venue.name}</h2>
+              <p className="text-gray-600 mt-2">
+                <strong>Location:</strong> {venue.city}, {venue.state}
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Price:</strong> ₹{venue.price.toLocaleString()}
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Capacity:</strong> {venue.paxcapacity} pax
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Rooms:</strong> {venue.roomcount}
+              </p>
+            </div>
           </div>
         </div>
+        
       </div>
       <div className="w-full max-w-4xl mt-8">
         <h3 className="text-xl font-bold text-pink-600">Prior Bookings</h3>

@@ -46,7 +46,7 @@ function EventsCarousel() {
         <div
           key={event.id || event._id}
           className={`transition-transform duration-500 transform ${
-            index === 1 ? 'scale-105' : 'scale-95 blur-sm'
+            index === 1 ? 'scale-105' : 'scale-95 '
           }`}
         >
           <img

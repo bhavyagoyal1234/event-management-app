@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
+import { Bar } from 'react-chartjs-2';
 
 function Reviews({ eventId }) {
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const [reviews, setReviews] = useState([]);
+  const [ratingCounts, setRatingCounts] = useState({
+    oneCnt: 0,
+    twoCnt: 0,
+    threeCnt: 0,
+    fourCnt: 0,
+    fiveCnt: 0,
+  });
 
   useEffect(() => {
     const fetchAverageRating = async () => {
@@ -17,7 +25,6 @@ function Reviews({ eventId }) {
         if (response.data.success) {
           setAverageRating(response.data.averageRating || 0);
           setTotalRatings(response.data.totalRatings || 0);
-          console.log("response data success",response.data)
         }
       } catch (error) {
         console.error('Error fetching average rating:', error);
@@ -35,7 +42,7 @@ function Reviews({ eventId }) {
         const response = await axios.post('http://localhost:3002/api/rating/getEventRating', {
           eventID: eventId,
         });
-        
+
         if (response.data.success) {
           setReviews(response.data.ratings);
         }
@@ -49,6 +56,33 @@ function Reviews({ eventId }) {
     }
   }, [eventId]);
 
+  useEffect(() => {
+    const fetchRatingCounts = async () => {
+      try {
+        const response = await axios.post('http://localhost:3002/api/rating/getRatingCnt', {
+          eventID: eventId,
+        });
+
+        if (response.data.success) {
+          setRatingCounts({
+            oneCnt: response.data.oneCnt,
+            twoCnt: response.data.twoCnt,
+            threeCnt: response.data.threeCnt,
+            fourCnt: response.data.fourCnt,
+            fiveCnt: response.data.fiveCnt,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching rating counts:', error);
+      }
+    };
+
+    if (eventId) {
+      fetchRatingCounts();
+    }
+  }, [eventId]);
+
+  
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-8">
@@ -62,26 +96,21 @@ function Reviews({ eventId }) {
           <div className="flex items-center justify-center">
             <p className="text-3xl font-bold">{averageRating}</p>
             <div className="flex ml-2">
+
               {[...Array(5)].map((_, i) => (
                 <FaStar
                   key={i}
-                  className={`text-yellow-500 ${i < Math.round(averageRating) ? '' : 'text-gray-300'}`}
+                  className={i < Math.round(averageRating) ? 'text-yellow-500' : 'text-gray-300'}
                 />
               ))}
+
             </div>
           </div>
           <p className="text-sm text-gray-500">Average rating on this year</p>
         </div>
-        <div className="text-sm text-gray-500">
-          <ul>
-            <li>5 <span className="text-green-500">▇▇▇▇▇</span> 2.5K+</li>
-            <li>4 <span className="text-blue-500">▇▇▇▇</span> 2.5K+</li>
-            <li>3 <span className="text-purple-500">▇▇▇</span> 2.5K+</li>
-            <li>2 <span className="text-yellow-500">▇▇</span> 2.5K+</li>
-            <li>1 <span className="text-red-500">▇</span> 2.5K+</li>
-          </ul>
-        </div>
       </div>
+
+     
 
       {reviews.map((review, index) => (
         <div key={index} className="mb-6 border-t pt-4">
@@ -94,7 +123,10 @@ function Reviews({ eventId }) {
           </div>
           <div className="flex items-center mb-2">
             {[...Array(5)].map((_, i) => (
-              <FaStar key={i} className={`text-yellow-500 ${i < review.rating ? '' : 'text-gray-300'}`} />
+              <FaStar
+                key={i}
+                className={i < review.rating ? 'text-yellow-500' : 'text-gray-300'}
+              />
             ))}
           </div>
           <p className="mb-2">{review.comment}</p>

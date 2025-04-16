@@ -22,7 +22,7 @@ function Navbar({ toggleSidebar, isSidebarOpen }) {
   };
 
   return (
-    <header className="text-white backdrop-blur-lg backdrop-saturate-150 backdrop-brightness-150 bg-black/70 hover:bg-black shadow-md px-6 py-3 h-[60px] flex items-center justify-between transition-all duration-300 ease-in-out">
+    <header className="text-white backdrop-blur-lg backdrop-saturate-150 backdrop-brightness-150 bg-black shadow-md px-6 py-3 h-[60px] flex items-center justify-between transition-all duration-300 ease-in-out hover:bg-black/70  ">
       {/* Logo or App Name */}
       <div className="text-lg md:text-xl font-bold">Evently</div>
 

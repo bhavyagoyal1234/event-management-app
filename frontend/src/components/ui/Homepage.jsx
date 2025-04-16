@@ -1,19 +1,29 @@
-// HomePage.jsx
-import React from "react";
+// HomePage.js
+import React, { useRef } from "react";
 import EventsPage from "./HomePage3";
 import EventGenres from "./HomePage2";
 import NavSidebar from "./HomeNavbarandSidebar";
 import Homeimage from "../../pages/home/events-carousel";
-import Homestart from "./Homestartingpage";
+import Homestart from "./Homestartingpage"; // Make sure this path points to HeroSection
 
 function HomePage() {
+  const eventGenresRef = useRef(null);
+
+  const scrollToEventGenres = () => {
+    if (eventGenresRef.current) {
+      eventGenresRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <div className="">
+    <div>
       <NavSidebar />
-      <section className=" ">
-        <Homestart />
+
+      <section>
+        <Homestart scrollToEventGenres={scrollToEventGenres} />
       </section>
-      <section className="mb-20 ">
+
+      <section className="mb-20">
         <Homeimage />
       </section>
 
@@ -21,7 +31,7 @@ function HomePage() {
         <EventsPage />
       </section>
 
-      <section>
+      <section ref={eventGenresRef} className="pt-20">
         <EventGenres />
       </section>
     </div>

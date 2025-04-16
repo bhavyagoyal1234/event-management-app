@@ -114,7 +114,7 @@ exports.getAverageRating = async (req, res) => {
 exports.getEventRating = async (req, res) => {
   try {
     const { eventID } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+    if (!mongoose.Types.ObjectId.isValid(eventID)) {
       return res.status(400).json({
         success:false, 
         message: 'Invalid event ID' 
@@ -171,8 +171,9 @@ exports.getEventRating = async (req, res) => {
 // get event rating cnt 
 exports.ratingCnt = async (req, res) => {
   try {
+    console.log("in ratingcount controller");
     const { eventID } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+    if (!mongoose.Types.ObjectId.isValid(eventID)) {
       return res.status(400).json({
         success:false, 
         message: 'Invalid event ID' 
