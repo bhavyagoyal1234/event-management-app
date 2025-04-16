@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
             type:String,
         },
         CompanyRegNo:{
-            type:Number,
+            type:String,
         },
         email:{
             type:String,

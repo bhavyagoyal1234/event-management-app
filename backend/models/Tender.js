@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TendorSchema = new mongoose.Schema(
+const TenderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -16,4 +16,4 @@ const TendorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Tendor", TendorSchema);
+module.exports = mongoose.model("Tender", TenderSchema);

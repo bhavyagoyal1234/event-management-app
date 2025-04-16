@@ -6,6 +6,7 @@ import SignupForm from "./components/ui/SignupForm.jsx";
 import LoginForm from "./pages/auth/LoginForm.jsx";
 import CompanySignup from "./components/ui/companysignup.jsx";
 import OTPVerification from "./components/ui/Otpverify.jsx";
+import CompanyOtpVerity from "./components/ui/verify-company-otp.jsx";
 import ResetPasswordForm from "./components/ui/Resetpass.jsx";
 import ResetPasswordFormemail from "./components/ui/Resetpassemail.jsx";
 import EmailSentNotification from "./components/ui/Emailsendsuccess.jsx";
@@ -36,6 +37,8 @@ import Homestart from  "./components/ui/Homestartingpage.jsx";
 import ScrollToTop from "./utils/scroll-to-top.jsx";
 import HomePage from "./pages/home/home.jsx";
 import Rating from "./components/ui/Homereviewpage2.jsx";
+import EventsPage from "./pages/file-tender/events-page.jsx";
+import TenderSubmissionForm from "./pages/file-tender/tender-submission-form.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -55,6 +58,7 @@ function App() {
           <Route path="/register" element={<GoogleAuthWrapper />} />
           <Route path="/companyregister" element={<CompanySignup />} />
           <Route path="/otpverify" element={<OTPVerification />} />
+          <Route path="/otpverify-company" element={<CompanyOtpVerity />} />
           <Route path="/update-password/:id" element={<ResetPasswordForm />} />
           <Route
             path="/update-passwordemail"
@@ -121,6 +125,12 @@ function App() {
           <Route path="/homeimage" element={<ProtectedRoute element={Homeimage} />} />
           <Route path="/homestart" element={<ProtectedRoute element={Homestart} />} />
           <Route path="/homerating" element={<ProtectedRoute element={Rating} />} />
+
+
+
+          <Route path="/file-tender" element={<EventsPage />} />
+          <Route path="/tender-for-event/:id" element={<TenderSubmissionForm />} />
+
         </Routes>
       </BrowserRouter>
     </>

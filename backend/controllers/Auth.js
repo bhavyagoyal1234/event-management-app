@@ -15,6 +15,7 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     //fetching data from request
+    console.log("in signup controller");
     const { name, email, password, accountType, otp,Rname,Rno } = req.body;
     console.log("req.body", req.body);
 

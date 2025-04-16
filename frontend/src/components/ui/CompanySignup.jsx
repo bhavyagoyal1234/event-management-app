@@ -27,13 +27,14 @@ function CompanySignup() {
         email: data.repEmail,
       });
       console.log('Response:', response.data);
-      navigate("/otpverifycompany", {
+      navigate("/otpverify-company", {
         state: {
-          companyName: data.companyName,
-          repName: data.repName,
-          repEmail: data.repEmail,
-          companyRegNo: data.companyRegNo,
-          password: data.password
+          name: data.companyName,
+          Rname: data.repName,
+          email: data.repEmail,
+          Rno: data.companyRegNo,
+          password: data.password,
+          accountType: 'company'
         }
       });
     } catch (error) {

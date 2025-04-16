@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 function Navbar({ toggleSidebar, isSidebarOpen }) {
   const navigate = useNavigate();
 
-  const {isLoggedIn} = useUser();
-  console.log('isLoggedIn', isLoggedIn);
+  const {isLoggedIn, userData} = useUser();
 
   const handleNavigation = (path) => {
     console.log(`Navigating to ${path}`);
@@ -47,6 +46,12 @@ function Navbar({ toggleSidebar, isSidebarOpen }) {
 
       {/* Right-side actions: Login and Sidebar */}
       <div className="flex items-center space-x-4">
+        {userData?.accountType === 'company' && <button
+          onClick={() => handleNavigation("/file-tender")}
+          className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md transition duration-200"
+        >
+          File Tender
+        </button>}
         {!isLoggedIn && <button
           onClick={() => handleNavigation("/login")}
           className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md transition duration-200"

@@ -1,4 +1,4 @@
-const Tendor =require("../models/Tendor");
+const Tendor =require("../models/Tender");
 const Event = require('../models/Event'); // Adjust path as needed
 exports.allotTendor = async(req,res)=>{
     try{

@@ -31,8 +31,6 @@ const profileSchema = new mongoose.Schema({
   },
   mobileNo: {
     type: String, // Changed from Number to String to handle leading zeros
-   
-    unique: true, // Ensures no duplicate mobile numbers
   }
 }, { timestamps: true });
 

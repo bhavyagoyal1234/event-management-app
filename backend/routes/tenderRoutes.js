@@ -5,7 +5,7 @@ const storage = multer.memoryStorage(); // You can use diskStorage if you want t
 const upload = multer({ storage: storage });
 
 
-const tendorController = require("../controllers/Tendor");
+const tendorController = require("../controllers/Tender");
 
 router.route('/allotTendor').post(tendorController.allotTendor);
 router.route("/getAllMyBooking").post(tendorController.getAllMyBookings);
