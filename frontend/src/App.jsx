@@ -43,12 +43,22 @@ import TenderSubmissionForm from "./pages/file-tender/tender-submission-form.jsx
 function App() {
   const GoogleAuthWrapper = () => {
     return (
-      <GoogleOAuthProvider clientId="127988388634-ocf6dq7ts0pjvu7cv0jpd0k61nsdsnq6.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com">
         <SignupForm />
+       
+        
       </GoogleOAuthProvider>
     );
   };
-
+  const GoogleAuthWrapper1 = () => {
+    return (
+      <GoogleOAuthProvider clientId="468203105744-0cvsjak0ig3n2q735ntt6u02g2b5ot8q.apps.googleusercontent.com">
+        
+       <LoginForm/>
+        
+      </GoogleOAuthProvider>
+    );
+  };
   return (
     <>
       <ToastContainer />
@@ -66,7 +76,7 @@ function App() {
             element={<ResetPasswordFormemail />}
           />
           <Route path="/emailsentsuccess" element={<EmailSentNotification />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<GoogleAuthWrapper1/>} />
           <Route path="/aboutus" element={<AboutUS />} />
 
           {/* Protected Routes */}

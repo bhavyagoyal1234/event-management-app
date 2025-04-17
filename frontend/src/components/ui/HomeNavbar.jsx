@@ -62,7 +62,7 @@ function Navbar({ toggleSidebar, isSidebarOpen, scrollToFooter }) {
 
         {/* Sidebar Toggle */}
         <button
-          className="hover:text-blue-600 transition-colors duration-200"
+          className="hover:text-blue-600 transition-colors duration-200 cursor-pointer"
           onClick={handleClick}
         >
           {isSidebarOpen ? <IoClose size={30} /> : <IoMenu size={30} />}

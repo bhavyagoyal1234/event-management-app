@@ -1,36 +1,36 @@
-import { useState } from "react"
-import { FaUser, FaCalendarAlt, FaTicketAlt, FaLifeRing, FaChevronRight } from "react-icons/fa"
-import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import axios from "axios"
-import { useUser } from "@/context/userContext"
+import { useState } from "react";
+import { FaUser, FaCalendarAlt, FaTicketAlt, FaLifeRing, FaChevronRight } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useUser } from "@/context/userContext";
 
-function Sidebar() {
-  const navigate = useNavigate()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState(null)
-  const {logout, userData} = useUser();
+function Sidebar({ closeSidebar }) {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(null);
+  const { logout, userData } = useUser();
 
   const handleProfileClick = () => {
-    navigate("/myprofile")
-  }
+    navigate("/myprofile");
+  };
 
   const handleEventsClick = () => {
-    navigate("/myevent")
-  }
+    navigate("/myevent");
+  };
 
   const handleBookingsClick = () => {
-    navigate("/myticket")
-  }
+    navigate("/myticket");
+  };
 
   const handleSupportClick = () => {
-    navigate("/support")
-  }
+    navigate("/support");
+  };
 
   const handleLogOut = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const confirmLogOut = async () => {
     try {
@@ -41,7 +41,8 @@ function Sidebar() {
 
       if (res.data.success) {
         toast.success("Logout successful");
-        navigate("/login");
+        closeSidebar(); // Close the sidebar on successful logout
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -49,11 +50,11 @@ function Sidebar() {
     } finally {
       setIsModalOpen(false);
     }
-  }
+  };
 
   const cancelLogOut = () => {
-    setIsModalOpen(false)
-  }
+    setIsModalOpen(false);
+  };
 
   const menuItems = [
     {
@@ -80,7 +81,7 @@ function Sidebar() {
       subtext: "Get help and support",
       onClick: handleSupportClick,
     },
-  ]
+  ];
 
   return (
     <div className="h-full bg-white rounded-xl flex flex-col relative overflow-hidden border border-gray-100 shadow-lg">
@@ -126,7 +127,7 @@ function Sidebar() {
       <div className="p-6 border-t border-gray-100">
         <Button
           onClick={handleLogOut}
-          className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white rounded-xl py-3 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg"
+          className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-950 text-white rounded-xl py-3 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg cursor-pointer"
           size="sm"
         >
           Log Out
@@ -143,13 +144,13 @@ function Sidebar() {
             <div className="flex justify-end space-x-4">
               <Button
                 onClick={cancelLogOut}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium px-5 py-2 rounded-xl transition-all duration-200"
+                className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium px-5 py-2 rounded-xl transition-all duration-200 cursor-pointer"
               >
                 Cancel
               </Button>
               <Button
                 onClick={confirmLogOut}
-                className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2 rounded-xl transition-all duration-200"
+                className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2 rounded-xl transition-all duration-200 cursor-pointer"
               >
                 Log out
               </Button>
@@ -161,4 +162,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar
+export default Sidebar;

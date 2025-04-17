@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/context/userContext";
 import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
-
+import { useGoogleLogin } from "@react-oauth/google";
 function LoginForm() {
   const [focusedInput, setFocusedInput] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -65,6 +65,35 @@ function LoginForm() {
       setLoading(false);
     }
   }
+const responseGoogle = async (authResult) => {
+    try {
+      console.log(authResult);
+      if (authResult.code) {
+        const result = await axios.post(
+          "http://localhost:3002/api/auth/googleLogin",
+          {
+            code: authResult.code,
+            accountType: "user",
+          }
+        );
+        console.log("nvoksnvoksdvnoas",result, 'google login result');
+        if (result.data.success) {
+        const user = result.data.user;
+        const token = result.data.token;
+        login(user, token)
+      }
+    } 
+  }
+  catch (err) {
+      console.error("Error while requesting code", err);
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onError: responseGoogle,
+    flow: "auth-code",
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-10">
@@ -198,6 +227,13 @@ function LoginForm() {
               </Link>
             </Button>
           </p>
+          <button
+              className="flex items-center justify-center border border-blue-500 text-blue-500 py-2 px-4 w-full cursor-pointer rounded-full"
+              onClick={googleLogin}
+            >
+              <img src="/google.png" alt="Google_icon" className="h-5 w-5 mr-2" />
+              Sign up with Google
+            </button>
         </div>
       </div>
     </div>

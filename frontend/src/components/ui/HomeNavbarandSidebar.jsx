@@ -1,4 +1,3 @@
-// NavSidebar.js
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from "./HomeNavbar";
 import Sidebar from "./Homesidebar";
@@ -42,7 +41,7 @@ function NavSidebar({ scrollToFooter }) {
         <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} scrollToFooter={scrollToFooter} />
         {isSidebarOpen && (
           <div className="fixed top-16 right-0 w-80 h-[calc(100%-4rem)] z-40">
-            <Sidebar />
+            <Sidebar closeSidebar={() => setIsSidebarOpen(false)} />
           </div>
         )}
       </div>

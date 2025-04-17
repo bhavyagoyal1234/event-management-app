@@ -187,15 +187,15 @@ function Reviews({ eventId }) {
                     <div className="flex items-center gap-3">
                       <Avatar className="border-2 border-white shadow-sm">
                         <AvatarImage
-                          src={review.user.profile.profilePhoto || "/placeholder.svg?height=40&width=40"}
-                          alt={review.user.name}
+                          src={review?.user?.profile?.profilePhoto || "/placeholder.svg?height=40&width=40"}
+                          alt={review?.user?.name}
                         />
                         <AvatarFallback>
                           <User className="h-5 w-5" />
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h4 className="font-semibold">{review.user.name}</h4>
+                        <h4 className="font-semibold">{review?.user?.name}</h4>
                         <p className="text-xs text-gray-500">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
                             year: "numeric",
@@ -207,7 +207,7 @@ function Reviews({ eventId }) {
                     </div>
                     <Badge variant="outline" className="bg-white">
                       <div className="flex items-center gap-1">
-                        <span className="font-bold">{review.rating}</span>
+                        <span className="font-bold">{review?.rating}</span>
                         <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
                       </div>
                     </Badge>
@@ -219,11 +219,11 @@ function Reviews({ eventId }) {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-5 h-5 ${i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                        className={`w-5 h-5 ${i < review?.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
                       />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-4">{review.comment}</p>
+                  <p className="text-gray-700 mb-4">{review?.comment}</p>
 
                   <div className="flex items-center justify-between border-t pt-4">
                     <p className="text-sm text-gray-500">Was this review helpful?</p>

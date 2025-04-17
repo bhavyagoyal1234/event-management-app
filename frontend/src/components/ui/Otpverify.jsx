@@ -11,7 +11,7 @@ function OTPVerification() {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(10); // 5 minutes in seconds
+  const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const { name, email, password, accountType } = location.state || {};
 
   useEffect(() => {

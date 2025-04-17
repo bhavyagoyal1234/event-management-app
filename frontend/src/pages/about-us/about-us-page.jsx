@@ -1,12 +1,22 @@
-import React from "react";
+import {useRef,React }from "react";
 import { Play } from "lucide-react";
 import NavSidebar from "@/components/ui/HomeNavbarandSidebar";
+import Footer from "../home/Footer";
+
 const AboutUs = () => {
+  const footerRef = useRef(null);
+   
+  
+    const scrollToFooter = () => {
+      if (footerRef.current) {
+        footerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
   return (
     <div className="font-sans">
 
       <section>
-        <NavSidebar />
+      <NavSidebar scrollToFooter={scrollToFooter} />
       </section>
 
       {/* About Our Agency Section */}
@@ -128,6 +138,8 @@ const AboutUs = () => {
     </div>
   </div>
 </section>
+
+<Footer ref={footerRef} />
     </div>
   );
 };
