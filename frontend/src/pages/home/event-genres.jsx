@@ -45,7 +45,7 @@ const EventGenres = () => {
 
   return (
     <div className="text-center p-5">
-      <h2 className="text-2xl font-bold mb-5">The Best Of Upcoming events</h2>
+      <h2 className="text-2xl font-bold mb-5">Upcoming Events based on genre</h2>
       <div className="flex flex-wrap justify-center">
         {genres.map((genre, index) => (
           <div

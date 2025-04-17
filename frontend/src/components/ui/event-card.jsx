@@ -6,7 +6,7 @@ import { Calendar, MapPin } from "lucide-react";
 export default function EventCard({ event }) {
   return (
     <Link to={`/ticketbooking/${event._id}`} className="block cursor-pointer">
-      <Card className="overflow-hidden w-[324px] shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
+      <Card className="overflow-hidden w-[324px] shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105  pt-0">
         {/* Image Section with Title Overlay */}
         <div className="relative h-[220px]">
           <img
@@ -15,6 +15,7 @@ export default function EventCard({ event }) {
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
+            style={{ borderTopLeftRadius: 'inherit', borderTopRightRadius: 'inherit' }}
           />
           <div className="absolute top-3 left-3 bg-pink-500 text-white rounded-full px-3 py-1 text-xs font-bold">
             {event.title || "SPORTS"}
@@ -42,18 +43,18 @@ export default function EventCard({ event }) {
 
         {/* Footer Section */}
         <CardFooter className="px-4 pb-2 pt-0">
-  <div className="flex justify-between items-center bg-blue-50 p-2 w-full rounded-lg">
-    <span className="text-black font-bold text-sm">
-      ₹{event.ticketPrice} ONWARDS
-    </span>
-    <div className="flex items-center">
-      <div className="border-l border-blue-500 h-5 mx-2"></div>
-      <span className="text-blue-500 font-bold text-sm">
-        BUY NOW
-      </span>
-    </div>
-  </div>
-</CardFooter>
+          <div className="flex justify-between items-center bg-blue-50 p-2 w-full rounded-lg">
+            <span className="text-black font-bold text-sm">
+              ₹{event.ticketPrice} ONWARDS
+            </span>
+            <div className="flex items-center">
+              <div className="border-l border-blue-500 h-5 mx-2"></div>
+              <span className="text-blue-500 font-bold text-sm">
+                BUY NOW
+              </span>
+            </div>
+          </div>
+        </CardFooter>
       </Card>
     </Link>
   );

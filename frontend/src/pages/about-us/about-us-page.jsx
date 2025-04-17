@@ -10,9 +10,9 @@ const AboutUs = () => {
       </section>
 
       {/* About Our Agency Section */}
-      <section className="relative bg-cover bg-center py-35">
+      <section className="relative bg-cover bg-center py-50">
         <img
-          src="teammember.png"
+          src="aboutusimage.jpg"
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -36,18 +36,18 @@ const AboutUs = () => {
         <div className="max-w-6xl mx-auto flex items-center space-x-12">
           <div className="w-1/2 relative">
             <div
-              className="absolute inset-0 bg-orange-200 transform rotate-6 scale-110 rounded-full"
+              className="absolute inset-0 bg-blue-50 transform rotate-6 scale-110 rounded-full"
               style={{ clipPath: "ellipse(75% 50% at 50% 50%)" }}
             ></div>
             <img
-              src="teammember.png"
+              src="aboutusimage.jpg"
               alt="Company"
               className="relative mx-auto w-2/3 rounded-full overflow-hidden"
               style={{ clipPath: "ellipse(75% 50% at 50% 50%)" }}
             />
           </div>
           <div className="w-1/2 text-left">
-            <h2 className="text-3xl font-bold mb-4">About Your Company</h2>
+            <h2 className="text-3xl font-bold mb-4 text-blue-500">About Our Company</h2>
             <p className="text-gray-600 mb-8">
               Welcome to our event management platform, where clients can list
               events and users can easily purchase tickets. Whether it's a
@@ -63,19 +63,19 @@ const AboutUs = () => {
             </p>
             <div className="flex space-x-8 mb-8">
               <div>
-                <h3 className="text-2xl font-bold text-orange-500">27k</h3>
+                <h3 className="text-2xl font-bold text-blue-500">27k</h3>
                 <p className="text-gray-600">Active Clients</p>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-orange-500">985+</h3>
+                <h3 className="text-2xl font-bold text-blue-500">985+</h3>
                 <p className="text-gray-600">Events Done</p>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-orange-500">78+</h3>
+                <h3 className="text-2xl font-bold text-blue-500">78+</h3>
                 <p className="text-gray-600">Team Member</p>
               </div>
             </div>
-            <button className="bg-orange-500 text-white py-2 px-4 rounded">
+            <button className="bg-blue-500 text-white py-2 px-4 rounded">
               More Details
             </button>
           </div>
@@ -86,8 +86,8 @@ const AboutUs = () => {
       {/* Our Team Section */}
 {/* Our Team Section */}
 <section className="py-20 bg-blue-50 bg-opacity-20 text-center">
-  <h2 className="text-orange-500 text-lg mb-2">Our Great</h2>
-  <h2 className="text-3xl font-bold mb-4">Our Team Members</h2>
+ 
+  <h2 className="text-3xl font-bold mb-4 text-blue-500">Our Team Members</h2>
   <p className="text-gray-600 mb-8">
     Meet the talented individuals who drive our success. <br />
     Their expertise and dedication are unmatched.
@@ -96,34 +96,34 @@ const AboutUs = () => {
     <div className="w-48 flex flex-col items-center">
       <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
         <img
-          src="teammember.png"
+          src="Bharat.jpg"
           alt="Team Member 1"
           className="w-full h-full object-cover"
         />
       </div>
-      <h3 className="mt-4 font-bold">BHARAT SINGH</h3>
+      <h3 className="mt-4 font-bold text-blue-500">BHARAT SINGH</h3>
       <p className="text-gray-600">Frontend Developer</p>
     </div>
     <div className="w-48 flex flex-col items-center">
       <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
         <img
-          src="teammember.png"
+          src="amit.jpg"
           alt="Team Member 2"
           className="w-full h-full object-cover"
         />
       </div>
-      <h3 className="mt-4 font-bold">AMIT BHAGAT</h3>
+      <h3 className="mt-4 font-bold text-blue-500">AMIT BHAGAT</h3>
       <p className="text-gray-600">Project Manager</p>
     </div>
     <div className="w-48 flex flex-col items-center">
       <div className="w-48 h-48 bg-gray-300 rounded-lg overflow-hidden">
         <img
-          src="teammember.png"
+          src="bhavyagandu.jpg"
           alt="Team Member 3"
           className="w-full h-full object-cover"
         />
       </div>
-      <h3 className="mt-4 font-bold">BHAVYA GOYAL</h3>
+      <h3 className="mt-4 font-bold text-blue-500">BHAVYA GOYAL</h3>
       <p className="text-gray-600">Backend Developer</p>
     </div>
   </div>
