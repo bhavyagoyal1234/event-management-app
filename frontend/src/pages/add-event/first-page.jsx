@@ -110,10 +110,9 @@ const FirstPage = ({ formData, setFormData, handlePageChange }) => {
                 onChange={handleChange}
                 className="min-h-[120px] resize-y"
               />
-              {/* Display the formatted description */}
-              <div className="mt-4 whitespace-pre-wrap">
+              {/* <div className="mt-4 whitespace-pre-wrap">
                 {formData.description}
-              </div>
+              </div> */}
             </div>
 
             {/* Genre */}

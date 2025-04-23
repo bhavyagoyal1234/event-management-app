@@ -16,10 +16,11 @@ import axios from "axios"
 
 const fetchEvent = async (id) => {
   try {
-    const response = await axios.post(`http://localhost:3002/api/event/get-event-by-id/${id}`);
+    console.log('id', id);
+    const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${id}`);
     if (response.data.success) {
-      console.log(response.data, 'single-event');
-      return response.data.events;
+      console.log(response.data.event, 'single-event');
+      return response.data.event;
     } else {
       console.error("Failed to fetch booked events");
     }

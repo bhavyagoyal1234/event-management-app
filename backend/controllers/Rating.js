@@ -173,32 +173,44 @@ exports.ratingCnt = async (req, res) => {
   try {
     console.log("in ratingcount controller");
     const { eventID } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(eventID)) {
+
+    if (!eventID || !mongoose.Types.ObjectId.isValid(eventID)) {
       return res.status(400).json({
-        success:false, 
-        message: 'Invalid event ID' 
+        success: false,
+        message: 'Valid eventID is required',
       });
     }
-    if(!eventID){
-      return res.status(400).json({
-        success:false,
-        message:"eventID is required",
-      })
-    }
-    const oneCnt = await Event.countDocuments({ event: eventID, rating: 1 });
-    const twoCnt = await Event.countDocuments({ event: eventID, rating: 2 });
-    const threeCnt = await Event.countDocuments({ event: eventID, rating: 3 });
-    const fourCnt = await Event.countDocuments({ event: eventID, rating: 4 });
-    const fiveCnt = await Event.countDocuments({ event: eventID, rating: 5 });
+
+    const ratingCounts = await Rating.aggregate([
+      { $match: { event: new mongoose.Types.ObjectId(eventID) } },
+      { $group: { _id: "$rating", count: { $sum: 1 } } }
+    ]);
+
+    const result = {
+      oneCnt: 0,
+      twoCnt: 0,
+      threeCnt: 0,
+      fourCnt: 0,
+      fiveCnt: 0
+    };
+
+    ratingCounts.forEach(item => {
+      switch (item._id) {
+        case 1: result.oneCnt = item.count; break;
+        case 2: result.twoCnt = item.count; break;
+        case 3: result.threeCnt = item.count; break;
+        case 4: result.fourCnt = item.count; break;
+        case 5: result.fiveCnt = item.count; break;
+      }
+    });
+
+    console.log(result);
+    console.log('rating count fetched successfully');
 
     return res.status(200).json({
       success: true,
       message: "Rating count fetched successfully",
-      oneCnt,
-      twoCnt,
-      threeCnt,
-      fourCnt,
-      fiveCnt
+      ...result
     });
   } catch (error) {
     console.error(error);

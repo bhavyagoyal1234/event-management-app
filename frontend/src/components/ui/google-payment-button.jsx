@@ -2,7 +2,7 @@ import GooglePayButton from "@google-pay/button-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-const GooglePaymentButton = ({ price, setPaymentDone }) => {
+const GooglePaymentButton = ({ price, setPaymentDone}) => {
   const [isGooglePayLoaded, setIsGooglePayLoaded] = useState(false);
 
   return (
@@ -51,8 +51,8 @@ const GooglePaymentButton = ({ price, setPaymentDone }) => {
       }}
       onPaymentAuthorized={(paymentData) => {
         console.log("Payment Authorised Success", paymentData);
-        setPaymentDone(true);
         toast.success("Payment completed successfully.");
+        setPaymentDone(true);
         return { transactionState: "SUCCESS" };
       }}
       onPaymentDataChanged={(paymentData) => {

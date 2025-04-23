@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Venue = require("../models/Venue");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { TbRulerMeasure } = require("react-icons/tb");
 require("dotenv").config();
 
 exports.addEvent = async (req, res) => {
@@ -138,6 +139,7 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log('hey there 👋👋', id)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid event ID." });
     }
@@ -145,7 +147,11 @@ exports.getEventById = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found." });
     }
-    res.status(200).json(event);
+    res.status(200).json({
+      success:true,
+      message:"fetched successfully",
+      event: event
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }

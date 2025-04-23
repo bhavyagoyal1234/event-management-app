@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { format } from "date-fns"
-import { CalendarIcon, MapPinIcon, PhoneIcon, TagIcon, TicketIcon, SearchIcon, ClockIcon } from "lucide-react"
+import { CalendarIcon, MapPinIcon, PhoneIcon, TagIcon, TicketIcon, SearchIcon, ClockIcon, SendIcon } from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,11 +21,24 @@ import { Skeleton } from "@/components/ui/skeleton"
 import NavSidebar from "@/components/ui/HomeNavbarandSidebar"
 import axios from "axios"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import GooglePaymentButton from "@/components/ui/google-payment-button"
+import { useUser } from "@/context/userContext"
+
 const fetchEvents = async () => {
   try {
     const response = await axios.post("http://localhost:3002/api/tender/getEmptyEvent");
     if (response.data.success) {
-      console.log(response.data.data, "events");
       return response.data.data;
     } else {
       console.error("Failed to fetch booked events");
@@ -33,92 +46,8 @@ const fetchEvents = async () => {
   } catch (error) {
     console.error("Error fetching booked events:", error);
   }
-  // This would be your actual API call
-  // const response = await fetch('/api/events');
-  // return response.json();
-
-  // Mock data for demonstration
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve([
-  //       {
-  //         _id: "1",
-  //         title: "Summer Music Festival",
-  //         genre: "Music",
-  //         contactNo: "+1234567890",
-  //         start: new Date(2023, 6, 15, 18, 0),
-  //         end: new Date(2023, 6, 15, 23, 0),
-  //         description:
-  //           "A vibrant summer music festival featuring local and international artists across multiple stages.",
-  //         imageUrl: "/placeholder.svg?height=200&width=400",
-  //         user: { _id: "user1", name: "Event Organizer" },
-  //         venue: { _id: "venue1", name: "Central Park", address: "New York, NY" },
-  //         ticketPrice: 75,
-  //         createdAt: new Date(),
-  //       },
-  //       {
-  //         _id: "2",
-  //         title: "Tech Conference 2023",
-  //         genre: "Technology",
-  //         contactNo: "+1987654321",
-  //         start: new Date(2023, 7, 10, 9, 0),
-  //         end: new Date(2023, 7, 12, 17, 0),
-  //         description:
-  //           "Annual technology conference showcasing the latest innovations and featuring keynote speakers from leading tech companies.",
-  //         imageUrl: "/placeholder.svg?height=200&width=400",
-  //         user: { _id: "user2", name: "Tech Events Inc." },
-  //         venue: { _id: "venue2", name: "Convention Center", address: "San Francisco, CA" },
-  //         ticketPrice: 250,
-  //         createdAt: new Date(),
-  //       },
-  //       {
-  //         _id: "3",
-  //         title: "Food & Wine Festival",
-  //         genre: "Food",
-  //         contactNo: "+1122334455",
-  //         start: new Date(2023, 8, 5, 12, 0),
-  //         end: new Date(2023, 8, 7, 22, 0),
-  //         description:
-  //           "Celebrate culinary excellence with tastings from top chefs, wine pairings, and cooking demonstrations.",
-  //         imageUrl: "/placeholder.svg?height=200&width=400",
-  //         user: { _id: "user3", name: "Culinary Events Co." },
-  //         venue: { _id: "venue3", name: "Waterfront Plaza", address: "Chicago, IL" },
-  //         ticketPrice: 120,
-  //         createdAt: new Date(),
-  //       },
-  //       {
-  //         _id: "4",
-  //         title: "Art Exhibition Opening",
-  //         genre: "Art",
-  //         contactNo: "+1567891234",
-  //         start: new Date(2023, 9, 20, 19, 0),
-  //         end: new Date(2023, 9, 20, 22, 0),
-  //         description:
-  //           "Opening night for a contemporary art exhibition featuring works from emerging artists around the world.",
-  //         imageUrl: "/placeholder.svg?height=200&width=400",
-  //         user: { _id: "user4", name: "Modern Art Gallery" },
-  //         venue: { _id: "venue4", name: "Downtown Gallery", address: "Los Angeles, CA" },
-  //         ticketPrice: 35,
-  //         createdAt: new Date(),
-  //       },
-  //       {
-  //         _id: "5",
-  //         title: "Sports Championship",
-  //         genre: "Sports",
-  //         contactNo: "+1456789012",
-  //         start: new Date(2023, 10, 15, 14, 0),
-  //         end: new Date(2023, 10, 15, 17, 0),
-  //         description: "The season finale championship game with the top teams competing for the trophy.",
-  //         imageUrl: "/placeholder.svg?height=200&width=400",
-  //         user: { _id: "user5", name: "Sports League" },
-  //         venue: { _id: "venue5", name: "Stadium Complex", address: "Dallas, TX" },
-  //         ticketPrice: 150,
-  //         createdAt: new Date(),
-  //       },
-  //     ])
-  //   }, 1000)
-  // })
 }
+
 
 export default function EventsPage() {
   const [events, setEvents] = useState([])
@@ -127,7 +56,47 @@ export default function EventsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeGenre, setActiveGenre] = useState("all")
   const [sortBy, setSortBy] = useState("date-asc")
+  const [paymentDone, setPaymentDone] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  
+  const userDataString = localStorage.getItem("user");
+  let userId;
+
+  if (userDataString) {
+    const userData = JSON.parse(userDataString);
+    userId = userData._id;
+  }
+
   const navigate = useNavigate()
+
+  useEffect(() => {
+    console.log(paymentDone, 'paymentDone')
+  }, [paymentDone])
+
+  useEffect(() => {
+    if (paymentDone && selectedEvent) {
+      const handleTender = async () => {
+        try {
+          console.log(selectedEvent, userId, 'hey tehere');
+          const response = await axios.post("http://localhost:3002/api/tender/allotTender", {
+            eventID: selectedEvent,
+            userID: userId
+          });
+          console.log("Tender submission response:", response.data);
+          navigate('/my-tenders');
+        } catch (err) {
+          console.error("Tender submission failed:", err);
+        } finally {
+          setPaymentDone(false);
+          setSelectedEvent(null);
+        }
+      };
+  
+      handleTender();
+    }
+  }, [paymentDone, selectedEvent, userId]);
+  
 
   useEffect(() => {
     const getEvents = async () => {
@@ -182,17 +151,17 @@ export default function EventsPage() {
 
   const genres = ["all", ...new Set(events?.map((event) => event.genre.toLowerCase()))]
 
-  const handleSubmitTender = (eventId) => {
-    navigate(`/tender-for-event/${eventId}`)
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <NavSidebar />
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0 mb-8 mt-20">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Available Events</h1>
-          <p className="text-muted-foreground mt-1">Browse and submit tenders for upcoming events</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Available Events
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Browse and submit tenders for upcoming events
+          </p>
         </div>
 
         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
@@ -221,7 +190,12 @@ export default function EventsPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="all" value={activeGenre} onValueChange={setActiveGenre} className="mb-8">
+      <Tabs
+        defaultValue="all"
+        value={activeGenre}
+        onValueChange={setActiveGenre}
+        className="mb-8"
+      >
         <TabsList className="mb-4 flex flex-wrap h-auto">
           {genres.map((genre) => (
             <TabsTrigger key={genre} value={genre} className="capitalize">
@@ -254,51 +228,68 @@ export default function EventsPage() {
           ) : filteredEvents?.length === 0 ? (
             <div className="text-center py-12">
               <h3 className="text-xl font-medium mb-2">No events found</h3>
-              <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+              <p className="text-muted-foreground">
+                Try adjusting your search or filter criteria
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredEvents?.map((event) => (
-                <Card key={event._id} className="overflow-hidden flex flex-col h-full">
-                  <div className="relative h-[200px] overflow-hidden">
+                <Card
+                  key={event._id}
+                  className="overflow-hidden flex flex-col h-full pt-0"
+                >
+                  <div className="relative h-[230px] overflow-hidden">
                     <img
                       src={event.imageUrl || "/placeholder.svg"}
                       alt={event.title}
                       className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
                     />
                     <Badge className="absolute top-3 right-3 bg-primary/90 hover:bg-primary">
-                    ₹{event.ticketPrice}
+                      ₹{event.ticketPrice}
                     </Badge>
                   </div>
 
                   <CardHeader className="p-4 pb-2">
                     <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl">{event.title}</CardTitle>
-                      <Badge variant="outline" className="capitalize">
-                        {event.genre}
-                      </Badge>
+                      <CardTitle className="w-full text-xl flex justify-between">
+                        <span>{event.title}</span>
+                        <span>₹ {event.venue.price}</span>
+                      </CardTitle>
                     </div>
                     <CardDescription className="flex items-center mt-1">
-                      <MapPinIcon className="h-4 w-4 mr-1 text-muted-foreground" />
-                      {event.venue.name}, {event.venue.address}
+                      <div className="flex items-center ">
+                        <MapPinIcon className="h-4 w-4 mr-1 text-muted-foreground" />
+                        {event.venue.name}, {event.venue.city}
+                      </div>
                     </CardDescription>
                   </CardHeader>
 
                   <CardContent className="p-4 pt-0 flex-grow">
                     <div className="flex items-center text-sm text-muted-foreground mb-3">
                       <CalendarIcon className="h-4 w-4 mr-1" />
-                      <span>{format(new Date(event.start), "MMM d, yyyy")}</span>
+                      <span>
+                        {format(new Date(event.start), "MMM d, yyyy")}
+                      </span>
                       <ClockIcon className="h-4 w-4 ml-3 mr-1" />
                       <span>
-                        {format(new Date(event.start), "h:mm a")} - {format(new Date(event.end), "h:mm a")}
+                        {format(new Date(event.start), "h:mm a")} -{" "}
+                        {format(new Date(event.end), "h:mm a")}
                       </span>
                     </div>
 
-                    <p className="text-sm line-clamp-3 mb-3">{event.description}</p>
+                    <p className="text-sm line-clamp-3 mb-3">
+                      {event.description}
+                    </p>
 
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <PhoneIcon className="h-4 w-4 mr-1" />
-                      <span>{event.contactNo}</span>
+                    <div className="flex justify-between items-center text-sm text-muted-foreground mt-5">
+                      <div className="flex items-center gap-2">
+                        <PhoneIcon className="h-4 w-4 mr-1" />
+                        <span>{event.contactNo}</span>
+                      </div>
+                      <Badge variant="outline" className="capitalize">
+                        {event.genre}
+                      </Badge>
                     </div>
                   </CardContent>
 
@@ -312,7 +303,9 @@ export default function EventsPage() {
                       <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
                           <DialogTitle>{event.title}</DialogTitle>
-                          <DialogDescription>Organized by {event.user.name}</DialogDescription>
+                          <DialogDescription>
+                            Organized by {event.user.name}
+                          </DialogDescription>
                         </DialogHeader>
 
                         <div className="grid gap-4 py-4">
@@ -325,18 +318,21 @@ export default function EventsPage() {
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div className="flex items-center">
                               <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                              <span>{format(new Date(event.start), "MMMM d, yyyy")}</span>
+                              <span>
+                                {format(new Date(event.start), "MMMM d, yyyy")}
+                              </span>
                             </div>
                             <div className="flex items-center">
                               <ClockIcon className="h-4 w-4 mr-2 text-muted-foreground" />
                               <span>
-                                {format(new Date(event.start), "h:mm a")} - {format(new Date(event.end), "h:mm a")}
+                                {format(new Date(event.start), "h:mm a")} -{" "}
+                                {format(new Date(event.end), "h:mm a")}
                               </span>
                             </div>
                             <div className="flex items-center">
                               <MapPinIcon className="h-4 w-4 mr-2 text-muted-foreground" />
                               <span>
-                                {event.venue.name}, {event.venue.address}
+                                {event.venue.name}, {event.venue.city}
                               </span>
                             </div>
                             <div className="flex items-center">
@@ -349,25 +345,48 @@ export default function EventsPage() {
                             </div>
                             <div className="flex items-center">
                               <TicketIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                              <span>${event.ticketPrice}</span>
+                              <span>₹{event.ticketPrice}</span>
                             </div>
                           </div>
 
                           <div>
                             <h4 className="font-medium mb-2">Description</h4>
-                            <p className="text-sm text-muted-foreground">{event.description}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {event.description}
+                            </p>
                           </div>
-                        </div>
-
-                        <div className="flex justify-end">
-                          <Button onClick={() => handleSubmitTender(event._id)}>Submit Tender</Button>
                         </div>
                       </DialogContent>
                     </Dialog>
 
-                    <Button className="flex-1" onClick={() => handleSubmitTender(event._id)}>
-                      Submit Tender
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button onClick={() => setSelectedEvent(event._id)}>
+                          <SendIcon className="mr-2 h-4 w-4" />
+                          Submit Tender
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Confirm Tender Submission
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            You are about to proceed with a payment of{" "}
+                            <span className="font-bold">₹{event.venue.price}</span>. Once
+                            the payment is successful, the tender will be
+                            submitted. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <GooglePaymentButton
+                            price={event.venue.price}
+                            setPaymentDone={setPaymentDone}
+                          />
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </CardFooter>
                 </Card>
               ))}
@@ -376,5 +395,5 @@ export default function EventsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

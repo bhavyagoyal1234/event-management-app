@@ -59,13 +59,13 @@ function Profile() {
           const profileData = res.data.profile
           setProfile((prev) => ({
             ...prev,
-            gender: profileData.gender,
-            dob: profileData.dob,
-            addressLine: profileData.addressLine,
-            city: profileData.city,
-            state: profileData.state,
-            mobileNo: profileData.mobileNo,
-            profilePhoto: profileData.profilePhoto,
+            gender: profileData?.gender,
+            dob: profileData?.dob,
+            addressLine: profileData?.addressLine,
+            city: profileData?.city,
+            state: profileData?.state,
+            mobileNo: profileData?.mobileNo,
+            profilePhoto: profileData?.profilePhoto,
           }))
         }
       } catch (err) {

@@ -75,6 +75,7 @@ function Reviews({ eventId }) {
             fourCnt: response.data.fourCnt,
             fiveCnt: response.data.fiveCnt,
           });
+          console.log("Rating Counts:", response.data);
         }
       } catch (error) {
         console.error("Error fetching rating counts:", error);

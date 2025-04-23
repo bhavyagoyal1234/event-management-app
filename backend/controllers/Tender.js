@@ -3,7 +3,10 @@ const Event = require('../models/Event'); // Adjust path as needed
 exports.allotTendor = async(req,res)=>{
     try{
 
+        console.log("in tender controller");
         const{userID,eventID}=req.body;
+        console.log("in tender controller", req.body);
+
         if(!userID || !eventID){
             return res.status(403).json({
                 success:false,
@@ -11,14 +14,19 @@ exports.allotTendor = async(req,res)=>{
             })
         }
         const isAlloted = await Tendor.findOne({event:eventID});
+        console.log('isalloted', isAlloted);
         if(isAlloted){
-            return res.status(404).json({
-                success:false,
-                message:"sorry event already got tendor",
-            })
+          return res.status(404).json({
+            success:false,
+            message:"sorry event already got tendor",
+          })
         }
-
-        const alloting = await Tendor.create({user:userID},{event:eventID});
+        
+        const alloting = await Tendor.create({
+          user:userID,
+          event:eventID
+        });
+        console.log('alloting', alloting);
         
         return res.status(200).json({
             success:true,
@@ -35,11 +43,13 @@ exports.allotTendor = async(req,res)=>{
     }
 }
 
-exports.getAllMyBookings = async (req, res) => {
+exports.getTicketByUserId = async (req, res) => {
     try {
       const { userID } = req.body;
+
+      console.log("Fetching tenders for user: 👋👋👋", userID);
   
-      const myEvents = await Tendor.find({ user: userID })
+      const myTenders = await Tendor.find({ user: userID })
         .populate({
           path: "event",
           populate: {
@@ -50,7 +60,7 @@ exports.getAllMyBookings = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Returning all your bookings",
-        myEvents,
+        myTenders,
       });
     } catch (error) {
       return res.status(400).json({

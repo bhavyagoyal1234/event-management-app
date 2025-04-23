@@ -40,6 +40,7 @@ import Footer from "./pages/home/Footer.jsx";
 import Rating from "./components/ui/Homereviewpage2.jsx";
 import EventsPage from "./pages/file-tender/events-page.jsx";
 import TenderSubmissionForm from "./pages/file-tender/tender-submission-form.jsx";
+import MyTenders from "./pages/file-tender/my-tenders.jsx";
 function App() {
   const GoogleAuthWrapper = () => {
     return (
@@ -142,6 +143,7 @@ function App() {
 
           <Route path="/file-tender" element={<EventsPage />} />
           <Route path="/tender-for-event/:id" element={<TenderSubmissionForm />} />
+          <Route path="/my-tenders" element={<MyTenders />} />
 
         </Routes>
       </BrowserRouter>

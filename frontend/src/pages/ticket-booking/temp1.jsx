@@ -32,6 +32,25 @@ import Giverating from "../../components/ui/Homereviewpage2"
 const EventCard = React.lazy(() => import("./temp2"))
 const GooglePaymentButton = React.lazy(() => import("../../components/ui/google-payment-button"))
 
+function EventDetailsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row gap-8">
+        <Skeleton className="h-[400px] w-full md:w-[600px] rounded-xl" />
+        <div className="w-full md:w-1/3 space-y-4">
+          <Skeleton className="h-10 w-3/4" />
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-6 w-2/3" />
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-12 w-full mt-8" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
 function EventDetails() {
   const navigate = useNavigate()
   const { event_id } = useParams()
@@ -54,10 +73,7 @@ function EventDetails() {
 
   // Mock multiple images for the gallery effect
   const mockImages = [
-    event?.imageUrl || "/placeholder.svg?height=600&width=800",
-    "/placeholder.svg?height=600&width=800&text=Event+Gallery+1",
-    "/placeholder.svg?height=600&width=800&text=Event+Gallery+2",
-    "/placeholder.svg?height=600&width=800&text=Event+Gallery+3",
+    event?.imageUrl
   ]
 
   const visibleCards = 3
@@ -75,7 +91,8 @@ function EventDetails() {
       try {
         const response = await axios.get(`http://localhost:3002/api/event/get-event-by-id/${event_id}`)
         if (response.status === 200) {
-          setEvent(response.data)
+          setEvent(response.data.event)
+          console.log("Event details fetched successfully:", response.data);
         } else {
           console.error("Failed to fetch event details")
         }
@@ -222,32 +239,28 @@ function EventDetails() {
 
       {/* Hero Section */}
       <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden bg-black">
-        {/* <AnimatePresence mode="wait">
-          <motion.img
-            key={currentImageIndex}
-            src={mockImages[currentImageIndex]}
-            alt={event?.title}
-            className="w-full h-full object-cover opacity-70"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.7 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          />
-        </AnimatePresence> */}
-
-        <img src={mockImages[currentImageIndex]} alt={event?.title} className="w-full h-full object-cover opacity-70"></img>
+        <img
+          src={mockImages[currentImageIndex]}
+          alt={event?.title}
+          className="w-full h-full object-cover opacity-70"
+        />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="container mx-auto">
-            <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-              <Badge className="mb-4 bg-blue-500 hover:bg-blue-600 text-white border-0">{event?.genre}</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-2">{event?.title}</h1>
+            <div>
+              <Badge className="mb-4 bg-blue-500 hover:bg-blue-600 text-white border-0">
+                {event?.genre}
+              </Badge>
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                {event?.title}
+              </h1>
               <p className="text-xl text-white/80">
-                Presented by <span className="font-medium">Event Organizer</span>
+                Presented by{" "}
+                <span className="font-medium">Event Organizer</span>
               </p>
-            </motion.div>
+            </div>
           </div>
         </div>
 
@@ -286,7 +299,9 @@ function EventDetails() {
                 <CardContent className="p-6 flex flex-col items-center text-center">
                   <Calendar className="h-8 w-8 text-blue-500 mb-3" />
                   <h3 className="font-semibold text-slate-700">Date & Time</h3>
-                  <p className="text-sm text-slate-600 mt-1">{formatDate(eventDate)}</p>
+                  <p className="text-sm text-slate-600 mt-1">
+                    {formatDate(eventDate)}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">
                     {formatTime(eventDate)} - {formatTime(eventEndDate)}
                   </p>
@@ -297,7 +312,9 @@ function EventDetails() {
                 <CardContent className="p-6 flex flex-col items-center text-center">
                   <MapPin className="h-8 w-8 text-blue-500 mb-3" />
                   <h3 className="font-semibold text-slate-700">Location</h3>
-                  <p className="text-sm text-slate-600 mt-1">{event?.venue?.name}</p>
+                  <p className="text-sm text-slate-600 mt-1">
+                    {event?.venue?.name}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">
                     {event?.venue?.city}, {event?.venue?.state}
                   </p>
@@ -309,14 +326,25 @@ function EventDetails() {
                   <Ticket className="h-8 w-8 text-blue-500 mb-3" />
                   <h3 className="font-semibold text-slate-700">Ticket Price</h3>
                   <p className="text-sm text-slate-600 mt-1">Starting from</p>
-                  <p className="text-xl font-bold text-blue-600 mt-1">₹{event?.ticketPrice}</p>
+                  <p className="text-xl font-bold text-blue-600 mt-1">
+                    ₹{event?.ticketPrice}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
 
             {/* Tabs for Event Information */}
-            <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}>
-              <Tabs defaultValue="details" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Tabs
+                defaultValue="details"
+                className="w-full"
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
                 <TabsList className="mb-8 grid w-full grid-cols-2 bg-slate-100 p-1 rounded-full">
                   <TabsTrigger
                     value="details"
@@ -332,12 +360,23 @@ function EventDetails() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="details" className="space-y-8 bg-white rounded-2xl p-6 shadow-sm">
+                <TabsContent
+                  value="details"
+                  className="space-y-8 bg-white rounded-2xl p-6 shadow-sm"
+                >
                   <div>
-                    <h2 className="text-2xl font-bold mb-4 text-slate-800">About the Event</h2>
-                    <p className="text-slate-600 whitespace-pre-wrap leading-relaxed">{description}</p>
+                    <h2 className="text-2xl font-bold mb-4 text-slate-800">
+                      About the Event
+                    </h2>
+                    <p className="text-slate-600 whitespace-pre-wrap leading-relaxed">
+                      {description}
+                    </p>
                     {event?.description && event.description.length > 150 && (
-                      <Button variant="link" onClick={toggleDescription} className="px-0 text-blue-600 mt-2">
+                      <Button
+                        variant="link"
+                        onClick={toggleDescription}
+                        className="px-0 text-blue-600 mt-2"
+                      >
                         {showFullDescription ? "Show Less" : "Show More"}
                       </Button>
                     )}
@@ -346,7 +385,9 @@ function EventDetails() {
                   <Separator />
 
                   <div>
-                    <h3 className="text-xl font-bold mb-4 text-slate-800">Event Highlights</h3>
+                    <h3 className="text-xl font-bold mb-4 text-slate-800">
+                      Event Highlights
+                    </h3>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
                         "Live performances",
@@ -365,15 +406,21 @@ function EventDetails() {
                   <Separator />
 
                   <div>
-                    <h3 className="text-xl font-bold mb-4 text-slate-800">Organizer Information</h3>
+                    <h3 className="text-xl font-bold mb-4 text-slate-800">
+                      Organizer Information
+                    </h3>
                     <div className="flex items-center gap-4">
                       <Avatar className="h-12 w-12 border-2 border-rose-100">
                         <AvatarImage src="/placeholder.svg?height=48&width=48" />
                         <AvatarFallback>EO</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-semibold text-slate-800">Event Organizer</p>
-                        <p className="text-sm text-slate-600">Professional event management company</p>
+                        <p className="font-semibold text-slate-800">
+                          Event Organizer
+                        </p>
+                        <p className="text-sm text-slate-600">
+                          Professional event management company
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -382,7 +429,9 @@ function EventDetails() {
                 <TabsContent value="reviews" className="space-y-8">
                   <div className="space-y-6">
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
-                      <h2 className="text-2xl font-bold mb-4 text-slate-800">Reviews & Ratings</h2>
+                      <h2 className="text-2xl font-bold mb-4 text-slate-800">
+                        Reviews & Ratings
+                      </h2>
                       <div className="space-y-4">
                         {/* Integrate your Ratingpage and Giverating components here */}
                         <div className="mt-8">
@@ -407,7 +456,9 @@ function EventDetails() {
                 className="mt-8"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-slate-800">You May Also Like</h2>
+                  <h2 className="text-2xl font-bold text-slate-800">
+                    You May Also Like
+                  </h2>
                   <div className="flex gap-2">
                     <Button
                       size="icon"
@@ -422,7 +473,9 @@ function EventDetails() {
                       size="icon"
                       variant="outline"
                       onClick={handleNext}
-                      disabled={currentIndex >= similarEvents.length - visibleCards}
+                      disabled={
+                        currentIndex >= similarEvents.length - visibleCards
+                      }
                       className="rounded-full border-slate-200 hover:border-rose-200 hover:text-blue-600"
                     >
                       <ChevronRight className="h-5 w-5" />
@@ -448,9 +501,14 @@ function EventDetails() {
                       </>
                     }
                   >
-                    {similarEvents.slice(currentIndex, currentIndex + visibleCards).map((similarEvent) => (
-                      <EventCard key={similarEvent._id} event={similarEvent} />
-                    ))}
+                    {similarEvents
+                      .slice(currentIndex, currentIndex + visibleCards)
+                      .map((similarEvent) => (
+                        <EventCard
+                          key={similarEvent._id}
+                          event={similarEvent}
+                        />
+                      ))}
                   </Suspense>
                 </div>
               </motion.div>
@@ -464,7 +522,9 @@ function EventDetails() {
                 transition={{ delay: 0.6 }}
                 className="mt-8"
               >
-                <h2 className="text-2xl font-bold mb-6 text-slate-800">Similar events in {event?.venue?.city}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-slate-800">
+                  Similar events in {event?.venue?.city}
+                </h2>
                 <Suspense
                   fallback={
                     <div className="h-[300px] bg-slate-100 rounded-xl flex items-center justify-center">
@@ -484,26 +544,40 @@ function EventDetails() {
           {/* Sidebar */}
           <div className="w-full lg:w-1/3">
             <div className="sticky top-24">
-              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
                 {/* Countdown Timer */}
                 <Card className="bg-gradient-to-br from-blue-500 to-pink-600 text-white mb-6 overflow-hidden">
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4 text-center">Event Starts In</h3>
+                    <h3 className="text-xl font-bold mb-4 text-center">
+                      Event Starts In
+                    </h3>
                     <div className="grid grid-cols-4 gap-2 text-center">
                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                        <div className="text-2xl font-bold">{countdown.days}</div>
+                        <div className="text-2xl font-bold">
+                          {countdown.days}
+                        </div>
                         <div className="text-xs uppercase">Days</div>
                       </div>
                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                        <div className="text-2xl font-bold">{countdown.hours}</div>
+                        <div className="text-2xl font-bold">
+                          {countdown.hours}
+                        </div>
                         <div className="text-xs uppercase">Hours</div>
                       </div>
                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                        <div className="text-2xl font-bold">{countdown.minutes}</div>
+                        <div className="text-2xl font-bold">
+                          {countdown.minutes}
+                        </div>
                         <div className="text-xs uppercase">Mins</div>
                       </div>
                       <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                        <div className="text-2xl font-bold">{countdown.seconds}</div>
+                        <div className="text-2xl font-bold">
+                          {countdown.seconds}
+                        </div>
                         <div className="text-xs uppercase">Secs</div>
                       </div>
                     </div>
@@ -513,8 +587,12 @@ function EventDetails() {
                 {/* Booking Card */}
                 <Card className="border-0 shadow-lg overflow-hidden">
                   <div className="bg-gradient-to-r from-rose-50 to-pink-50 p-4">
-                    <h3 className="text-xl font-bold text-slate-800">Book Your Tickets</h3>
-                    <p className="text-sm text-slate-600">Secure your spot at this amazing event</p>
+                    <h3 className="text-xl font-bold text-slate-800">
+                      Book Your Tickets
+                    </h3>
+                    <p className="text-sm text-slate-600">
+                      Secure your spot at this amazing event
+                    </p>
                   </div>
 
                   <CardContent className="p-6 space-y-6">
@@ -523,22 +601,35 @@ function EventDetails() {
                         <div className="flex items-center gap-3">
                           <Ticket className="h-5 w-5 text-rose-500" />
                           <div>
-                            <p className="font-medium text-slate-800">Standard Ticket</p>
-                            <p className="text-sm text-slate-500">General admission</p>
+                            <p className="font-medium text-slate-800">
+                              Standard Ticket
+                            </p>
+                            <p className="text-sm text-slate-500">
+                              General admission
+                            </p>
                           </div>
                         </div>
-                        <p className="font-bold text-rose-600">₹{event?.ticketPrice}</p>
+                        <p className="font-bold text-rose-600">
+                          ₹{event?.ticketPrice}
+                        </p>
                       </div>
 
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <Users className="h-5 w-5 text-rose-500" />
                           <div>
-                            <p className="font-medium text-slate-800">Available Seats</p>
-                            <p className="text-sm text-slate-500">Book before they're gone</p>
+                            <p className="font-medium text-slate-800">
+                              Available Seats
+                            </p>
+                            <p className="text-sm text-slate-500">
+                              Book before they're gone
+                            </p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
+                        <Badge
+                          variant="outline"
+                          className="bg-green-50 text-green-600 border-green-200"
+                        >
                           Available
                         </Badge>
                       </div>
@@ -547,8 +638,12 @@ function EventDetails() {
                         <div className="flex items-center gap-3">
                           <Star className="h-5 w-5 text-rose-500" />
                           <div>
-                            <p className="font-medium text-slate-800">Event Rating</p>
-                            <p className="text-sm text-slate-500">Based on user reviews</p>
+                            <p className="font-medium text-slate-800">
+                              Event Rating
+                            </p>
+                            <p className="text-sm text-slate-500">
+                              Based on user reviews
+                            </p>
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -556,7 +651,11 @@ function EventDetails() {
                             {[1, 2, 3, 4, 5].map((star) => (
                               <Star
                                 key={star}
-                                className={`h-4 w-4 ${star <= 4 ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                                className={`h-4 w-4 ${
+                                  star <= 4
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-300"
+                                }`}
                               />
                             ))}
                           </div>
@@ -569,12 +668,17 @@ function EventDetails() {
 
                     <div className="flex justify-between items-center font-bold">
                       <span className="text-slate-800">Total Amount</span>
-                      <span className="text-xl text-rose-600">₹{event?.ticketPrice}</span>
+                      <span className="text-xl text-rose-600">
+                        ₹{event?.ticketPrice}
+                      </span>
                     </div>
 
                     <div className="space-y-3">
                       <Suspense fallback={<Skeleton className="h-12 w-full" />}>
-                        <GooglePaymentButton price={event?.ticketPrice} setPaymentDone={setPaymentDone}>
+                        <GooglePaymentButton
+                          price={event?.ticketPrice}
+                          setPaymentDone={setPaymentDone}
+                        >
                           <Button className="w-full bg-rose-500 hover:bg-rose-600 text-white h-12 text-lg font-semibold">
                             Book Now
                           </Button>
@@ -585,12 +689,24 @@ function EventDetails() {
                         <Button
                           variant="outline"
                           size="icon"
-                          className={`rounded-full ${isLiked ? "text-rose-500 border-rose-200" : "text-slate-400 border-slate-200"}`}
+                          className={`rounded-full ${
+                            isLiked
+                              ? "text-rose-500 border-rose-200"
+                              : "text-slate-400 border-slate-200"
+                          }`}
                           onClick={() => setIsLiked(!isLiked)}
                         >
-                          <Heart className={`h-5 w-5 ${isLiked ? "fill-rose-500" : ""}`} />
+                          <Heart
+                            className={`h-5 w-5 ${
+                              isLiked ? "fill-rose-500" : ""
+                            }`}
+                          />
                         </Button>
-                        <Button variant="outline" size="icon" className="rounded-full text-slate-400 border-slate-200">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="rounded-full text-slate-400 border-slate-200"
+                        >
                           <Share2 className="h-5 w-5" />
                         </Button>
                       </div>
@@ -603,7 +719,7 @@ function EventDetails() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Payment Success Component

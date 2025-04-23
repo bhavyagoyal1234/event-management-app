@@ -232,7 +232,7 @@ const responseGoogle = async (authResult) => {
               onClick={googleLogin}
             >
               <img src="/google.png" alt="Google_icon" className="h-5 w-5 mr-2" />
-              Sign up with Google
+              Continue with Google
             </button>
         </div>
       </div>
